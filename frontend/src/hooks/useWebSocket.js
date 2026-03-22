@@ -4,13 +4,14 @@ import { useState, useEffect, useRef, useCallback } from 'react'
  * Custom hook that manages a WebSocket connection with automatic reconnection.
  *
  * @param {string} url  WebSocket URL to connect to (e.g. "ws://localhost:8765")
- * @returns {{ tradeData, isConnected, lastUpdate, error, sendMessage }}
+ * @returns {{ tradeData, isConnected, lastUpdate, error, sendMessage, reconnect, signalLog }}
  */
 export default function useWebSocket(url) {
   const [tradeData,   setTradeData]   = useState(null)
   const [isConnected, setIsConnected] = useState(false)
   const [lastUpdate,  setLastUpdate]  = useState(null)
   const [error,       setError]       = useState(null)
+  const [signalLog,   setSignalLog]   = useState([])
 
   const wsRef      = useRef(null)
   const reconnectRef = useRef(null)
@@ -36,6 +37,15 @@ export default function useWebSocket(url) {
         const data = JSON.parse(event.data)
         setTradeData(data)
         setLastUpdate(new Date())
+
+        // Append new signal to log (max 50 entries)
+        if (data?.meta?.lastSignal) {
+          setSignalLog(prev => {
+            const entry = { ...data.meta.lastSignal, timestamp: Date.now() }
+            const next = [entry, ...prev]
+            return next.slice(0, 50)
+          })
+        }
       } catch (e) {
         console.error('Failed to parse WebSocket message:', e)
       }
@@ -83,5 +93,5 @@ export default function useWebSocket(url) {
     connect()
   }, [connect])
 
-  return { tradeData, isConnected, lastUpdate, error, sendMessage, reconnect }
+  return { tradeData, isConnected, lastUpdate, error, sendMessage, reconnect, signalLog }
 }

@@ -1,42 +1,72 @@
 import { useState, useEffect, useRef } from 'react'
-import { Wifi, WifiOff, RefreshCw, AlertTriangle } from 'lucide-react'
 import useWebSocket from './hooks/useWebSocket'
-import TradeTable from './components/TradeTable'
-import SettingsPanel from './components/SettingsPanel'
-import PnLChart from './components/PnLChart'
+import CandlestickChart from './components/CandlestickChart'
+import MarketDepth from './components/MarketDepth'
+import TradeTicket from './components/TradeTicket'
 import DrawdownGauge from './components/DrawdownGauge'
 import ZoneMap from './components/ZoneMap'
-import {
-  formatCurrency,
-  formatTime,
-} from './utils/formatters'
+import SettingsPanel from './components/SettingsPanel'
+import { formatCurrency, formatTime, getDirectionLabel, getDirectionColor } from './utils/formatters'
 
 const WS_URL = 'ws://localhost:8765'
 
-// ---------------------------------------------------------------------------
-// Inline stat card — single-use, no separate file needed
-// ---------------------------------------------------------------------------
-function StatCard({ label, value, valueClass = '' }) {
+const SYMBOLS = ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'XAUUSD', 'BTCUSD']
+
+const STATIC_NEWS = [
+  { time: '08:30', currency: 'USD', event: 'Non-Farm Payrolls', impact: 'HIGH' },
+  { time: '10:00', currency: 'EUR', event: 'ECB Interest Rate Decision', impact: 'HIGH' },
+  { time: '13:30', currency: 'GBP', event: 'CPI y/y', impact: 'MED' },
+  { time: '15:00', currency: 'USD', event: 'ISM Manufacturing PMI', impact: 'MED' },
+  { time: '18:00', currency: 'CAD', event: 'BOC Rate Statement', impact: 'HIGH' },
+  { time: '02:00', currency: 'CNY', event: 'CPI m/m', impact: 'MED' },
+  { time: '07:45', currency: 'EUR', event: 'French Industrial Production', impact: 'LOW' },
+  { time: '12:30', currency: 'USD', event: 'Jobless Claims', impact: 'MED' },
+]
+
+// Simulated 24h price changes per symbol
+const MOCK_CHANGES = {
+  EURUSD: +0.12, GBPUSD: -0.34, USDJPY: +0.57, USDCHF: -0.09,
+  AUDUSD: +0.22, XAUUSD: +0.81, BTCUSD: +2.43,
+}
+
+// Simulated current prices (live price would come from ws)
+const MOCK_PRICES = {
+  EURUSD: '1.08524', GBPUSD: '1.26371', USDJPY: '149.512',
+  USDCHF: '0.89604', AUDUSD: '0.64518', XAUUSD: '2301.45', BTCUSD: '71245.00',
+}
+
+// ── Inline helpers ──────────────────────────────────────────────────────────
+
+function Cell({ label, value, valueColor = '#e2e8f0' }) {
   return (
-    <div className="bg-gray-800 rounded-xl p-4 flex flex-col gap-1 border border-gray-700/50">
-      <span className="text-xs text-gray-400 uppercase tracking-wide">{label}</span>
-      <span className={`text-2xl font-semibold ${valueClass}`}>{value}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid #0f2a4a' }}>
+      <span style={{ fontSize: 11, color: '#475569', fontFamily: 'monospace' }}>{label}</span>
+      <span style={{ fontSize: 12, color: valueColor, fontFamily: 'monospace', fontWeight: 600 }}>{value}</span>
     </div>
   )
 }
 
-// ---------------------------------------------------------------------------
-// App
-// ---------------------------------------------------------------------------
-export default function App() {
-  const { tradeData, isConnected, lastUpdate, error, sendMessage, reconnect } = useWebSocket(WS_URL)
+function SectionHeader({ title }) {
+  return (
+    <div style={{ fontSize: 10, color: '#475569', letterSpacing: '0.08em', fontFamily: 'monospace', marginTop: 10, marginBottom: 4, paddingBottom: 2, borderBottom: '1px solid #1e293b' }}>
+      {title}
+    </div>
+  )
+}
 
+// ── App ─────────────────────────────────────────────────────────────────────
+
+export default function App() {
+  const { tradeData, isConnected, lastUpdate, error, sendMessage, reconnect, signalLog } = useWebSocket(WS_URL)
+
+  const [activeSymbol,    setActiveSymbol]    = useState('EURUSD')
   const [activeTab,       setActiveTab]       = useState('Positions')
-  const [selectedSymbol,  setSelectedSymbol]  = useState('EURUSD')
   const [currentSettings, setCurrentSettings] = useState({})
-  // Preserve last valid trade payload so settings_confirmed messages don't wipe the dashboard
+  const [showSettings,    setShowSettings]    = useState(false)
+  const [clock,           setClock]           = useState('')
   const lastValidDataRef = useRef(null)
 
+  // Preserve last valid trade payload
   useEffect(() => {
     if (tradeData && tradeData.type !== 'settings_confirmed') {
       lastValidDataRef.current = tradeData
@@ -46,186 +76,608 @@ export default function App() {
     }
   }, [tradeData])
 
-  const activeData = (tradeData?.type === 'settings_confirmed')
-    ? lastValidDataRef.current
-    : tradeData
+  const activeData = tradeData?.type === 'settings_confirmed' ? lastValidDataRef.current : tradeData
+  const balance    = activeData?.meta?.accountBalance   ?? 0
+  const equity     = activeData?.meta?.accountEquity    ?? 0
+  const margin     = activeData?.meta?.margin           ?? 0
+  const freeMargin = activeData?.meta?.freeMargin       ?? 0
+  const ddPct      = activeData?.meta?.dailyDrawdownPct ?? 0
+  const ddLimit    = currentSettings.DailyDrawdownLimitPct ?? 3
+  const trades     = activeData?.trades ?? []
+  const masterOn   = currentSettings.MasterSwitch ?? true
 
-  const balance = activeData?.meta?.accountBalance  ?? 0
-  const equity  = activeData?.meta?.accountEquity   ?? 0
-  const ddPct   = activeData?.meta?.dailyDrawdownPct ?? 0
-  const trades  = activeData?.trades ?? []
+  // Live clock
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date()
+      setClock(now.toTimeString().slice(0, 8))
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
 
-  const showLoading = !activeData && !isConnected
-
-  function handleSaveSettings(updatedSettings) {
-    sendMessage({ type: 'settings_update', payload: updatedSettings })
-    console.log('Settings sent to bridge')
-  }
-
-  // Symbol options: unique set of trade symbols + default list
-  const symbolOptions = [...new Set([
+  // Symbol tabs — union of live trade symbols + defaults
+  const symbolTabs = [...new Set([
     ...(activeData?.trades ?? []).map(t => t.symbol),
-    'EURUSD', 'GBPUSD', 'XAUUSD', 'BTCUSD',
+    ...SYMBOLS,
   ])]
 
-  return (
-    <div className="bg-gray-950 min-h-screen text-white flex flex-col">
+  // P&L history from PnLChart logic (mini version)
+  const pnlHistory = useRef([])
+  useEffect(() => {
+    if (equity && balance) {
+      const pnl = equity - balance
+      pnlHistory.current = [...pnlHistory.current.slice(-49), pnl]
+    }
+  }, [equity, balance])
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Navbar                                                               */}
-      {/* ------------------------------------------------------------------ */}
-      <nav className="bg-gray-900 border-b border-gray-800 px-6 py-3 flex items-center justify-between">
-        {/* Left — branding + connection status */}
-        <div className="flex items-center gap-3">
-          <span className="text-lg font-semibold tracking-tight">TradingBot Pro</span>
-          <div className="flex items-center gap-1.5 text-sm">
-            <span
-              className={`inline-block w-2 h-2 rounded-full ${
-                isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-red-500'
-              }`}
-            />
-            <span className={isConnected ? 'text-emerald-400' : 'text-red-400'}>
-              {isConnected ? 'Live' : 'Disconnected'}
-            </span>
-          </div>
+  // Current price for market depth
+  const currentPrice = parseFloat(MOCK_PRICES[activeSymbol] ?? '1.0')
+
+  function handleSaveSettings(updated) {
+    sendMessage({ type: 'settings_update', payload: updated })
+  }
+
+  // ── Styles ────────────────────────────────────────────────────────────────
+
+  const panelBg   = '#0a1628'
+  const cardBg    = '#0f1e35'
+  const border    = '1px solid #1e293b'
+
+  // ── Render ────────────────────────────────────────────────────────────────
+
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateRows: '48px 1fr 200px',
+      gridTemplateColumns: '220px 1fr 240px',
+      gridTemplateAreas: `
+        "navbar navbar navbar"
+        "sidebar-left chart-main sidebar-right"
+        "bottom bottom bottom"
+      `,
+      height: '100vh',
+      overflow: 'hidden',
+      background: '#060b14',
+    }}>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* NAVBAR                                                              */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <nav style={{
+        gridArea: 'navbar',
+        background: panelBg,
+        borderBottom: border,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 12px',
+        gap: 12,
+        zIndex: 10,
+      }}>
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 180 }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: isConnected ? '#00d4aa' : '#f43f5e',
+            boxShadow: isConnected ? '0 0 6px #00d4aa' : 'none',
+            animation: isConnected ? 'pulse 2s infinite' : 'none',
+            flexShrink: 0,
+          }} />
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#e2e8f0', letterSpacing: '0.02em' }}>TradingBot Pro</span>
+          <span style={{
+            fontSize: 10, fontWeight: 700, color: '#60a5fa',
+            background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(59,130,246,0.4)',
+            borderRadius: 4, padding: '1px 5px', fontFamily: 'monospace',
+          }}>MT5</span>
         </div>
 
-        {/* Right — last update time + symbol selector + error/connected indicator */}
-        <div className="flex items-center gap-4 text-sm text-gray-400">
-          {lastUpdate && (
-            <span>Updated {formatTime(lastUpdate)}</span>
-          )}
-          {!isConnected && error && (
-            <div className="flex items-center gap-1.5 text-red-400">
-              <WifiOff className="w-4 h-4" />
-              <span className="hidden sm:inline text-xs">{error}</span>
-            </div>
-          )}
-          {isConnected && <Wifi className="w-4 h-4 text-emerald-400" />}
-          <select
-            value={selectedSymbol}
-            onChange={e => setSelectedSymbol(e.target.value)}
-            className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-sm text-white"
+        {/* Symbol tabs */}
+        <div style={{ display: 'flex', gap: 4, flex: 1, overflowX: 'auto' }}>
+          {symbolTabs.slice(0, 8).map(sym => {
+            const change = MOCK_CHANGES[sym] ?? 0
+            const price  = MOCK_PRICES[sym]  ?? '—'
+            const active = sym === activeSymbol
+            return (
+              <button
+                key={sym}
+                onClick={() => setActiveSymbol(sym)}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  padding: '3px 10px', borderRadius: 4, cursor: 'pointer', whiteSpace: 'nowrap',
+                  background: active ? 'rgba(37,99,235,0.25)' : 'transparent',
+                  border: active ? '1px solid #2563eb' : '1px solid transparent',
+                  transition: 'all 0.15s ease',
+                  minWidth: 72,
+                }}
+              >
+                <span style={{ fontSize: 11, fontWeight: 700, color: active ? '#e2e8f0' : '#94a3b8', fontFamily: 'monospace' }}>{sym}</span>
+                <span style={{ fontSize: 9, color: change >= 0 ? '#00d4aa' : '#f43f5e', fontFamily: 'monospace' }}>
+                  {price} <span>{change >= 0 ? '+' : ''}{change}%</span>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Right section */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexShrink: 0 }}>
+          {/* Connection status */}
+          <div style={{ fontSize: 11, fontFamily: 'monospace', color: isConnected ? '#00d4aa' : '#f43f5e' }}>
+            {isConnected ? '● LIVE' : '○ OFF'}
+          </div>
+
+          {/* Clock */}
+          <span style={{ fontSize: 12, color: '#475569', fontFamily: 'monospace' }}>{clock} UTC</span>
+
+          {/* Balance badge */}
+          <div style={{
+            background: cardBg, border, borderRadius: 4,
+            padding: '3px 8px', fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0',
+          }}>
+            {formatCurrency(balance)}
+          </div>
+
+          {/* Settings button */}
+          <button
+            onClick={() => setShowSettings(true)}
+            style={{
+              background: cardBg, border, borderRadius: 4,
+              padding: '3px 8px', fontSize: 11, color: '#94a3b8', cursor: 'pointer',
+              fontFamily: 'monospace', transition: 'all 0.15s ease',
+            }}
           >
-            {symbolOptions.map(sym => (
-              <option key={sym} value={sym}>{sym}</option>
-            ))}
-          </select>
+            ⚙ SETTINGS
+          </button>
+
+          {/* Reconnect */}
+          {!isConnected && (
+            <button
+              onClick={reconnect}
+              style={{
+                background: 'rgba(37,99,235,0.2)', border: '1px solid #2563eb',
+                borderRadius: 4, padding: '3px 8px', fontSize: 11, color: '#60a5fa',
+                cursor: 'pointer', fontFamily: 'monospace',
+              }}
+            >
+              ↺ Reconnect
+            </button>
+          )}
         </div>
       </nav>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Main content                                                         */}
-      {/* ------------------------------------------------------------------ */}
-      <main className="p-6 space-y-6 flex-1">
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* SIDEBAR LEFT                                                        */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <aside style={{
+        gridArea: 'sidebar-left',
+        background: panelBg,
+        borderRight: border,
+        overflowY: 'auto',
+        padding: '10px 10px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}>
 
-        {/* Loading state — shown before first connection */}
-        {showLoading && (
-          <div className="flex flex-col items-center justify-center h-64 gap-4 text-gray-400">
-            <RefreshCw className="w-8 h-8 animate-spin" />
-            <span>Connecting to bridge...</span>
+        {/* Account stats */}
+        <SectionHeader title="ACCOUNT" />
+        <Cell label="Balance"     value={formatCurrency(balance)} />
+        <Cell label="Equity"      value={formatCurrency(equity)}  valueColor={equity >= balance ? '#00d4aa' : '#f43f5e'} />
+        <Cell label="Margin"      value={formatCurrency(margin)} />
+        <Cell label="Free Margin" value={formatCurrency(freeMargin)} valueColor={freeMargin < margin * 0.5 ? '#f59e0b' : '#e2e8f0'} />
+
+        {/* Daily stats */}
+        <SectionHeader title="TODAY" />
+        <Cell label="Trades"   value={trades.length} />
+        <Cell label="Win Rate" value={trades.length > 0 ? '—' : '—'} />
+        <Cell label="Daily P&L" value={formatCurrency(equity - balance)} valueColor={(equity - balance) >= 0 ? '#00d4aa' : '#f43f5e'} />
+
+        {/* Drawdown gauge */}
+        <SectionHeader title="DRAWDOWN" />
+        <div style={{ transform: 'scale(0.85)', transformOrigin: 'top left', width: '118%', marginBottom: -20 }}>
+          <DrawdownGauge currentPct={ddPct} limitPct={ddLimit} />
+        </div>
+
+        {/* Signal status */}
+        <SectionHeader title="LAST SIGNAL" />
+        {activeData?.meta?.lastSignal ? (
+          <div style={{ background: cardBg, border: '1px solid #0f2a4a', borderRadius: 4, padding: '6px 8px' }}>
+            <div style={{ fontSize: 11, color: '#e2e8f0', fontFamily: 'monospace' }}>
+              {activeData.meta.lastSignal.symbol ?? activeSymbol}
+            </div>
+            <div style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'monospace', marginTop: 2 }}>
+              {activeData.meta.lastSignal.direction === 1
+                ? <span style={{ color: '#00d4aa' }}>▲ BUY</span>
+                : activeData.meta.lastSignal.direction === -1
+                  ? <span style={{ color: '#f43f5e' }}>▼ SELL</span>
+                  : '—'}
+              {' '}· Tier {activeData.meta.lastSignal.tier ?? '—'}
+            </div>
+            <div style={{ fontSize: 9, color: '#475569', fontFamily: 'monospace', marginTop: 2 }}>
+              {activeData.meta.lastSignal.timestamp
+                ? formatTime(activeData.meta.lastSignal.timestamp)
+                : '—'}
+            </div>
           </div>
+        ) : (
+          <div style={{ fontSize: 11, color: '#475569', fontFamily: 'monospace', padding: '4px 0' }}>Scanning...</div>
         )}
 
-        {/* Summary cards */}
-        {!showLoading && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard
-              label="Account Balance"
-              value={formatCurrency(balance)}
-              valueClass="text-white"
-            />
-            <StatCard
-              label="Account Equity"
-              value={formatCurrency(equity)}
-              valueClass={equity >= balance ? 'text-emerald-400' : 'text-red-400'}
-            />
-            <DrawdownGauge
-              currentPct={ddPct}
-              limitPct={currentSettings.DailyDrawdownLimitPct ?? 3}
-            />
-            <StatCard
-              label="Open Trades"
-              value={
-                <span>
-                  {trades.length}
-                  <span className="text-gray-500 text-base font-normal"> / 3</span>
-                </span>
-              }
-              valueClass="text-white"
-            />
-          </div>
-        )}
+        {/* Bot status */}
+        <SectionHeader title="BOT STATUS" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{
+            width: 7, height: 7, borderRadius: '50%',
+            background: masterOn ? '#00d4aa' : '#f43f5e',
+            boxShadow: masterOn ? '0 0 5px #00d4aa' : 'none',
+          }} />
+          <span style={{ fontSize: 12, fontFamily: 'monospace', color: masterOn ? '#00d4aa' : '#f43f5e', fontWeight: 700 }}>
+            {masterOn ? 'ACTIVE' : 'INACTIVE'}
+          </span>
+        </div>
 
-        {/* Tab navigation */}
-        {!showLoading && (
-          <div className="flex border-b border-gray-800">
-            {['Positions', 'Chart', 'Zones', 'Settings'].map(tab => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === tab
-                    ? 'text-white border-b-2 border-emerald-400'
-                    : 'text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+        {error && (
+          <div style={{
+            marginTop: 8, background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)',
+            borderRadius: 4, padding: '6px 8px', fontSize: 10, color: '#f87171', fontFamily: 'monospace',
+          }}>
+            {error}
           </div>
         )}
+      </aside>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* CHART MAIN                                                          */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <main style={{
+        gridArea: 'chart-main',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        background: '#060b14',
+      }}>
+        {/* Chart header */}
+        <div style={{
+          padding: '6px 12px',
+          borderBottom: border,
+          background: panelBg,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+        }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#e2e8f0', fontFamily: 'monospace' }}>{activeSymbol}</span>
+          <span style={{ fontSize: 11, color: '#475569', fontFamily: 'monospace' }}>· MT5</span>
+          <span style={{
+            marginLeft: 'auto', fontSize: 10, color: '#475569', fontFamily: 'monospace',
+          }}>
+            {lastUpdate ? `Updated ${lastUpdate.toTimeString().slice(0, 8)}` : 'Awaiting data...'}
+          </span>
+        </div>
+
+        {/* Candlestick chart — scrollable only if content overflows */}
+        <div style={{ flexShrink: 0 }}>
+          <CandlestickChart symbol={activeSymbol} wsData={activeData} />
+        </div>
+
+        {/* Tab bar */}
+        <div style={{
+          display: 'flex',
+          borderBottom: border,
+          borderTop: border,
+          background: panelBg,
+          flexShrink: 0,
+        }}>
+          {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '7px 16px',
+                fontSize: 11,
+                fontFamily: 'monospace',
+                fontWeight: activeTab === tab ? 700 : 400,
+                color: activeTab === tab ? '#e2e8f0' : '#475569',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: activeTab === tab ? '2px solid #2563eb' : '2px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {tab.toUpperCase()}
+            </button>
+          ))}
+        </div>
 
         {/* Tab content */}
-        {!showLoading && (
-          <div>
-            {activeTab === 'Positions' && <TradeTable trades={trades} />}
-            {activeTab === 'Chart' && (
-              <PnLChart trades={trades} meta={activeData?.meta ?? null} />
-            )}
-            {activeTab === 'Zones' && (
-              <ZoneMap trades={trades} symbol={selectedSymbol} />
-            )}
-            {activeTab === 'Settings' && (
+        <div style={{ flex: 1, overflowY: 'auto', background: '#060b14' }}>
+
+          {/* ── Positions ── */}
+          {activeTab === 'Positions' && (
+            <div>
+              {trades.length === 0 ? (
+                <div style={{ padding: 24, textAlign: 'center', color: '#475569', fontSize: 12, fontFamily: 'monospace' }}>
+                  No open positions
+                </div>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, fontFamily: 'monospace' }}>
+                  <thead>
+                    <tr style={{ background: cardBg, color: '#475569' }}>
+                      {['SYMBOL', 'DIR', 'LOT', 'ENTRY', 'SL', 'TP', 'P&L', 'STATUS'].map(h => (
+                        <th key={h} style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 600, fontSize: 10, letterSpacing: '0.05em', borderBottom: '1px solid #0f2a4a' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {trades.map((trade, i) => {
+                      const pnl = trade.unrealizedPnl ?? trade.pnl ?? 0
+                      const dir = trade.direction === 1 ? 'BUY' : 'SELL'
+                      return (
+                        <tr
+                          key={trade.ticket ?? i}
+                          style={{ borderBottom: '1px solid #0a1628', background: i % 2 === 0 ? '#060b14' : '#080e1a' }}
+                        >
+                          <td style={{ padding: '6px 10px', color: '#e2e8f0', fontWeight: 700 }}>{trade.symbol}</td>
+                          <td style={{ padding: '6px 10px' }}>
+                            <span style={{
+                              padding: '2px 6px', borderRadius: 3, fontSize: 10, fontWeight: 700,
+                              background: dir === 'BUY' ? 'rgba(0,212,170,0.15)' : 'rgba(244,63,94,0.15)',
+                              color: dir === 'BUY' ? '#00d4aa' : '#f43f5e',
+                              border: `1px solid ${dir === 'BUY' ? '#00d4aa' : '#f43f5e'}`,
+                            }}>{dir}</span>
+                          </td>
+                          <td style={{ padding: '6px 10px', color: '#94a3b8' }}>{trade.lotSize ?? trade.lot ?? '—'}</td>
+                          <td style={{ padding: '6px 10px', color: '#94a3b8' }}>{trade.entryPrice?.toFixed(5) ?? '—'}</td>
+                          <td style={{ padding: '6px 10px', color: '#f43f5e' }}>{trade.stopLoss?.toFixed(5) ?? '—'}</td>
+                          <td style={{ padding: '6px 10px', color: '#00d4aa' }}>{trade.takeProfit?.toFixed(5) ?? '—'}</td>
+                          <td style={{ padding: '6px 10px', fontWeight: 700, color: pnl >= 0 ? '#00d4aa' : '#f43f5e' }}>
+                            {pnl >= 0 ? '+' : ''}{formatCurrency(pnl)}
+                          </td>
+                          <td style={{ padding: '6px 10px' }}>
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              {trade.isLocked && (
+                                <span style={{ fontSize: 9, padding: '1px 4px', borderRadius: 2, background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid #f59e0b' }}>LOCK</span>
+                              )}
+                              {trade.isHedged && (
+                                <span style={{ fontSize: 9, padding: '1px 4px', borderRadius: 2, background: 'rgba(139,92,246,0.15)', color: '#8b5cf6', border: '1px solid #8b5cf6' }}>HEDGE</span>
+                              )}
+                              {!trade.isLocked && !trade.isHedged && (
+                                <span style={{ fontSize: 9, color: '#475569' }}>—</span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+
+          {/* ── History ── */}
+          {activeTab === 'History' && (
+            <div style={{ padding: 24, textAlign: 'center', color: '#475569', fontSize: 12, fontFamily: 'monospace' }}>
+              No closed trades yet
+            </div>
+          )}
+
+          {/* ── Signals ── */}
+          {activeTab === 'Signals' && (
+            <div style={{ padding: 8 }}>
+              {signalLog.length === 0 ? (
+                <div style={{ padding: 24, textAlign: 'center', color: '#475569', fontSize: 12, fontFamily: 'monospace' }}>
+                  Awaiting signal evaluations...
+                </div>
+              ) : (
+                signalLog.map((entry, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: 'flex', gap: 10, alignItems: 'flex-start',
+                      padding: '6px 8px', borderBottom: '1px solid #0f2a4a',
+                      fontSize: 11, fontFamily: 'monospace',
+                    }}
+                  >
+                    <span style={{ color: '#475569', flexShrink: 0 }}>
+                      {entry.timestamp ? new Date(entry.timestamp).toTimeString().slice(0, 8) : '—'}
+                    </span>
+                    <span style={{ color: '#94a3b8', flexShrink: 0 }}>{entry.symbol ?? '—'}</span>
+                    <span style={{ color: entry.direction === 1 ? '#00d4aa' : '#f43f5e' }}>
+                      {entry.direction === 1 ? '▲ BUY' : entry.direction === -1 ? '▼ SELL' : '—'}
+                    </span>
+                    {entry.tier && <span style={{ color: '#475569' }}>Tier {entry.tier}</span>}
+                    {entry.reason && <span style={{ color: '#475569' }}>{entry.reason}</span>}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* ── Zones ── */}
+          {activeTab === 'Zones' && (
+            <div style={{ padding: 8 }}>
+              <ZoneMap trades={trades} symbol={activeSymbol} />
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* SIDEBAR RIGHT                                                       */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <aside style={{
+        gridArea: 'sidebar-right',
+        display: 'flex',
+        flexDirection: 'column',
+        borderLeft: border,
+        overflow: 'hidden',
+      }}>
+        {/* Market depth — top half */}
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <MarketDepth symbol={activeSymbol} currentPrice={currentPrice} />
+        </div>
+
+        {/* Trade ticket — bottom half */}
+        <div style={{ flex: 1, borderTop: border, overflow: 'hidden' }}>
+          <TradeTicket defaultSymbol={activeSymbol} />
+        </div>
+      </aside>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* BOTTOM STRIP                                                        */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <footer style={{
+        gridArea: 'bottom',
+        background: panelBg,
+        borderTop: border,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}>
+
+        {/* News ticker */}
+        <div style={{
+          borderBottom: border,
+          padding: '4px 0',
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+          height: 28,
+        }}>
+          <span style={{
+            fontSize: 10, fontFamily: 'monospace', color: '#f59e0b', fontWeight: 700,
+            padding: '0 10px', flexShrink: 0, borderRight: '1px solid #1e293b',
+          }}>NEWS</span>
+          <div style={{ overflow: 'hidden', flex: 1, position: 'relative' }}>
+            <div style={{
+              display: 'flex', gap: 32, padding: '0 16px',
+              animation: 'scroll-left 40s linear infinite',
+              whiteSpace: 'nowrap',
+              fontSize: 11, fontFamily: 'monospace', color: '#94a3b8',
+            }}>
+              {(activeData?.meta?.newsEvents ?? STATIC_NEWS).map((item, i) => (
+                <span key={i} style={{ flexShrink: 0 }}>
+                  <span style={{ color: '#475569' }}>{item.time}</span>
+                  {' '}
+                  <span style={{
+                    color: item.impact === 'HIGH' ? '#f43f5e' : item.impact === 'MED' ? '#f59e0b' : '#475569',
+                    fontWeight: item.impact === 'HIGH' ? 700 : 400,
+                  }}>[{item.currency}]</span>
+                  {' '}{item.event}
+                </span>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {(activeData?.meta?.newsEvents ?? STATIC_NEWS).map((item, i) => (
+                <span key={`dup-${i}`} style={{ flexShrink: 0 }}>
+                  <span style={{ color: '#475569' }}>{item.time}</span>
+                  {' '}
+                  <span style={{ color: item.impact === 'HIGH' ? '#f43f5e' : item.impact === 'MED' ? '#f59e0b' : '#475569', fontWeight: item.impact === 'HIGH' ? 700 : 400 }}>
+                    [{item.currency}]
+                  </span>
+                  {' '}{item.event}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mini P&L chart + account summary */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 16px', gap: 24 }}>
+
+          {/* Mini P&L bars */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontSize: 10, color: '#475569', fontFamily: 'monospace', letterSpacing: '0.05em' }}>RECENT P&L</span>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 40 }}>
+              {(pnlHistory.current.length > 0 ? pnlHistory.current.slice(-10) : [0, 5, -3, 8, -2, 12, 4, -1, 7, 9]).map((v, i) => {
+                const maxAbs = Math.max(...[0, 5, -3, 8, -2, 12, 4, -1, 7, 9].map(Math.abs), 1)
+                const h = Math.max(2, Math.abs(v) / maxAbs * 36)
+                return (
+                  <div key={i} style={{
+                    width: 8, height: h,
+                    background: v >= 0 ? '#00d4aa' : '#f43f5e',
+                    borderRadius: 2, flexShrink: 0,
+                    opacity: 0.7 + (i / 10) * 0.3,
+                  }} />
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Stat row */}
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+            {[
+              { label: 'BALANCE',   value: formatCurrency(balance) },
+              { label: 'EQUITY',    value: formatCurrency(equity),   color: equity >= balance ? '#00d4aa' : '#f43f5e' },
+              { label: 'DRAWDOWN',  value: `${ddPct.toFixed(2)}%`,  color: ddPct > ddLimit * 0.75 ? '#f43f5e' : '#94a3b8' },
+              { label: 'POSITIONS', value: trades.length },
+              { label: 'STATUS',    value: isConnected ? 'LIVE' : 'OFFLINE', color: isConnected ? '#00d4aa' : '#f43f5e' },
+            ].map(({ label, value, color = '#e2e8f0' }) => (
+              <div key={label} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 9, color: '#475569', fontFamily: 'monospace', letterSpacing: '0.06em' }}>{label}</div>
+                <div style={{ fontSize: 14, color, fontFamily: 'monospace', fontWeight: 700, marginTop: 2 }}>{value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* SETTINGS MODAL                                                      */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {showSettings && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(6,11,20,0.85)',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end',
+          zIndex: 50, padding: 16,
+        }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowSettings(false) }}
+        >
+          <div style={{
+            background: panelBg,
+            border,
+            borderRadius: 6,
+            width: 480,
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: '0 0 40px rgba(0,0,0,0.8)',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '10px 14px', borderBottom: border,
+            }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0', fontFamily: 'monospace' }}>SETTINGS</span>
+              <button
+                onClick={() => setShowSettings(false)}
+                style={{
+                  background: 'none', border: 'none', color: '#475569',
+                  fontSize: 16, cursor: 'pointer', lineHeight: 1, padding: 4,
+                }}
+              >✕</button>
+            </div>
+            <div style={{ padding: 14 }}>
               <SettingsPanel
                 currentSettings={currentSettings}
                 onSave={handleSaveSettings}
                 isConnected={isConnected}
               />
-            )}
+            </div>
           </div>
-        )}
-
-      </main>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* Error banner                                                         */}
-      {/* ------------------------------------------------------------------ */}
-      {error && (
-        <div className="bg-amber-900/80 border-t border-amber-500/60 p-3 flex items-center gap-3">
-          <AlertTriangle className="text-amber-400 w-5 h-5 shrink-0" />
-          <span className="text-amber-200 text-sm">
-            {error} — Make sure bridge.py is running in your backend/bridge/ folder
-          </span>
         </div>
       )}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Footer                                                               */}
-      {/* ------------------------------------------------------------------ */}
-      <footer className="border-t border-gray-800 bg-gray-900 px-6 py-2 flex items-center justify-between text-xs text-gray-500">
-        <span>TradingBot Pro — MT4/MT5 Edition</span>
-        <span className="font-mono">ws://localhost:8765</span>
-        {!isConnected && (
-          <button
-            onClick={reconnect}
-            className="flex items-center gap-1.5 px-3 py-1 bg-blue-600/20 text-blue-400 border border-blue-600/40 rounded hover:bg-blue-600/40 transition-colors"
-          >
-            <RefreshCw className="w-3 h-3" /> Reconnect
-          </button>
-        )}
-        {isConnected && <span className="text-emerald-400/60">Connected</span>}
-      </footer>
+      {/* ── Keyframe animations ── */}
+      <style>{`
+        @keyframes scroll-left {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.4; }
+        }
+      `}</style>
 
     </div>
   )

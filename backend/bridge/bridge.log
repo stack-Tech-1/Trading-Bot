@@ -1427,3 +1427,92 @@ task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro
 2026-03-22 13:25:56,674 INFO connection open
 2026-03-22 13:25:56,677 INFO [WS] Client connected: ('::1', 49471, 0, 0)
 2026-03-22 13:27:17,376 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-22 13:36:26,914 INFO Bridge shutting down
+2026-03-22 13:36:26,940 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-3322' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-22 13:36:26,941 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-22 13:44:39,121 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-22 13:44:39,138 INFO server listening on 127.0.0.1:8765
+2026-03-22 13:44:39,139 INFO server listening on [::1]:8765
+2026-03-22 13:44:39,139 INFO WebSocket server started on ws://localhost:8765
+2026-03-22 13:44:39,197 INFO connection open
+2026-03-22 13:44:39,198 INFO [WS] Client connected: ('::1', 54277, 0, 0)
+2026-03-22 13:44:43,886 INFO connection open
+2026-03-22 13:44:43,887 INFO [WS] Client connected: ('::1', 58564, 0, 0)
+2026-03-22 13:44:43,901 INFO connection open
+2026-03-22 13:44:43,901 INFO [WS] Client connected: ('::1', 62598, 0, 0)
+2026-03-22 13:44:43,918 INFO [WS] Client disconnected: ('::1', 58564, 0, 0)
+2026-03-22 13:44:43,921 INFO [WS] Client disconnected: ('::1', 62598, 0, 0)
+2026-03-22 13:44:44,426 INFO [WS] Client disconnected: ('::1', 54277, 0, 0)
+2026-03-22 13:44:49,272 INFO connection open
+2026-03-22 13:44:49,272 INFO [WS] Client connected: ('::1', 64781, 0, 0)
+2026-03-22 13:44:49,290 INFO connection open
+2026-03-22 13:44:49,291 INFO [WS] Client connected: ('::1', 63992, 0, 0)
+2026-03-22 13:44:49,295 INFO [WS] Client disconnected: ('::1', 64781, 0, 0)
+2026-03-22 13:44:49,299 INFO [WS] Client disconnected: ('::1', 63992, 0, 0)
+2026-03-22 13:44:50,598 INFO connection open
+2026-03-22 13:44:50,598 INFO [WS] Client connected: ('::1', 54271, 0, 0)
+2026-03-22 13:44:50,612 INFO [WS] Client disconnected: ('::1', 54271, 0, 0)
+2026-03-22 13:44:50,615 INFO connection open
+2026-03-22 13:44:50,615 INFO [WS] Client connected: ('::1', 59781, 0, 0)
+2026-03-22 13:44:50,621 INFO [WS] Client disconnected: ('::1', 59781, 0, 0)
+2026-03-22 13:44:55,159 INFO connection open
+2026-03-22 13:44:55,160 INFO [WS] Client connected: ('::1', 55454, 0, 0)
+2026-03-22 13:44:55,180 INFO [WS] Client disconnected: ('::1', 55454, 0, 0)
+2026-03-22 13:44:55,181 INFO connection open
+2026-03-22 13:44:55,182 INFO [WS] Client connected: ('::1', 59812, 0, 0)
+2026-03-22 13:44:55,193 INFO [WS] Client disconnected: ('::1', 59812, 0, 0)
+2026-03-22 13:45:01,901 INFO [News] Fetched 12 high-impact events from ForexFactory
+2026-03-22 13:45:01,905 INFO [News] Wrote 12 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-22 13:45:01,906 INFO [News] News fetch complete at 2026-03-22T13:45:01.906231
+2026-03-22 13:46:41,258 INFO connection open
+2026-03-22 13:46:41,259 INFO [WS] Client connected: ('::1', 61266, 0, 0)
+2026-03-22 13:46:41,294 INFO connection open
+2026-03-22 13:46:41,294 INFO [WS] Client connected: ('::1', 61960, 0, 0)
+2026-03-22 13:46:41,297 INFO [WS] Client disconnected: ('::1', 61266, 0, 0)
+2026-03-22 13:46:41,308 INFO [WS] Client disconnected: ('::1', 61960, 0, 0)
+2026-03-22 13:49:26,054 INFO connection open
+2026-03-22 13:49:26,055 INFO [WS] Client connected: ('::1', 56401, 0, 0)
+2026-03-22 13:49:26,057 INFO [WS] Client disconnected: ('::1', 56401, 0, 0)
+2026-03-22 13:49:29,051 INFO connection open
+2026-03-22 13:49:29,051 INFO [WS] Client connected: ('::1', 52396, 0, 0)
+2026-03-22 13:49:29,059 INFO [WS] Client disconnected: ('::1', 52396, 0, 0)
+2026-03-22 13:49:39,058 INFO connection open
+2026-03-22 13:49:39,059 INFO [WS] Client connected: ('::1', 64248, 0, 0)
+2026-03-22 13:49:39,065 INFO [WS] Client disconnected: ('::1', 64248, 0, 0)
+2026-03-22 13:49:49,064 INFO connection open
+2026-03-22 13:49:49,065 INFO [WS] Client connected: ('::1', 61582, 0, 0)
+2026-03-22 13:49:49,073 INFO [WS] Client disconnected: ('::1', 61582, 0, 0)
+2026-03-22 13:49:57,077 INFO connection open
+2026-03-22 13:49:57,077 INFO [WS] Client connected: ('::1', 53270, 0, 0)
+2026-03-22 13:49:57,104 INFO connection open
+2026-03-22 13:49:57,104 INFO [WS] Client connected: ('::1', 63865, 0, 0)
+2026-03-22 13:49:57,125 INFO [WS] Client disconnected: ('::1', 53270, 0, 0)
+2026-03-22 13:51:45,795 INFO [WS] Client disconnected: ('::1', 63865, 0, 0)
+2026-03-22 13:51:46,226 INFO connection open
+2026-03-22 13:51:46,226 INFO [WS] Client connected: ('::1', 56644, 0, 0)
+2026-03-22 13:51:46,242 INFO connection open
+2026-03-22 13:51:46,243 INFO [WS] Client connected: ('::1', 54270, 0, 0)
+2026-03-22 13:51:46,283 INFO [WS] Client disconnected: ('::1', 56644, 0, 0)
+2026-03-22 13:56:15,079 INFO [WS] Client disconnected: ('::1', 54270, 0, 0)
+2026-03-22 13:56:15,449 INFO connection open
+2026-03-22 13:56:15,449 INFO [WS] Client connected: ('::1', 63769, 0, 0)
+2026-03-22 14:03:08,275 INFO [WS] Client disconnected: ('::1', 63769, 0, 0)
+2026-03-22 14:03:08,576 INFO connection open
+2026-03-22 14:03:08,576 INFO [WS] Client connected: ('::1', 51334, 0, 0)
+2026-03-22 14:08:22,082 INFO [WS] Client disconnected: ('::1', 51334, 0, 0)
+2026-03-22 14:08:22,447 INFO connection open
+2026-03-22 14:08:22,447 INFO [WS] Client connected: ('::1', 53364, 0, 0)
+2026-03-22 14:13:02,599 INFO [WS] Client disconnected: ('::1', 53364, 0, 0)
+2026-03-22 14:13:02,870 INFO connection open
+2026-03-22 14:13:02,871 INFO [WS] Client connected: ('::1', 60188, 0, 0)
+2026-03-22 14:15:13,295 INFO [WS] Client disconnected: ('::1', 60188, 0, 0)
+2026-03-22 14:15:13,565 INFO connection open
+2026-03-22 14:15:13,565 INFO [WS] Client connected: ('::1', 54193, 0, 0)
+2026-03-22 14:15:58,146 INFO [WS] Client disconnected: ('::1', 54193, 0, 0)
+2026-03-22 14:15:58,355 INFO connection open
+2026-03-22 14:15:58,356 INFO [WS] Client connected: ('::1', 57442, 0, 0)
+2026-03-22 14:23:35,217 INFO [WS] Client disconnected: ('::1', 57442, 0, 0)
+2026-03-22 14:23:35,556 INFO connection open
+2026-03-22 14:23:35,558 INFO [WS] Client connected: ('::1', 62851, 0, 0)
