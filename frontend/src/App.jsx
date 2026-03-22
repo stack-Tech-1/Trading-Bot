@@ -9,6 +9,7 @@ import ZoneMap from './components/ZoneMap'
 import SettingsPanel from './components/SettingsPanel'
 import { formatCurrency, formatTime, getDirectionLabel, getDirectionColor } from './utils/formatters'
 import { useWindowSize, isMobile, isTablet } from './hooks/useWindowSize'
+import MobileApp from './components/mobile/MobileApp'
 
 const WS_URL = window.location.hostname === 'localhost'
   ? 'ws://localhost:8765'
@@ -133,6 +134,17 @@ export default function App() {
   const border    = '1px solid #1e293b'
 
   // ── Render ────────────────────────────────────────────────────────────────
+
+  if (width < 768) {
+    return (
+      <MobileApp
+        tradeData={activeData}
+        isConnected={isConnected}
+        sendMessage={sendMessage}
+        signalLog={signalLog}
+      />
+    )
+  }
 
   return (
     <div style={{
