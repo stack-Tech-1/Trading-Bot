@@ -1,0 +1,20 @@
+{
+  "MasterSwitch": true,
+  "LotSize": 0.01,
+  "MaxOpenTrades": 3,
+  "LockThresholdPips": 50,
+  "DailyDrawdownLimitPct": 3.0,
+  "NewsPauseMinutes": 30,
+  "BBPeriod": 20,
+  "BBDeviation": 2.0,
+  "RSIPeriod": 14,
+  "ZoneLookback": 100,
+  "MA5": 5,
+  "MA9": 9,
+  "MA25": 25,
+  "MA50": 50,
+  "MA65": 65,
+  "MA100": 100,
+  "MA200": 200,
+  "MA245": 245
+}

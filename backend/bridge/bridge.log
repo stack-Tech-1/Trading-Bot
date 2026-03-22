@@ -1,0 +1,1429 @@
+2026-03-15 19:25:20,840 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:25:20,864 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:25:20,864 INFO server listening on [::1]:8765
+2026-03-15 19:25:20,865 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:25:20,865 INFO server closing
+2026-03-15 19:25:20,865 INFO server closed
+2026-03-15 19:25:59,809 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:25:59,821 INFO server listening on [::1]:8765
+2026-03-15 19:25:59,821 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:25:59,821 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:25:59,829 INFO server closing
+2026-03-15 19:25:59,830 INFO server closed
+2026-03-15 19:27:57,182 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:27:57,194 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:27:57,194 INFO server listening on [::1]:8765
+2026-03-15 19:27:57,194 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:27:57,896 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 19:27:57,902 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 19:27:57,902 INFO [News] News fetch complete at 2026-03-15T19:27:57.902712
+2026-03-15 19:34:43,331 ERROR opening handshake failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 356, in conn_handler
+    await connection.handshake(
+    ...<3 lines>...
+    )
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 142, in handshake
+    async with self.send_context(expected_state=CONNECTING):
+               ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\connection.py", line 965, in send_context
+    raise self.protocol.close_exc from original_exc
+websockets.exceptions.ConnectionClosedError: no close frame received or sent
+2026-03-15 19:34:43,346 INFO connection open
+2026-03-15 19:34:43,347 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:34:46,380 INFO connection open
+2026-03-15 19:34:46,382 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:34:49,423 INFO connection open
+2026-03-15 19:34:49,423 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:34:52,436 INFO connection open
+2026-03-15 19:34:52,436 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:34:56,036 INFO connection open
+2026-03-15 19:34:56,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:00,028 INFO connection open
+2026-03-15 19:35:00,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:04,031 INFO connection open
+2026-03-15 19:35:04,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:07,056 INFO connection open
+2026-03-15 19:35:07,058 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:11,025 INFO connection open
+2026-03-15 19:35:11,025 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:15,040 INFO connection open
+2026-03-15 19:35:15,041 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:18,053 INFO connection open
+2026-03-15 19:35:18,054 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:22,036 INFO connection open
+2026-03-15 19:35:22,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:26,030 INFO connection open
+2026-03-15 19:35:26,031 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:30,025 INFO connection open
+2026-03-15 19:35:30,025 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:34,037 INFO connection open
+2026-03-15 19:35:34,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:38,032 INFO connection open
+2026-03-15 19:35:38,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:42,027 INFO connection open
+2026-03-15 19:35:42,027 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:46,027 INFO connection open
+2026-03-15 19:35:46,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:50,028 INFO connection open
+2026-03-15 19:35:50,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:54,037 INFO connection open
+2026-03-15 19:35:54,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:35:58,040 INFO connection open
+2026-03-15 19:35:58,042 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:02,031 INFO connection open
+2026-03-15 19:36:02,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:06,028 INFO connection open
+2026-03-15 19:36:06,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:10,026 INFO connection open
+2026-03-15 19:36:10,026 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:13,032 INFO connection open
+2026-03-15 19:36:13,033 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:17,037 INFO connection open
+2026-03-15 19:36:17,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:21,031 INFO connection open
+2026-03-15 19:36:21,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:25,026 INFO connection open
+2026-03-15 19:36:25,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:29,026 INFO connection open
+2026-03-15 19:36:29,027 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:33,024 INFO connection open
+2026-03-15 19:36:33,025 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:37,036 INFO connection open
+2026-03-15 19:36:37,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:41,035 INFO connection open
+2026-03-15 19:36:41,035 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:45,038 INFO connection open
+2026-03-15 19:36:45,039 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:49,039 INFO connection open
+2026-03-15 19:36:49,040 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:53,039 INFO connection open
+2026-03-15 19:36:53,040 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:36:57,027 INFO connection open
+2026-03-15 19:36:57,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:01,032 INFO connection open
+2026-03-15 19:37:01,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:05,022 INFO connection open
+2026-03-15 19:37:05,022 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:09,024 INFO connection open
+2026-03-15 19:37:09,025 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:13,024 INFO connection open
+2026-03-15 19:37:13,025 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:17,028 INFO connection open
+2026-03-15 19:37:17,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:21,026 INFO connection open
+2026-03-15 19:37:21,026 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:25,027 INFO connection open
+2026-03-15 19:37:25,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:29,028 INFO connection open
+2026-03-15 19:37:29,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:33,023 INFO connection open
+2026-03-15 19:37:33,023 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:37,042 INFO connection open
+2026-03-15 19:37:37,043 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:41,036 INFO connection open
+2026-03-15 19:37:41,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:45,029 INFO connection open
+2026-03-15 19:37:45,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:49,028 INFO connection open
+2026-03-15 19:37:49,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:53,036 INFO connection open
+2026-03-15 19:37:53,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:37:57,029 INFO connection open
+2026-03-15 19:37:57,031 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:01,034 INFO connection open
+2026-03-15 19:38:01,035 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:05,029 INFO connection open
+2026-03-15 19:38:05,031 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:09,038 INFO connection open
+2026-03-15 19:38:09,040 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:13,039 INFO connection open
+2026-03-15 19:38:13,041 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:17,037 INFO connection open
+2026-03-15 19:38:17,039 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:21,028 INFO connection open
+2026-03-15 19:38:21,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:25,030 INFO connection open
+2026-03-15 19:38:25,031 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:29,035 INFO connection open
+2026-03-15 19:38:29,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:33,038 INFO connection open
+2026-03-15 19:38:33,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:37,022 INFO connection open
+2026-03-15 19:38:37,023 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:41,035 INFO connection open
+2026-03-15 19:38:41,036 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:45,038 INFO connection open
+2026-03-15 19:38:45,039 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:49,029 INFO connection open
+2026-03-15 19:38:49,029 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:51,354 INFO connection open
+2026-03-15 19:38:51,355 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:51,377 INFO connection open
+2026-03-15 19:38:51,378 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:54,391 INFO connection open
+2026-03-15 19:38:54,392 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:38:57,426 INFO connection open
+2026-03-15 19:38:57,427 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:00,437 INFO connection open
+2026-03-15 19:39:00,439 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:02,673 INFO connection open
+2026-03-15 19:39:02,674 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:03,438 INFO connection open
+2026-03-15 19:39:03,439 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:06,465 INFO connection open
+2026-03-15 19:39:06,467 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:10,030 INFO connection open
+2026-03-15 19:39:10,031 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:14,023 INFO connection open
+2026-03-15 19:39:14,024 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:18,036 INFO connection open
+2026-03-15 19:39:18,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:22,038 INFO connection open
+2026-03-15 19:39:22,040 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:26,031 INFO connection open
+2026-03-15 19:39:26,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:30,028 INFO connection open
+2026-03-15 19:39:30,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:32,026 INFO Bridge shutting down
+2026-03-15 19:39:32,046 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:39:32,047 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-238' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:39:33,945 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:39:33,962 INFO server listening on [::1]:8765
+2026-03-15 19:39:33,963 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:39:33,963 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:39:34,037 INFO connection open
+2026-03-15 19:39:34,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:36,667 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 19:39:36,672 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 19:39:36,672 INFO [News] News fetch complete at 2026-03-15T19:39:36.672663
+2026-03-15 19:39:38,027 INFO connection open
+2026-03-15 19:39:38,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:42,033 INFO connection open
+2026-03-15 19:39:42,034 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:46,035 INFO connection open
+2026-03-15 19:39:46,036 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:50,038 INFO connection open
+2026-03-15 19:39:50,040 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:54,039 INFO connection open
+2026-03-15 19:39:54,039 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:39:58,035 INFO connection open
+2026-03-15 19:39:58,036 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:02,033 INFO connection open
+2026-03-15 19:40:02,034 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:06,031 INFO connection open
+2026-03-15 19:40:06,032 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:10,027 INFO connection open
+2026-03-15 19:40:10,027 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:14,026 INFO connection open
+2026-03-15 19:40:14,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:18,037 INFO connection open
+2026-03-15 19:40:18,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:22,032 INFO connection open
+2026-03-15 19:40:22,033 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:26,025 INFO connection open
+2026-03-15 19:40:26,026 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+          ~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: handle_client() missing 1 required positional argument: '_path'
+2026-03-15 19:40:27,686 INFO Bridge shutting down
+2026-03-15 19:40:27,701 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-44' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:40:27,704 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:41:12,602 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:41:12,613 INFO server listening on [::1]:8765
+2026-03-15 19:41:12,614 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:41:12,614 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:41:12,854 INFO connection open
+2026-03-15 19:41:12,856 INFO [WS] Client connected: ('127.0.0.1', 59325)
+2026-03-15 19:41:23,298 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 19:41:23,305 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 19:41:23,306 INFO [News] News fetch complete at 2026-03-15T19:41:23.306438
+2026-03-15 19:41:39,068 INFO [WS] Client disconnected: ('127.0.0.1', 59325)
+2026-03-15 19:41:39,230 INFO connection open
+2026-03-15 19:41:39,231 INFO [WS] Client connected: ('::1', 56772, 0, 0)
+2026-03-15 19:41:39,233 INFO [WS] Client disconnected: ('::1', 56772, 0, 0)
+2026-03-15 19:41:39,248 INFO connection open
+2026-03-15 19:41:39,248 INFO [WS] Client connected: ('::1', 51489, 0, 0)
+2026-03-15 19:42:47,805 INFO [WS] Client disconnected: ('::1', 51489, 0, 0)
+2026-03-15 19:42:47,905 INFO connection open
+2026-03-15 19:42:47,907 INFO [WS] Client connected: ('::1', 61327, 0, 0)
+2026-03-15 19:42:47,909 INFO [WS] Client disconnected: ('::1', 61327, 0, 0)
+2026-03-15 19:42:47,920 INFO connection open
+2026-03-15 19:42:47,921 INFO [WS] Client connected: ('::1', 49680, 0, 0)
+2026-03-15 19:43:17,339 INFO [WS] Client disconnected: ('::1', 49680, 0, 0)
+2026-03-15 19:43:17,578 INFO connection open
+2026-03-15 19:43:17,578 INFO [WS] Client connected: ('::1', 56581, 0, 0)
+2026-03-15 19:43:17,583 INFO [WS] Client disconnected: ('::1', 56581, 0, 0)
+2026-03-15 19:43:17,595 INFO connection open
+2026-03-15 19:43:17,596 INFO [WS] Client connected: ('::1', 63984, 0, 0)
+2026-03-15 19:45:58,558 INFO [WS] Client disconnected: ('::1', 63984, 0, 0)
+2026-03-15 19:45:58,715 INFO connection open
+2026-03-15 19:45:58,716 INFO [WS] Client connected: ('::1', 49798, 0, 0)
+2026-03-15 19:45:58,717 INFO [WS] Client disconnected: ('::1', 49798, 0, 0)
+2026-03-15 19:45:58,740 INFO connection open
+2026-03-15 19:45:58,742 INFO [WS] Client connected: ('::1', 52693, 0, 0)
+2026-03-15 19:47:03,566 INFO [WS] Client disconnected: ('::1', 52693, 0, 0)
+2026-03-15 19:47:03,728 INFO connection open
+2026-03-15 19:47:03,729 INFO [WS] Client connected: ('::1', 61060, 0, 0)
+2026-03-15 19:47:03,730 INFO [WS] Client disconnected: ('::1', 61060, 0, 0)
+2026-03-15 19:47:03,737 INFO connection open
+2026-03-15 19:47:03,739 INFO [WS] Client connected: ('::1', 55724, 0, 0)
+2026-03-15 19:47:16,201 INFO [WS] Client disconnected: ('::1', 55724, 0, 0)
+2026-03-15 19:47:16,255 INFO connection open
+2026-03-15 19:47:16,255 INFO [WS] Client connected: ('::1', 52397, 0, 0)
+2026-03-15 19:47:16,257 INFO [WS] Client disconnected: ('::1', 52397, 0, 0)
+2026-03-15 19:47:16,278 INFO connection open
+2026-03-15 19:47:16,280 INFO [WS] Client connected: ('::1', 50355, 0, 0)
+2026-03-15 19:56:12,468 INFO Bridge shutting down
+2026-03-15 19:56:12,470 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-41' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:56:12,471 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:56:15,674 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 19:56:15,691 INFO server listening on [::1]:8765
+2026-03-15 19:56:15,691 INFO server listening on 127.0.0.1:8765
+2026-03-15 19:56:15,691 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 19:56:16,037 INFO connection open
+2026-03-15 19:56:16,038 INFO [WS] Client connected: ('::1', 58606, 0, 0)
+2026-03-15 19:56:21,138 INFO [WS] Client disconnected: ('::1', 58606, 0, 0)
+2026-03-15 19:56:21,306 INFO connection open
+2026-03-15 19:56:21,307 INFO [WS] Client connected: ('::1', 58816, 0, 0)
+2026-03-15 19:56:21,310 INFO [WS] Client disconnected: ('::1', 58816, 0, 0)
+2026-03-15 19:56:21,324 INFO connection open
+2026-03-15 19:56:21,324 INFO [WS] Client connected: ('::1', 62675, 0, 0)
+2026-03-15 19:56:34,620 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 19:56:34,625 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 19:56:34,626 INFO [News] News fetch complete at 2026-03-15T19:56:34.626183
+2026-03-15 19:58:09,205 INFO Bridge shutting down
+2026-03-15 19:58:09,224 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-11' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 19:58:09,227 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 20:04:44,743 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 20:04:44,770 INFO server listening on [::1]:8765
+2026-03-15 20:04:44,770 INFO server listening on 127.0.0.1:8765
+2026-03-15 20:04:44,770 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 20:04:46,045 INFO connection open
+2026-03-15 20:04:46,047 INFO [WS] Client connected: ('::1', 49495, 0, 0)
+2026-03-15 20:05:07,592 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 20:05:07,601 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 20:05:07,602 INFO [News] News fetch complete at 2026-03-15T20:05:07.602327
+2026-03-15 20:06:41,821 INFO Bridge shutting down
+2026-03-15 20:06:41,826 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 20:06:41,831 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 20:08:05,907 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 20:08:05,925 INFO server listening on 127.0.0.1:8765
+2026-03-15 20:08:05,925 INFO server listening on [::1]:8765
+2026-03-15 20:08:05,925 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 20:08:06,743 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 20:08:06,749 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 20:08:06,749 INFO [News] News fetch complete at 2026-03-15T20:08:06.749669
+2026-03-15 20:09:10,587 INFO connection open
+2026-03-15 20:09:10,588 INFO [WS] Client connected: ('::1', 52698, 0, 0)
+2026-03-15 20:09:10,595 INFO [WS] Client disconnected: ('::1', 52698, 0, 0)
+2026-03-15 20:09:10,602 INFO connection open
+2026-03-15 20:09:10,602 INFO [WS] Client connected: ('::1', 53506, 0, 0)
+2026-03-15 20:11:34,138 INFO [WS] Client disconnected: ('::1', 53506, 0, 0)
+2026-03-15 20:11:34,964 INFO connection open
+2026-03-15 20:11:34,964 INFO [WS] Client connected: ('::1', 55962, 0, 0)
+2026-03-15 20:11:34,989 INFO connection open
+2026-03-15 20:11:34,990 INFO [WS] Client connected: ('::1', 55171, 0, 0)
+2026-03-15 20:11:35,000 INFO [WS] Client disconnected: ('::1', 55962, 0, 0)
+2026-03-15 20:32:02,012 INFO [WS] Client disconnected: ('::1', 55171, 0, 0)
+2026-03-15 20:32:02,192 INFO connection open
+2026-03-15 20:32:02,193 INFO [WS] Client connected: ('::1', 60511, 0, 0)
+2026-03-15 20:32:02,195 INFO [WS] Client disconnected: ('::1', 60511, 0, 0)
+2026-03-15 20:32:02,209 INFO connection open
+2026-03-15 20:32:02,209 INFO [WS] Client connected: ('::1', 49409, 0, 0)
+2026-03-15 20:33:34,286 INFO [WS] Client disconnected: ('::1', 49409, 0, 0)
+2026-03-15 20:33:34,401 INFO connection open
+2026-03-15 20:33:34,402 INFO [WS] Client connected: ('::1', 54949, 0, 0)
+2026-03-15 20:33:34,403 INFO [WS] Client disconnected: ('::1', 54949, 0, 0)
+2026-03-15 20:33:34,431 INFO connection open
+2026-03-15 20:33:34,432 INFO [WS] Client connected: ('::1', 56198, 0, 0)
+2026-03-15 20:42:14,894 INFO [WS] Client disconnected: ('::1', 56198, 0, 0)
+2026-03-15 20:42:15,079 INFO connection open
+2026-03-15 20:42:15,080 INFO [WS] Client connected: ('::1', 65195, 0, 0)
+2026-03-15 20:42:15,084 INFO [WS] Client disconnected: ('::1', 65195, 0, 0)
+2026-03-15 20:42:15,093 INFO connection open
+2026-03-15 20:42:15,121 INFO [WS] Client connected: ('::1', 61375, 0, 0)
+2026-03-15 20:42:16,049 INFO [WS] Client disconnected: ('::1', 61375, 0, 0)
+2026-03-15 20:42:16,114 INFO connection open
+2026-03-15 20:42:16,115 INFO [WS] Client connected: ('::1', 53569, 0, 0)
+2026-03-15 20:42:16,117 INFO [WS] Client disconnected: ('::1', 53569, 0, 0)
+2026-03-15 20:42:16,134 INFO connection open
+2026-03-15 20:42:16,136 INFO [WS] Client connected: ('::1', 55090, 0, 0)
+2026-03-15 20:45:37,685 INFO [WS] Client disconnected: ('::1', 55090, 0, 0)
+2026-03-15 20:45:37,910 INFO connection open
+2026-03-15 20:45:37,911 INFO [WS] Client connected: ('::1', 52277, 0, 0)
+2026-03-15 20:45:37,913 INFO [WS] Client disconnected: ('::1', 52277, 0, 0)
+2026-03-15 20:45:37,936 INFO connection open
+2026-03-15 20:45:37,936 INFO [WS] Client connected: ('::1', 58718, 0, 0)
+2026-03-15 20:50:57,880 INFO [WS] Client disconnected: ('::1', 58718, 0, 0)
+2026-03-15 20:50:58,050 INFO connection open
+2026-03-15 20:50:58,052 INFO [WS] Client connected: ('::1', 52286, 0, 0)
+2026-03-15 20:50:58,060 INFO [WS] Client disconnected: ('::1', 52286, 0, 0)
+2026-03-15 20:50:58,068 INFO connection open
+2026-03-15 20:50:58,071 INFO [WS] Client connected: ('::1', 59454, 0, 0)
+2026-03-15 20:59:04,208 INFO [WS] Client disconnected: ('::1', 59454, 0, 0)
+2026-03-15 20:59:04,390 INFO connection open
+2026-03-15 20:59:04,391 INFO [WS] Client connected: ('::1', 60704, 0, 0)
+2026-03-15 20:59:04,393 INFO [WS] Client disconnected: ('::1', 60704, 0, 0)
+2026-03-15 20:59:04,418 INFO connection open
+2026-03-15 20:59:04,421 INFO [WS] Client connected: ('::1', 49302, 0, 0)
+2026-03-15 21:12:07,658 INFO Bridge shutting down
+2026-03-15 21:12:07,676 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:12:07,678 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-56' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:12:09,737 INFO [Watcher] File watcher started on C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\
+2026-03-15 21:12:09,759 INFO server listening on [::1]:8765
+2026-03-15 21:12:09,759 INFO server listening on 127.0.0.1:8765
+2026-03-15 21:12:09,760 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 21:12:11,038 INFO connection open
+2026-03-15 21:12:11,039 INFO [WS] Client connected: ('::1', 63281, 0, 0)
+2026-03-15 21:12:12,465 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 21:12:12,471 INFO [News] Wrote 32 events to C:\Program Files\Deriv SVG MT5 Terminal\MQL5\Files\news_events.json
+2026-03-15 21:12:12,472 INFO [News] News fetch complete at 2026-03-15T21:12:12.472307
+2026-03-15 21:12:21,930 INFO [WS] Client disconnected: ('::1', 63281, 0, 0)
+2026-03-15 21:12:22,106 INFO connection open
+2026-03-15 21:12:22,107 INFO [WS] Client connected: ('::1', 60702, 0, 0)
+2026-03-15 21:12:22,109 INFO [WS] Client disconnected: ('::1', 60702, 0, 0)
+2026-03-15 21:12:22,135 INFO connection open
+2026-03-15 21:12:22,136 INFO [WS] Client connected: ('::1', 63580, 0, 0)
+2026-03-15 21:18:02,475 INFO Bridge shutting down
+2026-03-15 21:18:02,503 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-11' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:18:02,506 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:18:03,626 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-15 21:18:03,640 INFO server listening on [::1]:8765
+2026-03-15 21:18:03,640 INFO server listening on 127.0.0.1:8765
+2026-03-15 21:18:03,641 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 21:18:03,670 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:03,778 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:03,779 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:03,991 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:03,992 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,200 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,200 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,379 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,380 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,500 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,501 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,910 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:04,911 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:05,729 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:05,730 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,034 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,037 INFO connection open
+2026-03-15 21:18:06,037 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,038 INFO [WS] Client connected: ('::1', 63243, 0, 0)
+2026-03-15 21:18:06,038 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,226 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,227 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,443 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,443 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,642 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:06,643 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,173 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,175 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,438 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,438 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,561 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,562 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,850 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,851 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,959 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:07,959 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,076 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,273 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,274 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,352 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 21:18:08,356 INFO [News] Wrote 32 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-15 21:18:08,357 INFO [News] News fetch complete at 2026-03-15T21:18:08.357315
+2026-03-15 21:18:08,495 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,497 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,690 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:08,691 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:09,061 INFO connection open
+2026-03-15 21:18:09,061 INFO [WS] Client connected: ('::1', 54408, 0, 0)
+2026-03-15 21:18:09,061 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:09,176 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:09,177 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:10,004 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:10,005 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:10,200 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:10,200 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:10,312 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,072 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,073 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,366 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,366 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,541 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,541 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,741 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,741 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,951 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:11,951 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:12,073 INFO connection open
+2026-03-15 21:18:12,074 INFO [WS] Client connected: ('::1', 50731, 0, 0)
+2026-03-15 21:18:12,075 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:12,156 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:12,156 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:12,570 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:12,571 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,073 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,073 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,338 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,700 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:18:13,701 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,886 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:13,887 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,091 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,094 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,417 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,418 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,700 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:14,701 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:15,216 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:15,343 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:15,344 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:15,953 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:15,954 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:16,034 INFO connection open
+2026-03-15 21:18:16,036 INFO [WS] Client connected: ('::1', 56495, 0, 0)
+2026-03-15 21:18:16,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:16,203 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:16,204 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:16,375 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:16,376 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,096 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,097 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,486 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,487 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,689 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:17,690 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:19,419 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:19,420 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:20,042 INFO connection open
+2026-03-15 21:18:20,043 INFO [WS] Client connected: ('::1', 63892, 0, 0)
+2026-03-15 21:18:20,045 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:21,165 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:21,565 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:21,566 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:22,278 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:22,604 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:22,605 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:22,891 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:22,892 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:23,203 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:23,210 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,027 INFO connection open
+2026-03-15 21:18:24,027 INFO [WS] Client connected: ('::1', 54679, 0, 0)
+2026-03-15 21:18:24,028 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,331 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,332 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,540 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,839 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:24,840 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,167 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,344 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,345 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,760 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,761 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,962 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:25,962 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:26,774 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:26,774 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:27,009 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:27,302 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:27,303 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:27,604 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:27,604 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:28,029 INFO connection open
+2026-03-15 21:18:28,029 INFO [WS] Client connected: ('::1', 62654, 0, 0)
+2026-03-15 21:18:28,030 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:28,671 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:29,251 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:29,252 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:31,303 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:31,487 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:31,487 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,029 INFO connection open
+2026-03-15 21:18:32,029 INFO [WS] Client connected: ('::1', 60211, 0, 0)
+2026-03-15 21:18:32,030 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,089 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,090 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,292 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,293 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,613 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,615 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,824 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:32,825 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,007 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,007 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,219 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,417 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,541 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,543 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:33,703 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,031 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,032 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,249 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,436 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,437 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,954 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:34,954 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,150 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,150 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,373 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,375 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,573 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,575 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,778 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:35,780 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,040 INFO connection open
+2026-03-15 21:18:36,041 INFO [WS] Client connected: ('::1', 65444, 0, 0)
+2026-03-15 21:18:36,043 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,170 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,171 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,385 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,387 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,584 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:36,585 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:37,330 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:37,331 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:37,593 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:37,593 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:37,716 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,563 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,563 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,749 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,750 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,951 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:39,952 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:40,022 INFO connection open
+2026-03-15 21:18:40,023 INFO [WS] Client connected: ('::1', 65152, 0, 0)
+2026-03-15 21:18:40,023 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:41,502 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:41,503 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:41,898 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:42,540 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:42,542 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:42,823 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:42,823 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,012 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,181 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,182 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,329 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,534 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:43,536 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:44,035 INFO connection open
+2026-03-15 21:18:44,036 INFO [WS] Client connected: ('::1', 56192, 0, 0)
+2026-03-15 21:18:44,037 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:44,065 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:44,066 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:44,231 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:44,231 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:45,578 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:45,579 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:45,778 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:45,779 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:45,976 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,194 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,194 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,429 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,429 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,579 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,579 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,807 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:46,808 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,146 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,147 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,426 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,427 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,623 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,624 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,812 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:47,813 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,022 INFO connection open
+2026-03-15 21:18:48,023 INFO [WS] Client connected: ('::1', 60853, 0, 0)
+2026-03-15 21:18:48,023 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,531 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,743 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,744 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,980 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:48,980 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:49,144 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:49,461 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:49,893 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:49,894 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:50,061 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:50,062 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:50,857 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:50,857 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:51,472 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:51,473 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:51,825 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:51,830 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,029 INFO connection open
+2026-03-15 21:18:52,029 INFO [WS] Client connected: ('::1', 64161, 0, 0)
+2026-03-15 21:18:52,030 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,108 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,109 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,541 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,541 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,738 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,739 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,956 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:52,957 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:18:53,687 INFO Bridge shutting down
+2026-03-15 21:18:53,703 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-41' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:18:53,705 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:19:09,563 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-15 21:19:09,576 INFO server listening on [::1]:8765
+2026-03-15 21:19:09,577 INFO server listening on 127.0.0.1:8765
+2026-03-15 21:19:09,577 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 21:19:09,580 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:09,866 INFO connection open
+2026-03-15 21:19:09,867 INFO [WS] Client connected: ('127.0.0.1', 55061)
+2026-03-15 21:19:09,867 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:10,333 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:10,334 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:10,739 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:10,740 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,020 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,021 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,318 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,319 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,727 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:11,727 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,119 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,119 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,237 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,238 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,454 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:12,455 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,035 INFO connection open
+2026-03-15 21:19:13,035 INFO [WS] Client connected: ('::1', 64420, 0, 0)
+2026-03-15 21:19:13,036 ERROR connection handler failed
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\websockets\asyncio\server.py", line 376, in conn_handler
+    await self.handler(connection)
+  File "C:\Users\SMC\Documents\GitHub\Trading-Bot\backend\bridge\bridge.py", line 120, in handle_client
+    initial_data = json.load(f)
+  File "C:\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+                 ~~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,379 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,380 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,568 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,772 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:13,773 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,213 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,385 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,386 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,494 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,495 ERROR [Watcher] Error reading trades.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-03-15 21:19:14,718 INFO Bridge shutting down
+2026-03-15 21:19:14,747 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-8' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:19:14,748 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:20:26,921 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-15 21:20:26,932 INFO server listening on [::1]:8765
+2026-03-15 21:20:26,933 INFO server listening on 127.0.0.1:8765
+2026-03-15 21:20:26,933 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 21:20:29,028 INFO connection open
+2026-03-15 21:20:29,029 INFO [WS] Client connected: ('::1', 52655, 0, 0)
+2026-03-15 21:20:38,172 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:20:47,613 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 21:20:47,622 INFO [News] Wrote 32 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-15 21:20:47,623 INFO [News] News fetch complete at 2026-03-15T21:20:47.623406
+2026-03-15 21:21:10,565 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:22:11,159 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:22:19,128 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:22:25,651 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:22:57,354 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:23:04,905 ERROR [Watcher] Error reading trades.json: [Errno 13] Permission denied: 'C:\\Users\\SMC\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\trades.json'
+2026-03-15 21:23:37,656 INFO Bridge shutting down
+2026-03-15 21:23:37,679 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-7' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:23:37,681 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-15 21:23:39,793 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-15 21:23:39,810 INFO server listening on [::1]:8765
+2026-03-15 21:23:39,810 INFO server listening on 127.0.0.1:8765
+2026-03-15 21:23:39,810 INFO WebSocket server started on ws://localhost:8765
+2026-03-15 21:23:41,046 INFO connection open
+2026-03-15 21:23:41,047 INFO [WS] Client connected: ('::1', 61457, 0, 0)
+2026-03-15 21:24:04,540 INFO [News] Fetched 32 high-impact events from ForexFactory
+2026-03-15 21:24:04,543 INFO [News] Wrote 32 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-15 21:24:04,543 INFO [News] News fetch complete at 2026-03-15T21:24:04.543391
+2026-03-15 21:34:58,174 INFO [WS] Client disconnected: ('::1', 61457, 0, 0)
+2026-03-22 13:13:47,303 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-22 13:13:47,313 ERROR [News] Failed to fetch ForexFactory calendar: HTTPSConnectionPool(host='nfs.faireconomy.media', port=443): Max retries exceeded with url: /ff_calendar_thisweek.json (Caused by NameResolutionError("HTTPSConnection(host='nfs.faireconomy.media', port=443): Failed to resolve 'nfs.faireconomy.media' ([Errno 11001] getaddrinfo failed)"))
+2026-03-22 13:13:47,315 INFO [News] Wrote 0 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-22 13:13:47,316 INFO [News] News fetch complete at 2026-03-22T13:13:47.316311
+2026-03-22 13:13:47,330 INFO server listening on [::1]:8765
+2026-03-22 13:13:47,330 INFO server listening on 127.0.0.1:8765
+2026-03-22 13:13:47,330 INFO WebSocket server started on ws://localhost:8765
+2026-03-22 13:15:14,701 INFO connection open
+2026-03-22 13:15:14,704 INFO [WS] Client connected: ('::1', 60198, 0, 0)
+2026-03-22 13:15:14,719 INFO connection open
+2026-03-22 13:15:14,720 INFO [WS] Client connected: ('::1', 51944, 0, 0)
+2026-03-22 13:15:14,736 INFO [WS] Client disconnected: ('::1', 60198, 0, 0)
+2026-03-22 13:16:42,121 INFO [WS] Client disconnected: ('::1', 51944, 0, 0)
+2026-03-22 13:16:42,321 INFO connection open
+2026-03-22 13:16:42,321 INFO [WS] Client connected: ('::1', 63254, 0, 0)
+2026-03-22 13:18:20,632 INFO [WS] Client disconnected: ('::1', 63254, 0, 0)
+2026-03-22 13:18:20,951 INFO connection open
+2026-03-22 13:18:20,953 INFO [WS] Client connected: ('::1', 60000, 0, 0)
+2026-03-22 13:18:20,968 INFO [WS] Client disconnected: ('::1', 60000, 0, 0)
+2026-03-22 13:18:20,971 INFO connection open
+2026-03-22 13:18:20,972 INFO [WS] Client connected: ('::1', 56728, 0, 0)
+2026-03-22 13:18:50,673 INFO Bridge shutting down
+2026-03-22 13:18:50,687 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-1175' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-22 13:18:50,688 ERROR Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<IocpProactor.accept.<locals>.accept_coro() running at C:\Python313\Lib\asyncio\windows_events.py:567> wait_for=<_OverlappedFuture cancelled>>
+2026-03-22 13:18:55,305 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-22 13:18:55,319 INFO server listening on [::1]:8765
+2026-03-22 13:18:55,320 INFO server listening on 127.0.0.1:8765
+2026-03-22 13:18:55,321 INFO WebSocket server started on ws://localhost:8765
+2026-03-22 13:18:55,361 INFO connection open
+2026-03-22 13:18:55,362 INFO [WS] Client connected: ('127.0.0.1', 56783)
+2026-03-22 13:19:03,337 INFO [News] Fetched 12 high-impact events from ForexFactory
+2026-03-22 13:19:03,346 INFO [News] Wrote 12 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-22 13:19:03,348 INFO [News] News fetch complete at 2026-03-22T13:19:03.348542
+2026-03-22 13:19:05,121 INFO [WS] Client disconnected: ('127.0.0.1', 56783)
+2026-03-22 13:19:05,502 INFO connection open
+2026-03-22 13:19:05,503 INFO [WS] Client connected: ('::1', 63722, 0, 0)
+2026-03-22 13:19:05,506 INFO [WS] Client disconnected: ('::1', 63722, 0, 0)
+2026-03-22 13:19:05,519 INFO connection open
+2026-03-22 13:19:05,522 INFO [WS] Client connected: ('::1', 49769, 0, 0)
+2026-03-22 13:24:56,730 INFO [WS] Client disconnected: ('::1', 49769, 0, 0)
+2026-03-22 13:24:57,085 INFO connection open
+2026-03-22 13:24:57,086 INFO [WS] Client connected: ('::1', 59866, 0, 0)
+2026-03-22 13:24:57,103 INFO [WS] Client disconnected: ('::1', 59866, 0, 0)
+2026-03-22 13:24:57,105 INFO connection open
+2026-03-22 13:24:57,109 INFO [WS] Client connected: ('::1', 50053, 0, 0)
+2026-03-22 13:25:36,209 INFO [WS] Client disconnected: ('::1', 50053, 0, 0)
+2026-03-22 13:25:52,993 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-22 13:25:56,646 INFO connection open
+2026-03-22 13:25:56,647 INFO [WS] Client connected: ('::1', 56213, 0, 0)
+2026-03-22 13:25:56,649 INFO [WS] Client disconnected: ('::1', 56213, 0, 0)
+2026-03-22 13:25:56,674 INFO connection open
+2026-03-22 13:25:56,677 INFO [WS] Client connected: ('::1', 49471, 0, 0)
+2026-03-22 13:27:17,376 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
