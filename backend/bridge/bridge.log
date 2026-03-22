@@ -1516,3 +1516,39 @@ task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro
 2026-03-22 14:23:35,217 INFO [WS] Client disconnected: ('::1', 57442, 0, 0)
 2026-03-22 14:23:35,556 INFO connection open
 2026-03-22 14:23:35,558 INFO [WS] Client connected: ('::1', 62851, 0, 0)
+2026-03-22 14:33:01,046 INFO [WS] Client disconnected: ('::1', 62851, 0, 0)
+2026-03-22 14:33:01,379 INFO connection open
+2026-03-22 14:33:01,380 INFO [WS] Client connected: ('::1', 61165, 0, 0)
+2026-03-22 14:33:13,097 INFO [WS] Client disconnected: ('::1', 61165, 0, 0)
+2026-03-22 14:33:13,487 INFO connection open
+2026-03-22 14:33:13,487 INFO [WS] Client connected: ('::1', 59753, 0, 0)
+2026-03-22 14:34:17,094 INFO [WS] Client disconnected: ('::1', 59753, 0, 0)
+2026-03-22 14:34:17,267 INFO connection open
+2026-03-22 14:34:17,268 INFO [WS] Client connected: ('::1', 51955, 0, 0)
+2026-03-22 14:38:44,920 INFO [WS] Client disconnected: ('::1', 51955, 0, 0)
+2026-03-22 14:38:45,212 INFO connection open
+2026-03-22 14:38:45,213 INFO [WS] Client connected: ('::1', 49809, 0, 0)
+2026-03-22 14:38:47,697 INFO [WS] Client disconnected: ('::1', 49809, 0, 0)
+2026-03-22 14:38:47,855 INFO connection open
+2026-03-22 14:38:47,856 INFO [WS] Client connected: ('::1', 52958, 0, 0)
+2026-03-22 14:43:44,757 INFO [WS] Client disconnected: ('::1', 52958, 0, 0)
+2026-03-22 14:43:45,117 INFO connection open
+2026-03-22 14:43:45,118 INFO [WS] Client connected: ('::1', 59340, 0, 0)
+2026-03-22 14:49:28,083 INFO [WS] Client disconnected: ('::1', 59340, 0, 0)
+2026-03-22 14:49:38,057 INFO connection open
+2026-03-22 14:49:38,057 INFO [WS] Client connected: ('::1', 50014, 0, 0)
+2026-03-22 14:50:59,594 INFO [WS] Client disconnected: ('::1', 50014, 0, 0)
+2026-03-22 14:50:59,925 INFO connection open
+2026-03-22 14:50:59,925 INFO [WS] Client connected: ('::1', 56736, 0, 0)
+2026-03-22 14:54:44,029 INFO [WS] Client disconnected: ('::1', 56736, 0, 0)
+2026-03-22 14:54:44,032 INFO connection open
+2026-03-22 14:54:44,032 INFO [WS] Client connected: ('::1', 51382, 0, 0)
+2026-03-22 14:54:48,033 INFO [WS] Client disconnected: ('::1', 51382, 0, 0)
+2026-03-22 14:54:48,040 INFO connection open
+2026-03-22 14:54:48,040 INFO [WS] Client connected: ('::1', 63949, 0, 0)
+2026-03-22 14:55:27,980 INFO [WS] Client disconnected: ('::1', 63949, 0, 0)
+2026-03-22 14:55:28,540 INFO connection open
+2026-03-22 14:55:28,540 INFO [WS] Client connected: ('::1', 64191, 0, 0)
+2026-03-22 14:58:48,042 INFO [WS] Client disconnected: ('::1', 64191, 0, 0)
+2026-03-22 14:58:48,045 INFO connection open
+2026-03-22 14:58:48,045 INFO [WS] Client connected: ('::1', 50976, 0, 0)

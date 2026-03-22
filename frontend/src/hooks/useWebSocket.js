@@ -35,7 +35,11 @@ export default function useWebSocket(url) {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        setTradeData(data)
+        setTradeData(prev => {
+          console.log('[WS] Message received, tick:', (prev?._tick ?? 0) + 1)
+          return { ...data, _tick: (prev?._tick ?? 0) + 1 }
+        })
+        console.log('[WS] Candles in payload:', data?.candles?.length ?? 'none')
         setLastUpdate(new Date())
 
         // Append new signal to log (max 50 entries)
@@ -47,7 +51,7 @@ export default function useWebSocket(url) {
           })
         }
       } catch (e) {
-        console.error('Failed to parse WebSocket message:', e)
+        console.error('WS parse error', e)
       }
     }
 

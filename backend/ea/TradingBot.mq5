@@ -427,6 +427,37 @@ void ManageOpenTrades()
 }
 
 //+------------------------------------------------------------------+
+//| WriteCandleData                                                  |
+//| Returns a JSON array string of OHLCV candles for symbol/tf.     |
+//+------------------------------------------------------------------+
+string WriteCandleData(string symbol, ENUM_TIMEFRAMES tf, int count)
+{
+   Print("[Debug] WriteCandleData called for ", symbol, " count=", count);
+   MqlRates rates[];
+   int copied = CopyRates(symbol, tf, 0, count, rates);
+   Print("[Debug] CopyRates returned: ", copied, " bars");
+
+   if(copied <= 0)
+      return "[]";
+
+   string json = "[\n";
+   for(int i = 0; i < copied; i++)
+   {
+      json += "    {";
+      json += "\"t\":" + IntegerToString((long)rates[i].time)    + ",";
+      json += "\"o\":" + DoubleToString(rates[i].open,  _Digits) + ",";
+      json += "\"h\":" + DoubleToString(rates[i].high,  _Digits) + ",";
+      json += "\"l\":" + DoubleToString(rates[i].low,   _Digits) + ",";
+      json += "\"c\":" + DoubleToString(rates[i].close, _Digits) + ",";
+      json += "\"v\":" + IntegerToString(rates[i].tick_volume)   + "}";
+      json += (i < copied - 1) ? ",\n" : "\n";
+   }
+   json += "  ]";
+   Print("[Debug] Candle data write complete");
+   return json;
+}
+
+//+------------------------------------------------------------------+
 //| WriteTradesJSON                                                  |
 //| Writes all open trade records plus account meta to trades.json  |
 //| in the MT5 Common Files folder.  The Python bridge reads this   |
@@ -475,7 +506,11 @@ void WriteTradesJSON()
       FileWriteString(fh, (i < n - 1) ? "    },\n" : "    }\n");
    }
 
-   FileWriteString(fh, "  ]\n");
+   FileWriteString(fh, "  ],\n");
+   Print("[Debug] About to write candle data for symbol: ", _Symbol, " TF: ", Period(), " Bars available: ", Bars(_Symbol, Period()));
+   string candleJson = WriteCandleData(_Symbol, PERIOD_M15, 200);
+   Print("[Debug] candles JSON length: ", StringLen(candleJson));
+   FileWriteString(fh, "  \"candles\": " + candleJson + "\n");
    FileWriteString(fh, "}\n");
    FileClose(fh);
    Print("[Debug] Wrote trades.json successfully");

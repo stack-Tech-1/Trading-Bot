@@ -44,7 +44,6 @@ function getDecimals(symbol) {
   return 5
 }
 
-// Generate synthetic OHLCV data for fallback display (15M, 200 candles)
 function generateSyntheticData(symbol) {
   const basePrice = getBasePrice(symbol)
   const vol = getVolatility(symbol)
@@ -78,68 +77,51 @@ function calculateEMA(candles, period) {
 
   for (let i = 0; i < candles.length; i++) {
     const c = candles[i]
-    if (ema === null) {
-      ema = c.close
-    } else {
-      ema = c.close * k + ema * (1 - k)
-    }
-    if (i >= period - 1) {
-      result.push({ time: c.time, value: ema })
-    }
+    ema = ema === null ? c.close : c.close * k + ema * (1 - k)
+    if (i >= period - 1) result.push({ time: c.time, value: ema })
   }
   return result
 }
 
 export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   const containerRef = useRef(null)
-  const chartRef = useRef(null)
+  const chartRef     = useRef(null)
   const candleSeriesRef = useRef(null)
   const volumeSeriesRef = useRef(null)
-  const ma20Ref = useRef(null)
-  const ma50Ref = useRef(null)
+  const ma20Ref  = useRef(null)
+  const ma50Ref  = useRef(null)
   const ma200Ref = useRef(null)
 
-  const [activeTimeframe, setActiveTimeframe] = useState(TIMEFRAMES[2]) // 15M default
+  const prevCandleCountRef = useRef(0)
+
+  const [activeTimeframe, setActiveTimeframe] = useState(TIMEFRAMES[2])
   const [ohlcv, setOhlcv] = useState({ open: 0, high: 0, low: 0, close: 0, volume: 0 })
 
   const decimals = getDecimals(symbol)
 
-  // ── Chart initialization (mount once, never re-run) ──────────────────────
+  // ── Effect 1: Create chart — runs ONCE on mount ───────────────────────────
   useEffect(() => {
     if (!containerRef.current) return
 
     const chart = createChart(containerRef.current, {
-      width: containerRef.current.clientWidth,
+      width:  containerRef.current.clientWidth,
       height: 500,
-      layout: {
-        background: { color: '#060b14' },
-        textColor: '#94a3b8',
-      },
-      grid: {
-        vertLines: { color: '#0f1e35' },
-        horzLines: { color: '#0f1e35' },
-      },
+      layout: { background: { color: '#060b14' }, textColor: '#94a3b8' },
+      grid:   { vertLines: { color: '#0f1e35' }, horzLines: { color: '#0f1e35' } },
       crosshair: { mode: 1 },
       rightPriceScale: { borderColor: '#1e293b', textColor: '#94a3b8' },
       timeScale: { borderColor: '#1e293b', timeVisible: true, secondsVisible: false },
       watermark: {
-        visible: true,
-        fontSize: 48,
-        horzAlign: 'center',
-        vertAlign: 'center',
-        color: 'rgba(30,58,95,0.3)',
-        text: symbol,
+        visible: true, fontSize: 48,
+        horzAlign: 'center', vertAlign: 'center',
+        color: 'rgba(30,58,95,0.3)', text: symbol,
       },
     })
 
-    // Assign series to refs immediately so the data effect can access them
     candleSeriesRef.current = chart.addSeries(CandlestickSeries, {
-      upColor: '#00d4aa',
-      downColor: '#f43f5e',
-      borderUpColor: '#00d4aa',
-      borderDownColor: '#f43f5e',
-      wickUpColor: '#00d4aa',
-      wickDownColor: '#f43f5e',
+      upColor: '#00d4aa', downColor: '#f43f5e',
+      borderUpColor: '#00d4aa', borderDownColor: '#f43f5e',
+      wickUpColor: '#00d4aa', wickDownColor: '#f43f5e',
     })
 
     volumeSeriesRef.current = chart.addSeries(HistogramSeries, {
@@ -157,65 +139,115 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
     chartRef.current = chart
 
     chart.subscribeCrosshairMove((param) => {
-      if (!param || !param.time || !param.seriesData) return
+      if (!param?.time || !param?.seriesData) return
       const bar = param.seriesData.get(candleSeriesRef.current)
-      if (bar) {
-        setOhlcv({ open: bar.open, high: bar.high, low: bar.low, close: bar.close, volume: 0 })
-      }
+      if (bar) setOhlcv({ open: bar.open, high: bar.high, low: bar.low, close: bar.close, volume: 0 })
     })
 
     const handleResize = () => {
-      if (containerRef.current) {
-        chart.applyOptions({ width: containerRef.current.clientWidth, height: containerRef.current.clientHeight })
-      }
+      if (containerRef.current)
+        chart.applyOptions({ width: containerRef.current.clientWidth })
     }
     window.addEventListener('resize', handleResize)
 
     return () => {
       window.removeEventListener('resize', handleResize)
       chart.remove()
+      chartRef.current     = null
+      candleSeriesRef.current = null
+      volumeSeriesRef.current = null
+      ma20Ref.current  = null
+      ma50Ref.current  = null
+      ma200Ref.current = null
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Unified data update (fires on every wsData change) ───────────────────
+  // ── Effect 2: Symbol or timeframe changed — reset state, load synthetic ───
   useEffect(() => {
+    prevCandleCountRef.current = 0
+
     if (!candleSeriesRef.current) return
 
-    let candles = wsData?.candles
-
-    if (!candles || candles.length === 0) {
-      candles = generateSyntheticData(symbol)
-    }
-
-    const chartCandles = candles.map(c => ({
-      time:  c.t  ?? c.time,
-      open:  parseFloat(c.o  ?? c.open),
-      high:  parseFloat(c.h  ?? c.high),
-      low:   parseFloat(c.l  ?? c.low),
-      close: parseFloat(c.c  ?? c.close),
-    })).sort((a, b) => a.time - b.time)
-
-    const volumes = candles.map(c => ({
-      time:  c.t ?? c.time,
-      value: parseFloat(c.v ?? c.volume ?? 0),
-      color: parseFloat(c.c ?? c.close) >= parseFloat(c.o ?? c.open)
-        ? '#00d4aa33' : '#f43f5e33',
-    })).sort((a, b) => a.time - b.time)
-
-    candleSeriesRef.current.setData(chartCandles)
-    if (volumeSeriesRef.current) volumeSeriesRef.current.setData(volumes)
-    if (ma20Ref.current)  ma20Ref.current.setData(calculateEMA(chartCandles, 20))
-    if (ma50Ref.current)  ma50Ref.current.setData(calculateEMA(chartCandles, 50))
-    if (ma200Ref.current) ma200Ref.current.setData(calculateEMA(chartCandles, 200))
-
-    if (chartCandles.length > 0) {
-      const last = chartCandles[chartCandles.length - 1]
-      setOhlcv({
-        open: last.open, high: last.high, low: last.low, close: last.close,
-        volume: volumes[volumes.length - 1]?.value ?? 0,
+    // Update watermark
+    if (chartRef.current) {
+      chartRef.current.applyOptions({
+        watermark: {
+          visible: true, fontSize: 48,
+          horzAlign: 'center', vertAlign: 'center',
+          color: 'rgba(30,58,95,0.3)', text: symbol,
+        },
       })
     }
-  }, [wsData]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Load synthetic placeholder until real data arrives
+    const synthetic = generateSyntheticData(symbol)
+    candleSeriesRef.current.setData(synthetic)
+    if (volumeSeriesRef.current) volumeSeriesRef.current.setData(
+      synthetic.map(c => ({ time: c.time, value: 200, color: '#00d4aa33' }))
+    )
+    if (ma20Ref.current)  ma20Ref.current.setData(calculateEMA(synthetic, 20))
+    if (ma50Ref.current)  ma50Ref.current.setData(calculateEMA(synthetic, 50))
+    if (ma200Ref.current) ma200Ref.current.setData(calculateEMA(synthetic, 200))
+    if (chartRef.current) chartRef.current.timeScale().fitContent()
+  }, [symbol, activeTimeframe]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Effect 3: Live data updates — fires on every wsData tick ─────────────
+  useEffect(() => {
+    console.log('[Chart] useEffect fired, tick:', wsData?._tick)
+    console.log('[Chart] candleSeriesRef exists:', !!candleSeriesRef.current)
+    console.log('[Chart] candles received:', wsData?.candles?.length ?? 'none')
+    console.log('[Chart] prevCandleCount:', prevCandleCountRef.current)
+    if (!candleSeriesRef.current) return
+    const candles = wsData?.candles
+    if (!candles || candles.length === 0) return
+
+    const chartCandles = candles
+      .map(c => ({
+        time:  Number(c.t  ?? c.time),
+        open:  parseFloat(c.o  ?? c.open),
+        high:  parseFloat(c.h  ?? c.high),
+        low:   parseFloat(c.l  ?? c.low),
+        close: parseFloat(c.c  ?? c.close),
+      }))
+      .filter(c => c.time > 0 && c.open > 0 && c.close > 0)
+      .sort((a, b) => a.time - b.time)
+
+    if (chartCandles.length === 0) return
+
+    const latest = chartCandles[chartCandles.length - 1]
+    const latestVol = {
+      time:  latest.time,
+      value: parseFloat(candles[candles.length - 1]?.v ?? 100),
+      color: latest.close >= latest.open ? '#00d4aa33' : '#f43f5e33',
+    }
+
+    // Full reload only when candle count changes (new candle formed) or first load
+    if (chartCandles.length !== prevCandleCountRef.current) {
+      prevCandleCountRef.current = chartCandles.length
+      const volumes = chartCandles.map((c, i) => ({
+        time:  c.time,
+        value: parseFloat(candles[i]?.v ?? 100),
+        color: c.close >= c.open ? '#00d4aa33' : '#f43f5e33',
+      }))
+      console.log('[Chart] Calling setData() with', chartCandles.length, 'candles')
+      candleSeriesRef.current.setData(chartCandles)
+      if (volumeSeriesRef.current) volumeSeriesRef.current.setData(volumes)
+      if (ma20Ref.current)  ma20Ref.current.setData(calculateEMA(chartCandles, 20))
+      if (ma50Ref.current)  ma50Ref.current.setData(calculateEMA(chartCandles, 50))
+      if (ma200Ref.current) ma200Ref.current.setData(calculateEMA(chartCandles, 200))
+      if (chartRef.current) chartRef.current.timeScale().fitContent()
+    } else {
+      // Same candle count — just update the last candle's price
+      console.log('[Chart] Calling update() with:', latest)
+      candleSeriesRef.current.update(latest)
+      if (volumeSeriesRef.current) volumeSeriesRef.current.update(latestVol)
+    }
+
+    setOhlcv({
+      open: latest.open, high: latest.high, low: latest.low, close: latest.close,
+      volume: latestVol.value,
+    })
+  }, [wsData?._tick])
 
   // ── Trade entry price lines ───────────────────────────────────────────────
   useEffect(() => {
@@ -227,9 +259,7 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
           candleSeriesRef.current.createPriceLine({
             price: trade.entryPrice,
             color: trade.direction === 1 ? '#00d4aa' : '#f43f5e',
-            lineWidth: 1,
-            lineStyle: 2,
-            axisLabelVisible: true,
+            lineWidth: 1, lineStyle: 2, axisLabelVisible: true,
             title: trade.direction === 1 ? 'BUY' : 'SELL',
           })
         } catch (_) {}
@@ -252,10 +282,10 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
               padding: '2px 8px',
               fontSize: 11,
               fontFamily: 'monospace',
-              background: activeTimeframe.label === tf.label ? '#2563eb' : '#0f1e35',
-              color: activeTimeframe.label === tf.label ? '#fff' : '#94a3b8',
+              background:   activeTimeframe.label === tf.label ? '#2563eb' : '#0f1e35',
+              color:        activeTimeframe.label === tf.label ? '#fff'    : '#94a3b8',
               border: '1px solid',
-              borderColor: activeTimeframe.label === tf.label ? '#3b82f6' : '#1e293b',
+              borderColor:  activeTimeframe.label === tf.label ? '#3b82f6' : '#1e293b',
               borderRadius: 4,
               cursor: 'pointer',
               transition: 'all 0.15s ease',
