@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+const WS_URL = window.location.hostname === 'localhost'
+  ? 'ws://localhost:8765'
+  : `ws://${window.location.hostname}/ws`
+
 /**
  * Custom hook that manages a WebSocket connection with automatic reconnection.
  *
- * @param {string} url  WebSocket URL to connect to (e.g. "ws://localhost:8765")
+ * @param {string} [url]  WebSocket URL — defaults to WS_URL (auto-detected from hostname)
  * @returns {{ tradeData, isConnected, lastUpdate, error, sendMessage, reconnect, signalLog }}
  */
-export default function useWebSocket(url) {
+export default function useWebSocket(url = WS_URL) {
   const [tradeData,   setTradeData]   = useState(null)
   const [isConnected, setIsConnected] = useState(false)
   const [lastUpdate,  setLastUpdate]  = useState(null)

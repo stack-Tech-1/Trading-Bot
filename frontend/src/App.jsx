@@ -10,7 +10,9 @@ import SettingsPanel from './components/SettingsPanel'
 import { formatCurrency, formatTime, getDirectionLabel, getDirectionColor } from './utils/formatters'
 import { useWindowSize, isMobile, isTablet } from './hooks/useWindowSize'
 
-const WS_URL = 'ws://localhost:8765'
+const WS_URL = window.location.hostname === 'localhost'
+  ? 'ws://localhost:8765'
+  : `ws://${window.location.hostname}/ws`
 
 const SYMBOLS = ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'XAUUSD', 'BTCUSD']
 
