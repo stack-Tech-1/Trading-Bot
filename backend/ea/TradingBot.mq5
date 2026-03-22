@@ -107,6 +107,9 @@ int    g_MA245                 = 245;
 // Global IndicatorHandles — populated by InitIndicators() in OnInit
 IndicatorHandles g_Handles;
 
+// Stores the full signal evaluation state from the most recent tick
+SignalState g_lastSignalState;
+
 // Tracks when settings were last reloaded from settings.json
 datetime g_LastSettingsLoad = 0;
 datetime g_LastZoneRebuild  = 0;
@@ -340,7 +343,8 @@ void OnTick()
       g_MaxOpenTrades,
       IsNewsActive(_Symbol, g_NewsPauseMinutes),
       dailyDrawdownPct,
-      g_DailyDrawdownLimitPct
+      g_DailyDrawdownLimitPct,
+      g_lastSignalState
    );
 
    if(sig.direction == 1)
@@ -352,6 +356,8 @@ void OnTick()
    double zoneStrength = 0.0;
    sig.zoneBonus = IsNearZone(_Symbol, sig.direction,
                               SymbolInfoDouble(_Symbol, SYMBOL_BID), zoneStrength);
+   g_lastSignalState.t4_zoneBonus    = sig.zoneBonus;
+   g_lastSignalState.t4_zoneStrength = zoneStrength;
 
    // Open trade when a valid signal is produced
    if(sig.direction != 0)
@@ -507,6 +513,23 @@ void WriteTradesJSON()
    }
 
    FileWriteString(fh, "  ],\n");
+   FileWriteString(fh, "  \"signalState\": {\n");
+   FileWriteString(fh, "    \"t1_masterSwitch\":"  + (g_lastSignalState.t1_masterSwitch ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t1_tradeCapOk\":"    + (g_lastSignalState.t1_tradeCapOk   ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t1_noNews\":"        + (g_lastSignalState.t1_noNews        ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t1_spreadOk\":"      + (g_lastSignalState.t1_spreadOk      ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t1_drawdownOk\":"    + (g_lastSignalState.t1_drawdownOk    ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t2_htfTrend\":"      + (g_lastSignalState.t2_htfTrend      ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t2_priceVsMA\":"     + (g_lastSignalState.t2_priceVsMA     ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t2_bias\":"          + IntegerToString(g_lastSignalState.t2_bias)              + ",\n");
+   FileWriteString(fh, "    \"t3_candlestick\":"   + (g_lastSignalState.t3_candlestick   ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t3_bbMiddle\":"      + (g_lastSignalState.t3_bbMiddle      ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t3_bbOuter\":"       + (g_lastSignalState.t3_bbOuter       ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t3_ema5xMA20\":"     + (g_lastSignalState.t3_ema5xMA20     ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"t3_score\":"         + IntegerToString(g_lastSignalState.t3_score)             + ",\n");
+   FileWriteString(fh, "    \"t4_zoneBonus\":"     + (g_lastSignalState.t4_zoneBonus     ? "true" : "false") + ",\n");
+   FileWriteString(fh, "    \"finalDirection\":"   + IntegerToString(g_lastSignalState.finalDirection)       + "\n");
+   FileWriteString(fh, "  },\n");
    Print("[Debug] About to write candle data for symbol: ", _Symbol, " TF: ", Period(), " Bars available: ", Bars(_Symbol, Period()));
    string candleJson = WriteCandleData(_Symbol, PERIOD_M15, 200);
    Print("[Debug] candles JSON length: ", StringLen(candleJson));

@@ -35,11 +35,7 @@ export default function useWebSocket(url) {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        setTradeData(prev => {
-          console.log('[WS] Message received, tick:', (prev?._tick ?? 0) + 1)
-          return { ...data, _tick: (prev?._tick ?? 0) + 1 }
-        })
-        console.log('[WS] Candles in payload:', data?.candles?.length ?? 'none')
+        setTradeData(prev => ({ ...data, _tick: (prev?._tick ?? 0) + 1 }))
         setLastUpdate(new Date())
 
         // Append new signal to log (max 50 entries)

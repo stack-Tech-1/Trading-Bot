@@ -59,6 +59,7 @@ struct IndicatorHandles
 {
    // --- Moving Averages on M1 ---
    int MA5_M1;
+   int MA20_M1;
    int MA9_M1;
    int MA25_M1;
    int MA50_M1;
@@ -114,6 +115,7 @@ IndicatorHandles InitIndicators(string symbol,
    // Moving Averages — M1
    // ----------------------------------------------------------------
    h.MA5_M1   = iMA(symbol, PERIOD_M1, ma5,   0, MODE_EMA, PRICE_CLOSE);
+   h.MA20_M1  = iMA(symbol, PERIOD_M1, 20,    0, MODE_SMA, PRICE_CLOSE);
    h.MA9_M1   = iMA(symbol, PERIOD_M1, ma9,   0, MODE_EMA, PRICE_CLOSE);
    h.MA25_M1  = iMA(symbol, PERIOD_M1, ma25,  0, MODE_EMA, PRICE_CLOSE);
    h.MA50_M1  = iMA(symbol, PERIOD_M1, ma50,  0, MODE_EMA, PRICE_CLOSE);
@@ -122,7 +124,8 @@ IndicatorHandles InitIndicators(string symbol,
    h.MA200_M1 = iMA(symbol, PERIOD_M1, ma200, 0, MODE_EMA, PRICE_CLOSE);
    h.MA245_M1 = iMA(symbol, PERIOD_M1, ma245, 0, MODE_EMA, PRICE_CLOSE);
 
-   if(h.MA5_M1   == INVALID_HANDLE) Print("[Signals] Failed: MA5_M1");
+   if(h.MA5_M1   == INVALID_HANDLE) Print("[Signals] Failed: EMA5_M1");
+   if(h.MA20_M1  == INVALID_HANDLE) Print("[Signals] Failed: MA20_M1");
    if(h.MA9_M1   == INVALID_HANDLE) Print("[Signals] Failed: MA9_M1");
    if(h.MA25_M1  == INVALID_HANDLE) Print("[Signals] Failed: MA25_M1");
    if(h.MA50_M1  == INVALID_HANDLE) Print("[Signals] Failed: MA50_M1");
@@ -143,7 +146,7 @@ IndicatorHandles InitIndicators(string symbol,
    h.MA200_H4 = iMA(symbol, PERIOD_H4, ma200, 0, MODE_EMA, PRICE_CLOSE);
    h.MA245_H4 = iMA(symbol, PERIOD_H4, ma245, 0, MODE_EMA, PRICE_CLOSE);
 
-   if(h.MA5_H4   == INVALID_HANDLE) Print("[Signals] Failed: MA5_H4");
+   if(h.MA5_H4   == INVALID_HANDLE) Print("[Signals] Failed: EMA5_H4");
    if(h.MA9_H4   == INVALID_HANDLE) Print("[Signals] Failed: MA9_H4");
    if(h.MA25_H4  == INVALID_HANDLE) Print("[Signals] Failed: MA25_H4");
    if(h.MA50_H4  == INVALID_HANDLE) Print("[Signals] Failed: MA50_H4");
@@ -164,7 +167,7 @@ IndicatorHandles InitIndicators(string symbol,
    h.MA200_D1 = iMA(symbol, PERIOD_D1, ma200, 0, MODE_EMA, PRICE_CLOSE);
    h.MA245_D1 = iMA(symbol, PERIOD_D1, ma245, 0, MODE_EMA, PRICE_CLOSE);
 
-   if(h.MA5_D1   == INVALID_HANDLE) Print("[Signals] Failed: MA5_D1");
+   if(h.MA5_D1   == INVALID_HANDLE) Print("[Signals] Failed: EMA5_D1");
    if(h.MA9_D1   == INVALID_HANDLE) Print("[Signals] Failed: MA9_D1");
    if(h.MA25_D1  == INVALID_HANDLE) Print("[Signals] Failed: MA25_D1");
    if(h.MA50_D1  == INVALID_HANDLE) Print("[Signals] Failed: MA50_D1");
@@ -203,6 +206,7 @@ void ReleaseIndicators(IndicatorHandles &h)
 {
    // MA — M1
    if(h.MA5_M1   != INVALID_HANDLE) IndicatorRelease(h.MA5_M1);
+   if(h.MA20_M1  != INVALID_HANDLE) IndicatorRelease(h.MA20_M1);
    if(h.MA9_M1   != INVALID_HANDLE) IndicatorRelease(h.MA9_M1);
    if(h.MA25_M1  != INVALID_HANDLE) IndicatorRelease(h.MA25_M1);
    if(h.MA50_M1  != INVALID_HANDLE) IndicatorRelease(h.MA50_M1);
@@ -444,6 +448,38 @@ struct SignalResult
    string reason;        // human-readable description of which signals fired
 };
 
+struct SignalState
+{
+   // Tier 1
+   bool   t1_masterSwitch;
+   bool   t1_tradeCapOk;
+   bool   t1_noNews;
+   bool   t1_spreadOk;
+   bool   t1_drawdownOk;
+   bool   t1_allPass;
+
+   // Tier 2
+   bool   t2_htfTrend;
+   bool   t2_priceVsMA;
+   int    t2_bias;        // 1=bull, -1=bear, 0=none
+
+   // Tier 3
+   bool   t3_candlestick;
+   bool   t3_bbMiddle;
+   bool   t3_bbOuter;
+   bool   t3_ema5xMA20;
+   int    t3_score;       // 0-4
+   bool   t3_flexEntry;
+
+   // Tier 4
+   bool   t4_zoneBonus;
+   double t4_zoneStrength;
+
+   // Overall
+   int    finalDirection; // 1=buy, -1=sell, 0=none
+   string lastUpdated;
+};
+
 //+------------------------------------------------------------------+
 //| CheckTier1Gates                                                  |
 //| Hard gates — all must pass for a trade to be opened.            |
@@ -457,8 +493,17 @@ bool CheckTier1Gates(string       symbol,
                      int           maxOpenTrades,
                      bool          newsActive,
                      double        dailyDrawdownPct,
-                     double        dailyDrawdownLimit)
+                     double        dailyDrawdownLimit,
+                     SignalState  &state)
 {
+   state.t1_masterSwitch = masterSwitch;
+   state.t1_tradeCapOk   = (openTradeCount < maxOpenTrades);
+   state.t1_noNews       = !(newsActive && profile.useNewsFilter);
+   state.t1_spreadOk     = ((int)SymbolInfoInteger(symbol, SYMBOL_SPREAD) <= spreadLimit);
+   state.t1_drawdownOk   = (dailyDrawdownPct < dailyDrawdownLimit);
+   state.t1_allPass      = state.t1_masterSwitch && state.t1_tradeCapOk &&
+                           state.t1_noNews && state.t1_spreadOk && state.t1_drawdownOk;
+
    if(!masterSwitch)
    {
       Print("[Tier1] FAIL: MasterSwitch is OFF");
@@ -503,7 +548,7 @@ bool CheckTier1Gates(string       symbol,
 //| Determines directional bias from higher timeframes.             |
 //| Returns: 1 = bullish, -1 = bearish, 0 = no clear / conflicting  |
 //+------------------------------------------------------------------+
-int CheckTier2Bias(string symbol, IndicatorHandles &handles)
+int CheckTier2Bias(string symbol, IndicatorHandles &handles, SignalState &state)
 {
    // --- Condition 1: H4 price vs MA100_H4 AND MA200_H4 ---
    double h4Close  = iClose(symbol, PERIOD_H4, 1);
@@ -526,27 +571,33 @@ int CheckTier2Bias(string symbol, IndicatorHandles &handles)
    int bullishCount = (bullish1 ? 1 : 0) + (bullish2 ? 1 : 0);
    int bearishCount = (bearish1 ? 1 : 0) + (bearish2 ? 1 : 0);
 
-   // Conflicting signals — no usable bias
+   int bias = 0;
    if(bullishCount > 0 && bearishCount > 0)
    {
       Print("[Tier2] FAIL: Conflicting bias (bullish=", bullishCount,
             " bearish=", bearishCount, ")");
-      return 0;
+      bias = 0;
    }
-
-   if(bullishCount >= 1)
+   else if(bullishCount >= 1)
    {
       Print("[Tier2] PASS: BULLISH (conditions=", bullishCount, ")");
-      return 1;
+      bias = 1;
    }
-   if(bearishCount >= 1)
+   else if(bearishCount >= 1)
    {
       Print("[Tier2] PASS: BEARISH (conditions=", bearishCount, ")");
-      return -1;
+      bias = -1;
+   }
+   else
+   {
+      Print("[Tier2] FAIL: No directional bias");
+      bias = 0;
    }
 
-   Print("[Tier2] FAIL: No directional bias");
-   return 0;
+   state.t2_htfTrend  = (bullish1 || bearish1);
+   state.t2_priceVsMA = (bullish2 || bearish2);
+   state.t2_bias      = bias;
+   return bias;
 }
 
 //+------------------------------------------------------------------+
@@ -556,7 +607,7 @@ int CheckTier2Bias(string symbol, IndicatorHandles &handles)
 //| interim score to lower the confirmation bar if 2+ have fired.   |
 //| Returns a SignalResult with score, flags, and reason string.    |
 //+------------------------------------------------------------------+
-SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bias)
+SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bias, SignalState &state)
 {
    SignalResult result;
    result.direction     = bias;
@@ -569,6 +620,11 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
    string reasonBuf = "";
 
    bool isBuy = (bias == 1);
+
+   bool sig1Fired = false;
+   bool sig2Fired = false;
+   bool sig3Fired = false;
+   bool sig4Fired = false;
 
    // ----------------------------------------------------------------
    // Signal 2 — BB Middle
@@ -587,6 +643,7 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
             score++;
             reasonBuf += "S2:BBMid ";
          }
+         sig2Fired = s2;
       }
    }
 
@@ -613,31 +670,32 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
             score++;
             reasonBuf += "S3:BBReject ";
          }
+         sig3Fired = s3;
       }
    }
 
    // ----------------------------------------------------------------
-   // Signal 4 — MA5/MA9 Crossover + MA100 trend filter on M1
-   // Buy:  MA5[1] > MA9[1], MA5[2] <= MA9[2], close > MA100
-   // Sell: MA5[1] < MA9[1], MA5[2] >= MA9[2], close < MA100
+   // Signal 4 — EMA5 x MA20 crossover with MA50 trend filter on M1
+   // Buy:  EMA5[1] > MA20[1], EMA5[2] <= MA20[2], EMA5[1] > MA50[1]
+   // Sell: EMA5[1] < MA20[1], EMA5[2] >= MA20[2], EMA5[1] < MA50[1]
    // ----------------------------------------------------------------
    {
-      double ma5_1   = GetMAValue(handles.MA5_M1,   1);
-      double ma9_1   = GetMAValue(handles.MA9_M1,   1);
-      double ma5_2   = GetMAValue(handles.MA5_M1,   2);
-      double ma9_2   = GetMAValue(handles.MA9_M1,   2);
-      double ma100   = GetMAValue(handles.MA100_M1, 1);
-      double closeM1 = iClose(symbol, PERIOD_M1, 1);
+      double ema5_1 = GetMAValue(handles.MA5_M1,  1);
+      double ema5_2 = GetMAValue(handles.MA5_M1,  2);
+      double ma20_1 = GetMAValue(handles.MA20_M1, 1);
+      double ma20_2 = GetMAValue(handles.MA20_M1, 2);
+      double ma50_1 = GetMAValue(handles.MA50_M1, 1);
 
-      if(ma5_1 > 0.0 && ma9_1 > 0.0 && ma5_2 > 0.0 && ma9_2 > 0.0 && ma100 > 0.0)
+      if(ema5_1 > 0.0 && ema5_2 > 0.0 && ma20_1 > 0.0 && ma20_2 > 0.0 && ma50_1 > 0.0)
       {
-         bool s4 = isBuy ? ((ma5_1 > ma9_1) && (ma5_2 <= ma9_2) && (closeM1 > ma100))
-                         : ((ma5_1 < ma9_1) && (ma5_2 >= ma9_2) && (closeM1 < ma100));
+         bool s4 = isBuy ? ((ema5_1 > ma20_1) && (ema5_2 <= ma20_2) && (ema5_1 > ma50_1))
+                         : ((ema5_1 < ma20_1) && (ema5_2 >= ma20_2) && (ema5_1 < ma50_1));
          if(s4)
          {
             score++;
-            reasonBuf += "S4:MACross ";
+            reasonBuf += "S4:EMA5xMA20+MA50filter ";
          }
+         sig4Fired = s4;
       }
    }
 
@@ -665,6 +723,7 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
             if(confCount >= 2 || interimFlexible)
             {
                score++;
+               sig1Fired = true;
                reasonBuf += "S1:" + patternName +
                             "(conf=" + IntegerToString(confCount) + ") ";
             }
@@ -683,6 +742,7 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
             if(confCount >= 2 || interimFlexible)
             {
                score++;
+               sig1Fired = true;
                reasonBuf += "S1:" + patternName +
                             "(conf=" + IntegerToString(confCount) + ") ";
             }
@@ -695,6 +755,14 @@ SignalResult CheckTier3Signals(string symbol, IndicatorHandles &handles, int bia
    result.reason        = (StringLen(reasonBuf) > 0)
                           ? StringSubstr(reasonBuf, 0, StringLen(reasonBuf) - 1)
                           : "none";
+
+   state.t3_candlestick = sig1Fired;
+   state.t3_bbMiddle    = sig2Fired;
+   state.t3_bbOuter     = sig3Fired;
+   state.t3_ema5xMA20   = sig4Fired;
+   state.t3_score       = score;
+   state.t3_flexEntry   = result.flexibleEntry;
+
    return result;
 }
 
@@ -712,7 +780,8 @@ SignalResult EvaluateEntry(string           symbol,
                            int              maxOpenTrades,
                            bool             newsActive,
                            double           dailyDrawdownPct,
-                           double           dailyDrawdownLimit)
+                           double           dailyDrawdownLimit,
+                           SignalState      &state)
 {
    SignalResult empty;
    empty.direction     = 0;
@@ -724,28 +793,35 @@ SignalResult EvaluateEntry(string           symbol,
    // Tier 1 — Hard gates
    if(!CheckTier1Gates(symbol, profile, (int)profile.spreadLimit,
                        masterSwitch, openTradeCount, maxOpenTrades,
-                       newsActive, dailyDrawdownPct, dailyDrawdownLimit))
+                       newsActive, dailyDrawdownPct, dailyDrawdownLimit, state))
+   {
+      state.finalDirection = 0;
       return empty;
+   }
 
    // Tier 2 — Directional bias
-   int bias = CheckTier2Bias(symbol, handles);
+   int bias = CheckTier2Bias(symbol, handles, state);
    if(bias == 0)
    {
       Print("[Entry] FAIL: Tier2 produced no clear bias");
+      state.finalDirection = 0;
       return empty;
    }
 
    // Tier 3 — Entry signals
-   SignalResult result = CheckTier3Signals(symbol, handles, bias);
+   SignalResult result = CheckTier3Signals(symbol, handles, bias, state);
 
    // Require score >= 2, OR flexibleEntry (score >= 3 means any 1 signal suffices)
    if(result.tier3Score < 2 && !result.flexibleEntry)
    {
       Print("[Entry] FAIL: Tier3 score=", result.tier3Score, " | ", result.reason);
+      state.finalDirection = 0;
       return empty;
    }
 
    result.direction = bias;
+   state.finalDirection = result.direction;
+   state.lastUpdated    = TimeToString(TimeCurrent(), TIME_DATE|TIME_MINUTES|TIME_SECONDS);
    Print("[Entry] PASS | dir=", (bias == 1 ? "BUY" : "SELL"),
          " score=", result.tier3Score,
          " flex=", (result.flexibleEntry ? "Y" : "N"),

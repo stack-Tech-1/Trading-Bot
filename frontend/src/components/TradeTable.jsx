@@ -33,7 +33,7 @@ export default function TradeTable({ trades = [], onClose }) {
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-800">
-      <table className="w-full text-sm text-left text-gray-300">
+      <table className="w-full text-sm text-left text-gray-300" style={{ minWidth: '600px' }}>
         <thead className="bg-gray-800 sticky top-0 text-xs text-gray-400 uppercase tracking-wide">
           <tr>
             {HEADERS.map((h) => (

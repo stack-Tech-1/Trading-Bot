@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createChart, CandlestickSeries, LineSeries, HistogramSeries } from 'lightweight-charts'
+import { isMobile } from '../hooks/useWindowSize'
 
 const TIMEFRAMES = [
   { label: '1M',  seconds: 60,    candles: 200 },
@@ -83,6 +84,50 @@ function calculateEMA(candles, period) {
   return result
 }
 
+function calculateEMA5(candles) {
+  const k = 2 / (5 + 1)
+  const result = []
+  if (candles.length === 0) return result
+  let ema = candles[0].close
+  for (let i = 0; i < candles.length; i++) {
+    ema = candles[i].close * k + ema * (1 - k)
+    result.push({ time: candles[i].time, value: parseFloat(ema.toFixed(5)) })
+  }
+  return result
+}
+
+function calculateBollingerBands(candles, period = 20, multiplier = 2) {
+  const result = { upper: [], middle: [], lower: [] }
+  for (let i = period - 1; i < candles.length; i++) {
+    const slice = candles.slice(i - period + 1, i + 1)
+    const mean = slice.reduce((s, c) => s + c.close, 0) / period
+    const variance = slice.reduce((s, c) => s + Math.pow(c.close - mean, 2), 0) / period
+    const stdDev = Math.sqrt(variance)
+    result.upper.push({ time: candles[i].time, value: mean + multiplier * stdDev })
+    result.middle.push({ time: candles[i].time, value: mean })
+    result.lower.push({ time: candles[i].time, value: mean - multiplier * stdDev })
+  }
+  return result
+}
+
+function calculateRSI(candles, period = 14) {
+  const result = []
+  if (candles.length < period + 1) return result
+  for (let i = period; i < candles.length; i++) {
+    let gains = 0, losses = 0
+    for (let j = i - period + 1; j <= i; j++) {
+      const change = candles[j].close - candles[j - 1].close
+      if (change > 0) gains += change
+      else losses += Math.abs(change)
+    }
+    const avgGain = gains / period
+    const avgLoss = losses / period
+    const rs = avgLoss === 0 ? 100 : avgGain / avgLoss
+    result.push({ time: candles[i].time, value: parseFloat((100 - 100 / (1 + rs)).toFixed(2)) })
+  }
+  return result
+}
+
 export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   const containerRef = useRef(null)
   const chartRef     = useRef(null)
@@ -94,8 +139,17 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
 
   const prevCandleCountRef = useRef(0)
 
+  const bbUpperRef   = useRef(null)
+  const bbMiddleRef  = useRef(null)
+  const bbLowerRef   = useRef(null)
+  const rsiSeriesRef = useRef(null)
+  const ema5Ref = useRef(null)
+
   const [activeTimeframe, setActiveTimeframe] = useState(TIMEFRAMES[2])
   const [ohlcv, setOhlcv] = useState({ open: 0, high: 0, low: 0, close: 0, volume: 0 })
+  const [indicators, setIndicators] = useState({
+    ema5: true, ma20: true, ma50: true, ma200: true, bb: true, volume: true, rsi: false,
+  })
 
   const decimals = getDecimals(symbol)
 
@@ -105,7 +159,7 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
 
     const chart = createChart(containerRef.current, {
       width:  containerRef.current.clientWidth,
-      height: 500,
+      height: isMobile(window.innerWidth) ? 300 : 500,
       layout: { background: { color: '#060b14' }, textColor: '#94a3b8' },
       grid:   { vertLines: { color: '#0f1e35' }, horzLines: { color: '#0f1e35' } },
       crosshair: { mode: 1 },
@@ -136,6 +190,15 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
     ma50Ref.current  = chart.addSeries(LineSeries, { color: '#f59e0b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false })
     ma200Ref.current = chart.addSeries(LineSeries, { color: '#8b5cf6', lineWidth: 1, priceLineVisible: false, lastValueVisible: false })
 
+    bbUpperRef.current  = chart.addSeries(LineSeries, { color: '#4a90d9', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false })
+    bbMiddleRef.current = chart.addSeries(LineSeries, { color: '#4a90d9', lineWidth: 1, lineStyle: 1, priceLineVisible: false, lastValueVisible: false })
+    bbLowerRef.current  = chart.addSeries(LineSeries, { color: '#4a90d9', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false })
+    rsiSeriesRef.current = chart.addSeries(LineSeries, { color: '#f59e0b', lineWidth: 1, priceScaleId: 'rsi', priceLineVisible: false, lastValueVisible: false })
+    rsiSeriesRef.current.priceScale().applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } })
+    ema5Ref.current = chart.addSeries(LineSeries, {
+      color: '#00ffcc', lineWidth: 2, priceLineVisible: false, lastValueVisible: false,
+    })
+
     chartRef.current = chart
 
     chart.subscribeCrosshairMove((param) => {
@@ -146,7 +209,10 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
 
     const handleResize = () => {
       if (containerRef.current)
-        chart.applyOptions({ width: containerRef.current.clientWidth })
+        chart.applyOptions({
+          width: containerRef.current.clientWidth,
+          height: isMobile(window.innerWidth) ? 300 : 500,
+        })
     }
     window.addEventListener('resize', handleResize)
 
@@ -159,6 +225,11 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
       ma20Ref.current  = null
       ma50Ref.current  = null
       ma200Ref.current = null
+      bbUpperRef.current  = null
+      bbMiddleRef.current = null
+      bbLowerRef.current  = null
+      rsiSeriesRef.current = null
+      ema5Ref.current = null
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -188,15 +259,17 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
     if (ma20Ref.current)  ma20Ref.current.setData(calculateEMA(synthetic, 20))
     if (ma50Ref.current)  ma50Ref.current.setData(calculateEMA(synthetic, 50))
     if (ma200Ref.current) ma200Ref.current.setData(calculateEMA(synthetic, 200))
+    const syntheticBB = calculateBollingerBands(synthetic, 20, 2)
+    if (bbUpperRef.current)  bbUpperRef.current.setData(syntheticBB.upper)
+    if (bbMiddleRef.current) bbMiddleRef.current.setData(syntheticBB.middle)
+    if (bbLowerRef.current)  bbLowerRef.current.setData(syntheticBB.lower)
+    if (rsiSeriesRef.current) rsiSeriesRef.current.setData(calculateRSI(synthetic, 14))
+    if (ema5Ref.current) ema5Ref.current.setData(calculateEMA5(synthetic))
     if (chartRef.current) chartRef.current.timeScale().fitContent()
   }, [symbol, activeTimeframe]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Effect 3: Live data updates — fires on every wsData tick ─────────────
   useEffect(() => {
-    console.log('[Chart] useEffect fired, tick:', wsData?._tick)
-    console.log('[Chart] candleSeriesRef exists:', !!candleSeriesRef.current)
-    console.log('[Chart] candles received:', wsData?.candles?.length ?? 'none')
-    console.log('[Chart] prevCandleCount:', prevCandleCountRef.current)
     if (!candleSeriesRef.current) return
     const candles = wsData?.candles
     if (!candles || candles.length === 0) return
@@ -229,16 +302,33 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
         value: parseFloat(candles[i]?.v ?? 100),
         color: c.close >= c.open ? '#00d4aa33' : '#f43f5e33',
       }))
-      console.log('[Chart] Calling setData() with', chartCandles.length, 'candles')
       candleSeriesRef.current.setData(chartCandles)
       if (volumeSeriesRef.current) volumeSeriesRef.current.setData(volumes)
-      if (ma20Ref.current)  ma20Ref.current.setData(calculateEMA(chartCandles, 20))
+      const ma20Data = calculateEMA(chartCandles, 20)
+      if (ma20Ref.current)  ma20Ref.current.setData(ma20Data)
       if (ma50Ref.current)  ma50Ref.current.setData(calculateEMA(chartCandles, 50))
       if (ma200Ref.current) ma200Ref.current.setData(calculateEMA(chartCandles, 200))
+      const bb = calculateBollingerBands(chartCandles, 20, 2)
+      if (bbUpperRef.current)  bbUpperRef.current.setData(bb.upper)
+      if (bbMiddleRef.current) bbMiddleRef.current.setData(bb.middle)
+      if (bbLowerRef.current)  bbLowerRef.current.setData(bb.lower)
+      if (rsiSeriesRef.current) rsiSeriesRef.current.setData(calculateRSI(chartCandles, 14))
+      const ema5Data = calculateEMA5(chartCandles)
+      if (ema5Ref.current) ema5Ref.current.setData(ema5Data)
+      if (ema5Data.length >= 2 && ma20Data.length >= 2) {
+        const lastEMA5 = ema5Data[ema5Data.length - 1].value
+        const prevEMA5 = ema5Data[ema5Data.length - 2].value
+        const lastMA20 = ma20Data[ma20Data.length - 1].value
+        const prevMA20 = ma20Data[ma20Data.length - 2].value
+        if (prevEMA5 <= prevMA20 && lastEMA5 > lastMA20) {
+          console.log('[Signal] EMA5 crossed ABOVE MA20 — potential BUY signal')
+        } else if (prevEMA5 >= prevMA20 && lastEMA5 < lastMA20) {
+          console.log('[Signal] EMA5 crossed BELOW MA20 — potential SELL signal')
+        }
+      }
       if (chartRef.current) chartRef.current.timeScale().fitContent()
     } else {
       // Same candle count — just update the last candle's price
-      console.log('[Chart] Calling update() with:', latest)
       candleSeriesRef.current.update(latest)
       if (volumeSeriesRef.current) volumeSeriesRef.current.update(latestVol)
     }
@@ -248,6 +338,27 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
       volume: latestVol.value,
     })
   }, [wsData?._tick])
+
+  // ── Effect: RSI reference lines ───────────────────────────────────────────
+  useEffect(() => {
+    if (!rsiSeriesRef.current || !indicators.rsi) return
+    rsiSeriesRef.current.createPriceLine({ price: 70, color: '#f43f5e', lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: 'OB' })
+    rsiSeriesRef.current.createPriceLine({ price: 30, color: '#00d4aa', lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: 'OS' })
+    rsiSeriesRef.current.createPriceLine({ price: 50, color: '#475569', lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: '' })
+  }, [indicators.rsi])
+
+  // ── Effect: Indicator visibility toggles ──────────────────────────────────
+  useEffect(() => {
+    if (ma20Ref.current)  ma20Ref.current.applyOptions({ visible: indicators.ma20 })
+    if (ma50Ref.current)  ma50Ref.current.applyOptions({ visible: indicators.ma50 })
+    if (ma200Ref.current) ma200Ref.current.applyOptions({ visible: indicators.ma200 })
+    if (bbUpperRef.current)  bbUpperRef.current.applyOptions({ visible: indicators.bb })
+    if (bbMiddleRef.current) bbMiddleRef.current.applyOptions({ visible: indicators.bb })
+    if (bbLowerRef.current)  bbLowerRef.current.applyOptions({ visible: indicators.bb })
+    if (volumeSeriesRef.current) volumeSeriesRef.current.applyOptions({ visible: indicators.volume })
+    if (rsiSeriesRef.current) rsiSeriesRef.current.applyOptions({ visible: indicators.rsi })
+    if (ema5Ref.current) ema5Ref.current.applyOptions({ visible: indicators.ema5 })
+  }, [indicators])
 
   // ── Trade entry price lines ───────────────────────────────────────────────
   useEffect(() => {
@@ -304,16 +415,40 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
           {ohlcv.volume > 0 && <span>Vol: <span style={{ color: '#e2e8f0' }}>{ohlcv.volume}</span></span>}
         </div>
 
-        {/* EMA legend */}
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, fontSize: 10, fontFamily: 'monospace' }}>
-          <span style={{ color: '#3b82f6' }}>MA20</span>
-          <span style={{ color: '#f59e0b' }}>MA50</span>
-          <span style={{ color: '#8b5cf6' }}>MA200</span>
-        </div>
+      </div>
+
+      {/* Indicator toggles */}
+      <div style={{ display: 'flex', gap: '6px', alignItems: 'center', padding: '4px 12px', background: '#0a1628', borderBottom: '1px solid #1e293b', flexWrap: 'wrap' }}>
+        {[
+          { key: 'ema5',   label: 'EMA5',     color: '#00ffcc' },
+          { key: 'ma20',   label: 'MA20',     color: '#3b82f6' },
+          { key: 'ma50',   label: 'MA50',     color: '#f59e0b' },
+          { key: 'ma200',  label: 'MA200',    color: '#8b5cf6' },
+          { key: 'bb',     label: 'BB(20,2)', color: '#4a90d9' },
+          { key: 'volume', label: 'Volume',   color: '#6b7280' },
+          { key: 'rsi',    label: 'RSI(14)',  color: '#f59e0b' },
+        ].map(({ key, label, color }) => (
+          <button
+            key={key}
+            onClick={() => setIndicators(prev => ({ ...prev, [key]: !prev[key] }))}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '4px',
+              padding: '3px 8px', borderRadius: '4px', border: 'none',
+              cursor: 'pointer', fontSize: '11px', fontWeight: '500',
+              background: indicators[key] ? `${color}22` : '#1e293b',
+              color: indicators[key] ? color : '#475569',
+              transition: 'all 0.15s ease',
+              outline: indicators[key] ? `1px solid ${color}66` : '1px solid transparent',
+            }}
+          >
+            <span style={{ width: '8px', height: '2px', borderRadius: '1px', background: indicators[key] ? color : '#475569', display: 'inline-block' }}/>
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Chart container */}
-      <div ref={containerRef} style={{ width: '100%', height: 500 }} />
+      <div ref={containerRef} style={{ width: '100%', height: isMobile(window.innerWidth) ? 300 : 500 }} />
     </div>
   )
 }

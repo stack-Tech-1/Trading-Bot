@@ -297,7 +297,7 @@ export default function SettingsPanel({ currentSettings, onSave, isConnected }) 
       {/* ------------------------------------------------------------------ */}
       <div>
         <h3 className="text-xs text-gray-500 uppercase tracking-wide mb-3">MA Periods</h3>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             ['MA5',   'MA5'],
             ['MA9',   'MA9'],

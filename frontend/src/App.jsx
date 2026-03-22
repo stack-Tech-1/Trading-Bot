@@ -4,9 +4,11 @@ import CandlestickChart from './components/CandlestickChart'
 import MarketDepth from './components/MarketDepth'
 import TradeTicket from './components/TradeTicket'
 import DrawdownGauge from './components/DrawdownGauge'
+import SignalPanel from './components/SignalPanel'
 import ZoneMap from './components/ZoneMap'
 import SettingsPanel from './components/SettingsPanel'
 import { formatCurrency, formatTime, getDirectionLabel, getDirectionColor } from './utils/formatters'
+import { useWindowSize, isMobile, isTablet } from './hooks/useWindowSize'
 
 const WS_URL = 'ws://localhost:8765'
 
@@ -59,11 +61,14 @@ function SectionHeader({ title }) {
 export default function App() {
   const { tradeData, isConnected, lastUpdate, error, sendMessage, reconnect, signalLog } = useWebSocket(WS_URL)
 
-  const [activeSymbol,    setActiveSymbol]    = useState('EURUSD')
-  const [activeTab,       setActiveTab]       = useState('Positions')
-  const [currentSettings, setCurrentSettings] = useState({})
-  const [showSettings,    setShowSettings]    = useState(false)
-  const [clock,           setClock]           = useState('')
+  const { width } = useWindowSize()
+  const [activeSymbol,      setActiveSymbol]      = useState('EURUSD')
+  const [activeTab,         setActiveTab]         = useState('Positions')
+  const [currentSettings,   setCurrentSettings]   = useState({})
+  const [showSettings,      setShowSettings]      = useState(false)
+  const [clock,             setClock]             = useState('')
+  const [showStatsDrawer,   setShowStatsDrawer]   = useState(false)
+  const [showDepthDrawer,   setShowDepthDrawer]   = useState(false)
   const lastValidDataRef = useRef(null)
 
   // Preserve last valid trade payload
@@ -130,13 +135,17 @@ export default function App() {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateRows: '48px 1fr 200px',
-      gridTemplateColumns: '220px 1fr 240px',
-      gridTemplateAreas: `
-        "navbar navbar navbar"
-        "sidebar-left chart-main sidebar-right"
-        "bottom bottom bottom"
-      `,
+      gridTemplateRows: isMobile(width) ? '48px 1fr auto' : '48px 1fr 48px',
+      gridTemplateColumns: isMobile(width)
+        ? '1fr'
+        : isTablet(width)
+          ? '1fr 200px'
+          : '220px 1fr 240px',
+      gridTemplateAreas: isMobile(width)
+        ? `"navbar" "chart-main" "bottom"`
+        : isTablet(width)
+          ? `"navbar navbar" "chart-main sidebar-right" "bottom bottom"`
+          : `"navbar navbar navbar" "sidebar-left chart-main sidebar-right" "bottom bottom bottom"`,
       height: '100vh',
       overflow: 'hidden',
       background: '#060b14',
@@ -155,95 +164,107 @@ export default function App() {
         gap: 12,
         zIndex: 10,
       }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 180 }}>
-          <span style={{
-            width: 8, height: 8, borderRadius: '50%',
-            background: isConnected ? '#00d4aa' : '#f43f5e',
-            boxShadow: isConnected ? '0 0 6px #00d4aa' : 'none',
-            animation: isConnected ? 'pulse 2s infinite' : 'none',
-            flexShrink: 0,
-          }} />
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#e2e8f0', letterSpacing: '0.02em' }}>TradingBot Pro</span>
-          <span style={{
-            fontSize: 10, fontWeight: 700, color: '#60a5fa',
-            background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(59,130,246,0.4)',
-            borderRadius: 4, padding: '1px 5px', fontFamily: 'monospace',
-          }}>MT5</span>
-        </div>
+        {isMobile(width) ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0 12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ color: isConnected ? '#00d4aa' : '#f43f5e', fontSize: '8px' }}>●</span>
+              <span style={{ fontWeight: '600', fontSize: '14px', color: '#e2e8f0' }}>TradingBot Pro</span>
+            </div>
+            <select
+              value={activeSymbol}
+              onChange={e => setActiveSymbol(e.target.value)}
+              style={{ background: '#0f1e35', color: '#e2e8f0', border: '1px solid #1e293b', borderRadius: '4px', padding: '4px 8px', fontSize: '12px' }}
+            >
+              {symbolTabs.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <span style={{ fontSize: '13px', fontWeight: '600', color: '#e2e8f0' }}>
+              {formatCurrency(activeData?.meta?.accountBalance ?? 0)}
+            </span>
+          </div>
+        ) : (
+          <>
+            {/* Logo */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 180 }}>
+              <span style={{
+                width: 8, height: 8, borderRadius: '50%',
+                background: isConnected ? '#00d4aa' : '#f43f5e',
+                boxShadow: isConnected ? '0 0 6px #00d4aa' : 'none',
+                animation: isConnected ? 'pulse 2s infinite' : 'none',
+                flexShrink: 0,
+              }} />
+              <span style={{ fontSize: 14, fontWeight: 700, color: '#e2e8f0', letterSpacing: '0.02em' }}>TradingBot Pro</span>
+              <span style={{
+                fontSize: 10, fontWeight: 700, color: '#60a5fa',
+                background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(59,130,246,0.4)',
+                borderRadius: 4, padding: '1px 5px', fontFamily: 'monospace',
+              }}>MT5</span>
+            </div>
 
-        {/* Symbol tabs */}
-        <div style={{ display: 'flex', gap: 4, flex: 1, overflowX: 'auto' }}>
-          {symbolTabs.slice(0, 8).map(sym => {
-            const change = MOCK_CHANGES[sym] ?? 0
-            const price  = MOCK_PRICES[sym]  ?? '—'
-            const active = sym === activeSymbol
-            return (
+            {/* Symbol tabs */}
+            <div style={{ display: 'flex', gap: 4, flex: 1, overflowX: 'auto' }}>
+              {symbolTabs.slice(0, 8).map(sym => {
+                const change = MOCK_CHANGES[sym] ?? 0
+                const price  = MOCK_PRICES[sym]  ?? '—'
+                const active = sym === activeSymbol
+                return (
+                  <button
+                    key={sym}
+                    onClick={() => setActiveSymbol(sym)}
+                    style={{
+                      display: 'flex', flexDirection: 'column', alignItems: 'center',
+                      padding: '3px 10px', borderRadius: 4, cursor: 'pointer', whiteSpace: 'nowrap',
+                      background: active ? 'rgba(37,99,235,0.25)' : 'transparent',
+                      border: active ? '1px solid #2563eb' : '1px solid transparent',
+                      transition: 'all 0.15s ease',
+                      minWidth: 72,
+                    }}
+                  >
+                    <span style={{ fontSize: 11, fontWeight: 700, color: active ? '#e2e8f0' : '#94a3b8', fontFamily: 'monospace' }}>{sym}</span>
+                    <span style={{ fontSize: 9, color: change >= 0 ? '#00d4aa' : '#f43f5e', fontFamily: 'monospace' }}>
+                      {price} <span>{change >= 0 ? '+' : ''}{change}%</span>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Right section */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexShrink: 0 }}>
+              <div style={{ fontSize: 11, fontFamily: 'monospace', color: isConnected ? '#00d4aa' : '#f43f5e' }}>
+                {isConnected ? '● LIVE' : '○ OFF'}
+              </div>
+              <span style={{ fontSize: 12, color: '#475569', fontFamily: 'monospace' }}>{clock} UTC</span>
+              <div style={{
+                background: cardBg, border, borderRadius: 4,
+                padding: '3px 8px', fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0',
+              }}>
+                {formatCurrency(balance)}
+              </div>
               <button
-                key={sym}
-                onClick={() => setActiveSymbol(sym)}
+                onClick={() => setShowSettings(true)}
                 style={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center',
-                  padding: '3px 10px', borderRadius: 4, cursor: 'pointer', whiteSpace: 'nowrap',
-                  background: active ? 'rgba(37,99,235,0.25)' : 'transparent',
-                  border: active ? '1px solid #2563eb' : '1px solid transparent',
-                  transition: 'all 0.15s ease',
-                  minWidth: 72,
+                  background: cardBg, border, borderRadius: 4,
+                  padding: '3px 8px', fontSize: 11, color: '#94a3b8', cursor: 'pointer',
+                  fontFamily: 'monospace', transition: 'all 0.15s ease',
                 }}
               >
-                <span style={{ fontSize: 11, fontWeight: 700, color: active ? '#e2e8f0' : '#94a3b8', fontFamily: 'monospace' }}>{sym}</span>
-                <span style={{ fontSize: 9, color: change >= 0 ? '#00d4aa' : '#f43f5e', fontFamily: 'monospace' }}>
-                  {price} <span>{change >= 0 ? '+' : ''}{change}%</span>
-                </span>
+                ⚙ SETTINGS
               </button>
-            )
-          })}
-        </div>
-
-        {/* Right section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexShrink: 0 }}>
-          {/* Connection status */}
-          <div style={{ fontSize: 11, fontFamily: 'monospace', color: isConnected ? '#00d4aa' : '#f43f5e' }}>
-            {isConnected ? '● LIVE' : '○ OFF'}
-          </div>
-
-          {/* Clock */}
-          <span style={{ fontSize: 12, color: '#475569', fontFamily: 'monospace' }}>{clock} UTC</span>
-
-          {/* Balance badge */}
-          <div style={{
-            background: cardBg, border, borderRadius: 4,
-            padding: '3px 8px', fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0',
-          }}>
-            {formatCurrency(balance)}
-          </div>
-
-          {/* Settings button */}
-          <button
-            onClick={() => setShowSettings(true)}
-            style={{
-              background: cardBg, border, borderRadius: 4,
-              padding: '3px 8px', fontSize: 11, color: '#94a3b8', cursor: 'pointer',
-              fontFamily: 'monospace', transition: 'all 0.15s ease',
-            }}
-          >
-            ⚙ SETTINGS
-          </button>
-
-          {/* Reconnect */}
-          {!isConnected && (
-            <button
-              onClick={reconnect}
-              style={{
-                background: 'rgba(37,99,235,0.2)', border: '1px solid #2563eb',
-                borderRadius: 4, padding: '3px 8px', fontSize: 11, color: '#60a5fa',
-                cursor: 'pointer', fontFamily: 'monospace',
-              }}
-            >
-              ↺ Reconnect
-            </button>
-          )}
-        </div>
+              {!isConnected && (
+                <button
+                  onClick={reconnect}
+                  style={{
+                    background: 'rgba(37,99,235,0.2)', border: '1px solid #2563eb',
+                    borderRadius: 4, padding: '3px 8px', fontSize: 11, color: '#60a5fa',
+                    cursor: 'pointer', fontFamily: 'monospace',
+                  }}
+                >
+                  ↺ Reconnect
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </nav>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}
@@ -255,9 +276,10 @@ export default function App() {
         borderRight: border,
         overflowY: 'auto',
         padding: '10px 10px',
-        display: 'flex',
+        display: isMobile(width) || isTablet(width) ? 'none' : 'flex',
         flexDirection: 'column',
         gap: 2,
+        minHeight: 0,
       }}>
 
         {/* Account stats */}
@@ -304,6 +326,11 @@ export default function App() {
           <div style={{ fontSize: 11, color: '#475569', fontFamily: 'monospace', padding: '4px 0' }}>Scanning...</div>
         )}
 
+        {/* Signal panel */}
+        <SectionHeader title="SIGNAL MONITOR" />
+        {console.log('[App] signalState being passed:', tradeData?.signalState)}
+        <SignalPanel signalState={tradeData?.signalState} />
+
         {/* Bot status */}
         <SectionHeader title="BOT STATUS" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -336,6 +363,7 @@ export default function App() {
         flexDirection: 'column',
         overflow: 'hidden',
         background: '#060b14',
+        minHeight: 0,
       }}>
         {/* Chart header */}
         <div style={{
@@ -401,7 +429,8 @@ export default function App() {
                   No open positions
                 </div>
               ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, fontFamily: 'monospace' }}>
+                <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                <table style={{ width: '100%', minWidth: isMobile(width) ? '600px' : '100%', borderCollapse: 'collapse', fontSize: 11, fontFamily: 'monospace' }}>
                   <thead>
                     <tr style={{ background: cardBg, color: '#475569' }}>
                       {['SYMBOL', 'DIR', 'LOT', 'ENTRY', 'SL', 'TP', 'P&L', 'STATUS'].map(h => (
@@ -452,6 +481,7 @@ export default function App() {
                     })}
                   </tbody>
                 </table>
+                </div>
               )}
             </div>
           )}
@@ -509,10 +539,12 @@ export default function App() {
       {/* ═══════════════════════════════════════════════════════════════════ */}
       <aside style={{
         gridArea: 'sidebar-right',
-        display: 'flex',
+        display: isMobile(width) ? 'none' : 'flex',
         flexDirection: 'column',
         borderLeft: border,
         overflow: 'hidden',
+        overflowY: 'auto',
+        minHeight: 0,
       }}>
         {/* Market depth — top half */}
         <div style={{ flex: 1, overflow: 'hidden' }}>
@@ -530,12 +562,60 @@ export default function App() {
       {/* ═══════════════════════════════════════════════════════════════════ */}
       <footer style={{
         gridArea: 'bottom',
+        height: isMobile(width) ? 'auto' : '48px',
+        flexShrink: 0,
         background: panelBg,
         borderTop: border,
         display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
+        flexDirection: isMobile(width) ? 'column' : 'row',
+        alignItems: isMobile(width) ? 'stretch' : 'center',
+        overflow: isMobile(width) ? 'visible' : 'hidden',
       }}>
+
+        {/* Mobile: Stats / Depth / Settings buttons */}
+        {isMobile(width) && (
+          <div style={{ display: 'flex', gap: '8px', padding: '6px 12px', background: '#0a1628', borderTop: '1px solid #1e293b' }}>
+            <button onClick={() => setShowStatsDrawer(v => !v)}
+              style={{ flex: 1, padding: '8px', background: '#0f1e35', color: '#94a3b8', border: '1px solid #1e293b', borderRadius: '6px', fontSize: '12px', cursor: 'pointer' }}>
+              Stats {showStatsDrawer ? '▼' : '▲'}
+            </button>
+            <button onClick={() => setShowDepthDrawer(v => !v)}
+              style={{ flex: 1, padding: '8px', background: '#0f1e35', color: '#94a3b8', border: '1px solid #1e293b', borderRadius: '6px', fontSize: '12px', cursor: 'pointer' }}>
+              Depth {showDepthDrawer ? '▼' : '▲'}
+            </button>
+            <button onClick={() => setShowSettings(true)}
+              style={{ flex: 1, padding: '8px', background: '#0f1e35', color: '#94a3b8', border: '1px solid #1e293b', borderRadius: '6px', fontSize: '12px', cursor: 'pointer' }}>
+              Settings
+            </button>
+          </div>
+        )}
+
+        {/* Mobile: Stats drawer */}
+        {isMobile(width) && showStatsDrawer && (
+          <div style={{ background: '#0a1628', borderTop: '1px solid #1e293b', padding: '12px', maxHeight: '60vh', overflowY: 'auto', transition: 'all 0.3s ease' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+              {[
+                { label: 'Balance',   value: formatCurrency(activeData?.meta?.accountBalance ?? 0), color: '#e2e8f0' },
+                { label: 'Equity',    value: formatCurrency(activeData?.meta?.accountEquity ?? 0),  color: '#00d4aa' },
+                { label: 'Drawdown',  value: `${(activeData?.meta?.dailyDrawdownPct ?? 0).toFixed(2)}%`, color: '#f59e0b' },
+                { label: 'Positions', value: `${activeData?.trades?.length ?? 0}/3`, color: '#e2e8f0' },
+              ].map(({ label, value, color }) => (
+                <div key={label} style={{ background: '#0f1e35', padding: '10px', borderRadius: '6px', border: '1px solid #1e293b' }}>
+                  <div style={{ fontSize: '10px', color: '#475569', marginBottom: '4px', textTransform: 'uppercase' }}>{label}</div>
+                  <div style={{ fontSize: '16px', fontWeight: '600', color, fontFamily: 'monospace' }}>{value}</div>
+                </div>
+              ))}
+            </div>
+            <SignalPanel signalState={activeData?.signalState} />
+          </div>
+        )}
+
+        {/* Mobile: Depth drawer */}
+        {isMobile(width) && showDepthDrawer && (
+          <div style={{ background: '#0a1628', borderTop: '1px solid #1e293b', padding: '12px', maxHeight: '50vh', overflowY: 'auto' }}>
+            <MarketDepth symbol={activeSymbol} currentPrice={currentPrice} />
+          </div>
+        )}
 
         {/* News ticker */}
         <div style={{
@@ -544,7 +624,7 @@ export default function App() {
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
-          height: 28,
+          height: isMobile(width) ? 36 : 28,
         }}>
           <span style={{
             fontSize: 10, fontFamily: 'monospace', color: '#f59e0b', fontWeight: 700,
@@ -584,7 +664,7 @@ export default function App() {
         </div>
 
         {/* Mini P&L chart + account summary */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 16px', gap: 24 }}>
+        {!isMobile(width) && <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 16px', gap: 24 }}>
 
           {/* Mini P&L bars */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -620,7 +700,7 @@ export default function App() {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
       </footer>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}
