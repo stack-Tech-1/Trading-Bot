@@ -1,163 +1,257 @@
 import { useState } from 'react'
 import CandlestickChart from '../CandlestickChart'
 
-const TIMEFRAMES = ['1M', '5M', '15M', '1H', '4H', '1D']
-const INDICATORS = [
-  { key: 'ema5',  label: 'EMA5',  color: '#00ffcc' },
-  { key: 'ma20',  label: 'MA20',  color: '#3b82f6' },
-  { key: 'ma50',  label: 'MA50',  color: '#f59e0b' },
-  { key: 'ma200', label: 'MA200', color: '#8b5cf6' },
-  { key: 'bb',    label: 'BB',    color: '#94a3b8' },
-  { key: 'vol',   label: 'Vol',   color: '#475569' },
-]
-
-export default function MobileChart({ wsData, signalState, trades }) {
-  const [activeTf, setActiveTf] = useState('1H')
-  const [activeIndicators, setActiveIndicators] = useState({
-    ema5: true, ma20: true, ma50: true, ma200: true, bb: true, vol: true,
-  })
+export default function MobileChart({ wsData, signalState, trades, signalLog }) {
+  const [activeTF, setActiveTF] = useState('1M')
   const [chartSubTab, setChartSubTab] = useState('Positions')
+  const [indicators, setIndicators] = useState({
+    ema5: true, ma20: true, ma50: true, ma200: false, bb: true, volume: true
+  })
 
   const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
-
-  const toggleIndicator = (key) =>
-    setActiveIndicators(prev => ({ ...prev, [key]: !prev[key] }))
-
-  const s = signalState ?? {}
-  const t1Pass = s.t1_allPass
-  const t2Bias = s.t2_bias ?? 0
-  const t3Score = s.t3_score ?? 0
-  const hasFinal = s.finalDirection && s.finalDirection !== 0
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
 
-      {/* Timeframe pills — 36px */}
+      {/* Timeframe row — fixed 36px */}
       <div style={{
         height: '36px', flexShrink: 0,
-        display: 'flex', alignItems: 'center',
-        overflowX: 'auto', gap: '6px', padding: '0 10px',
-        background: '#0a1628', borderBottom: '1px solid #1e293b',
-        scrollbarWidth: 'none',
+        display: 'flex', overflowX: 'auto', alignItems: 'center',
+        gap: '4px', padding: '0 8px',
+        background: '#0a1628', borderBottom: '1px solid #1e293b'
       }}>
-        {TIMEFRAMES.map(tf => (
-          <button key={tf} onClick={() => setActiveTf(tf)} style={{
-            minWidth: '40px', height: '26px', flexShrink: 0,
-            background: activeTf === tf ? '#1e3a5f' : 'transparent',
-            color: activeTf === tf ? '#60a5fa' : '#475569',
-            border: activeTf === tf ? '1px solid #2563eb' : '1px solid #1e293b',
-            borderRadius: '4px', fontSize: '11px', fontWeight: '600',
-            cursor: 'pointer', fontFamily: 'monospace',
+        {['1M','5M','15M','1H','4H','1D'].map(tf => (
+          <button key={tf} onClick={() => setActiveTF(tf)} style={{
+            flexShrink: 0, padding: '4px 10px',
+            background: activeTF === tf ? '#1e3a5f' : 'transparent',
+            color: activeTF === tf ? '#60a5fa' : '#475569',
+            border: activeTF === tf ? '1px solid #1e3a5f' : '1px solid transparent',
+            borderRadius: '4px', fontSize: '11px', fontWeight: '600', cursor: 'pointer'
           }}>{tf}</button>
         ))}
       </div>
 
-      {/* Indicator pills — 32px */}
+      {/* Indicator pills row — fixed 32px */}
       <div style={{
         height: '32px', flexShrink: 0,
-        display: 'flex', alignItems: 'center',
-        overflowX: 'auto', gap: '6px', padding: '0 10px',
-        background: '#0a1628', borderBottom: '1px solid #1e293b',
-        scrollbarWidth: 'none',
+        display: 'flex', overflowX: 'auto', alignItems: 'center',
+        gap: '4px', padding: '0 8px',
+        background: '#0a1628', borderBottom: '1px solid #1e293b'
       }}>
-        {INDICATORS.map(ind => {
-          const on = activeIndicators[ind.key]
-          return (
-            <button key={ind.key} onClick={() => toggleIndicator(ind.key)} style={{
-              display: 'flex', alignItems: 'center', gap: '4px',
-              height: '22px', padding: '0 8px', flexShrink: 0,
-              background: on ? '#0f1e35' : 'transparent',
-              border: on ? `1px solid ${ind.color}44` : '1px solid #1e293b',
-              borderRadius: '4px', fontSize: '10px', color: on ? '#e2e8f0' : '#475569',
-              cursor: 'pointer', fontFamily: 'monospace',
-            }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: on ? ind.color : '#475569', flexShrink: 0 }}/>
-              {ind.label}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Chart area — fills remaining height, position relative for overlay */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        <CandlestickChart symbol={symbol} wsData={wsData} />
-
-        {/* Signal overlay bar — pinned to bottom of chart area */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          height: '44px', background: 'rgba(10,22,40,0.92)',
-          borderTop: '1px solid #1e293b',
-          display: 'flex', alignItems: 'center',
-          padding: '0 12px', gap: '8px',
-          backdropFilter: 'blur(4px)',
-        }}>
-          {/* T1 badge */}
-          <span style={{
-            fontSize: '10px', fontWeight: '700', padding: '2px 7px',
-            borderRadius: '4px',
-            background: t1Pass ? '#00d4aa18' : '#f43f5e18',
-            color: t1Pass ? '#00d4aa' : '#f43f5e',
-            border: `1px solid ${t1Pass ? '#00d4aa44' : '#f43f5e44'}`,
-          }}>T1</span>
-
-          {/* T2 badge */}
-          <span style={{
-            fontSize: '10px', fontWeight: '700', padding: '2px 7px',
-            borderRadius: '4px',
-            background: t2Bias === 1 ? '#00d4aa18' : t2Bias === -1 ? '#f43f5e18' : '#1e293b',
-            color: t2Bias === 1 ? '#00d4aa' : t2Bias === -1 ? '#f43f5e' : '#475569',
-            border: '1px solid #1e293b',
-          }}>{t2Bias === 1 ? 'BULL' : t2Bias === -1 ? 'BEAR' : '—'}</span>
-
-          {/* T3 score */}
-          <span style={{
-            fontSize: '10px', fontWeight: '700', padding: '2px 7px',
-            borderRadius: '4px', background: '#0f1e35', border: '1px solid #1e293b',
-            color: t3Score >= 2 ? '#00d4aa' : t3Score === 1 ? '#f59e0b' : '#475569',
-          }}>{t3Score}/4</span>
-
-          {/* Final direction pill or scanning text */}
-          <div style={{ marginLeft: 'auto' }}>
-            {hasFinal ? (
-              <span style={{
-                fontSize: '12px', fontWeight: '700', padding: '4px 10px',
-                borderRadius: '4px',
-                animation: 'pulseBanner 1s ease-in-out infinite',
-                background: s.finalDirection === 1 ? '#00d4aa18' : '#f43f5e18',
-                color: s.finalDirection === 1 ? '#00d4aa' : '#f43f5e',
-                border: `1px solid ${s.finalDirection === 1 ? '#00d4aa44' : '#f43f5e44'}`,
-              }}>
-                {s.finalDirection === 1 ? '▲ BUY' : '▼ SELL'}
-              </span>
-            ) : (
-              <span style={{ fontSize: '11px', color: '#475569' }}>Scanning...</span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Sub-tab bar — Positions / History / Signals / Zones */}
-      <div style={{
-        display: 'flex', overflowX: 'auto',
-        borderTop: '1px solid #1e293b',
-        background: '#0a1628'
-      }}>
-        {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
-          <button key={tab}
-            onClick={() => setChartSubTab(tab)}
+        {[
+          { key: 'ema5', label: 'EMA5', color: '#00ffcc' },
+          { key: 'ma20', label: 'MA20', color: '#3b82f6' },
+          { key: 'ma50', label: 'MA50', color: '#f59e0b' },
+          { key: 'ma200', label: 'MA200', color: '#8b5cf6' },
+          { key: 'bb', label: 'BB', color: '#4a90d9' },
+          { key: 'volume', label: 'Vol', color: '#6b7280' },
+        ].map(({ key, label, color }) => (
+          <button key={key}
+            onClick={() => setIndicators(prev => ({ ...prev, [key]: !prev[key] }))}
             style={{
-              flexShrink: 0, padding: '8px 16px',
-              background: 'transparent', border: 'none',
-              borderBottom: chartSubTab === tab ? '2px solid #00d4aa' : '2px solid transparent',
-              color: chartSubTab === tab ? '#00d4aa' : '#475569',
-              fontSize: '12px', fontWeight: '600', cursor: 'pointer'
+              flexShrink: 0, display: 'flex', alignItems: 'center', gap: '3px',
+              padding: '2px 8px', borderRadius: '3px', border: 'none',
+              cursor: 'pointer', fontSize: '10px',
+              background: indicators[key] ? `${color}22` : '#1e293b',
+              color: indicators[key] ? color : '#475569'
             }}
-          >{tab}</button>
+          >
+            <span style={{ width: '6px', height: '2px', background: indicators[key] ? color : '#475569', display: 'inline-block', borderRadius: '1px' }}/>
+            {label}
+          </button>
         ))}
       </div>
 
+      {/* Chart — FIXED 280px height */}
+      <div style={{ height: '280px', flexShrink: 0, position: 'relative' }}>
+        <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} style={{ width: '100%', height: '100%' }} />
+
+        {/* Signal overlay bar pinned to bottom of chart */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          height: '36px', background: 'rgba(10,22,40,0.9)',
+          borderTop: '1px solid #1e293b',
+          display: 'flex', alignItems: 'center',
+          padding: '0 10px', gap: '6px'
+        }}>
+          <span style={{
+            fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
+            background: signalState?.t1_allPass ? '#00d4aa22' : '#f43f5e22',
+            color: signalState?.t1_allPass ? '#00d4aa' : '#f43f5e'
+          }}>T1 {signalState?.t1_allPass ? '✓' : '✗'}</span>
+
+          <span style={{
+            fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
+            background: signalState?.t2_bias !== 0 ? '#3b82f622' : '#1e293b',
+            color: signalState?.t2_bias === 1 ? '#00d4aa' : signalState?.t2_bias === -1 ? '#f43f5e' : '#475569'
+          }}>
+            {signalState?.t2_bias === 1 ? 'BULL' : signalState?.t2_bias === -1 ? 'BEAR' : 'T2 —'}
+          </span>
+
+          <span style={{
+            fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
+            background: (signalState?.t3_score ?? 0) >= 2 ? '#00d4aa22' : '#1e293b',
+            color: (signalState?.t3_score ?? 0) >= 2 ? '#00d4aa' : (signalState?.t3_score ?? 0) === 1 ? '#f59e0b' : '#475569'
+          }}>{signalState?.t3_score ?? 0}/4</span>
+
+          {signalState?.finalDirection !== 0 && signalState?.finalDirection != null ? (
+            <span style={{
+              marginLeft: 'auto', fontSize: '11px', fontWeight: '700',
+              padding: '3px 10px', borderRadius: '4px',
+              background: signalState.finalDirection === 1 ? '#00d4aa' : '#f43f5e',
+              color: '#060b14', animation: 'pulse 1s infinite'
+            }}>
+              {signalState.finalDirection === 1 ? '▲ BUY' : '▼ SELL'}
+            </span>
+          ) : (
+            <span style={{ marginLeft: 'auto', fontSize: '10px', color: '#475569' }}>Scanning...</span>
+          )}
+        </div>
+      </div>
+
+      {/* Sub-tab bar — fixed 36px */}
+      <div style={{
+        height: '36px', flexShrink: 0,
+        display: 'flex', background: '#0a1628', borderBottom: '1px solid #1e293b'
+      }}>
+        {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
+          <button key={tab} onClick={() => setChartSubTab(tab)} style={{
+            flex: 1, border: 'none', background: 'transparent',
+            borderBottom: chartSubTab === tab ? '2px solid #00d4aa' : '2px solid transparent',
+            color: chartSubTab === tab ? '#00d4aa' : '#475569',
+            fontSize: '11px', fontWeight: '600', cursor: 'pointer'
+          }}>{tab}</button>
+        ))}
+      </div>
+
+      {/* Tab content — flex:1 + overflowY:auto = fills remaining height, scrollable */}
+      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', background: '#060b14' }}>
+
+        {chartSubTab === 'Positions' && (
+          <div style={{ padding: '12px' }}>
+            {(trades ?? []).length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '32px 16px', color: '#475569' }}>
+                <div style={{ fontSize: '32px', marginBottom: '8px' }}>—</div>
+                <div style={{ fontSize: '13px', marginBottom: '4px', color: '#94a3b8' }}>No open positions</div>
+                <div style={{ fontSize: '11px' }}>Bot is scanning for signals</div>
+              </div>
+            ) : (
+              trades.map(trade => (
+                <div key={trade.ticket} style={{
+                  background: '#0f1e35', borderRadius: '8px',
+                  padding: '12px', marginBottom: '8px', border: '1px solid #1e293b'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <span style={{ fontWeight: '700', fontSize: '14px' }}>{trade.symbol}</span>
+                    <span style={{
+                      fontSize: '12px', fontWeight: '700', padding: '2px 8px', borderRadius: '4px',
+                      background: trade.direction === 1 ? '#00d4aa22' : '#f43f5e22',
+                      color: trade.direction === 1 ? '#00d4aa' : '#f43f5e'
+                    }}>{trade.direction === 1 ? '▲ BUY' : '▼ SELL'}</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', fontSize: '11px', color: '#94a3b8' }}>
+                    <span>Entry: <b style={{ color: '#e2e8f0' }}>{trade.entryPrice?.toFixed(2)}</b></span>
+                    <span>Lot: <b style={{ color: '#e2e8f0' }}>{trade.lotSize}</b></span>
+                    <span>SL: <b style={{ color: '#f43f5e' }}>{trade.stopLoss?.toFixed(2)}</b></span>
+                    <span>TP: <b style={{ color: '#00d4aa' }}>{trade.takeProfit?.toFixed(2)}</b></span>
+                  </div>
+                  {trade.isLocked && (
+                    <div style={{ marginTop: '6px', fontSize: '10px', color: '#f59e0b' }}>🔒 LOCKED — hedge active</div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {chartSubTab === 'History' && (
+          <div>
+            {(wsData?.history ?? []).length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '32px 16px', color: '#475569', fontSize: '13px' }}>
+                No closed trades in the last 7 days
+              </div>
+            ) : (
+              <>
+                {Object.values(
+                  (wsData?.history ?? []).reduce((acc, deal) => {
+                    const id = deal.positionId ?? deal.ticket
+                    if (!acc[id]) acc[id] = { entry: null, exit: null }
+                    if (deal.entry === 0) acc[id].entry = deal
+                    if (deal.entry === 1) acc[id].exit = deal
+                    return acc
+                  }, {})
+                ).map((pos, i) => (
+                  <div key={i} style={{
+                    padding: '10px 14px', borderBottom: '1px solid #0f1e35',
+                    display: 'flex', alignItems: 'center', gap: '10px'
+                  }}>
+                    <span style={{
+                      fontSize: '11px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
+                      background: pos.entry?.type === 0 ? '#00d4aa22' : '#f43f5e22',
+                      color: pos.entry?.type === 0 ? '#00d4aa' : '#f43f5e', minWidth: '18px', textAlign: 'center'
+                    }}>{pos.entry?.type === 0 ? 'B' : 'S'}</span>
+                    <div style={{ flex: 1, fontSize: '11px' }}>
+                      <div style={{ color: '#94a3b8' }}>
+                        {pos.entry ? new Date(pos.entry.time * 1000).toLocaleTimeString() : '—'}
+                      </div>
+                      <div style={{ color: '#475569', fontSize: '10px' }}>
+                        Entry: {pos.entry?.price?.toFixed(2)} → Exit: {pos.exit?.price?.toFixed(2) ?? 'open'}
+                      </div>
+                    </div>
+                    <div style={{
+                      fontSize: '13px', fontWeight: '700',
+                      color: (pos.exit?.profit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e'
+                    }}>
+                      {(pos.exit?.profit ?? 0) >= 0 ? '+' : ''}{(pos.exit?.profit ?? 0).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+                <div style={{
+                  padding: '12px 14px', textAlign: 'right',
+                  fontSize: '13px', fontWeight: '700',
+                  color: (wsData?.totalProfit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e',
+                  borderTop: '1px solid #1e293b'
+                }}>
+                  Total: {(wsData?.totalProfit ?? 0) >= 0 ? '+' : ''}{(wsData?.totalProfit ?? 0).toFixed(2)}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {chartSubTab === 'Signals' && (
+          <div style={{ padding: '12px' }}>
+            {(signalLog ?? []).length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '32px', color: '#475569', fontSize: '12px' }}>
+                Signal evaluations will appear here
+              </div>
+            ) : (
+              [...(signalLog ?? [])].reverse().map((entry, i) => (
+                <div key={i} style={{
+                  padding: '8px 0', borderBottom: '1px solid #0f1e35',
+                  display: 'flex', gap: '8px', alignItems: 'center'
+                }}>
+                  <span style={{ fontSize: '10px', color: '#475569', minWidth: '48px' }}>{entry.time}</span>
+                  <span style={{
+                    fontSize: '11px', fontWeight: '600', minWidth: '36px',
+                    color: entry.direction === 1 ? '#00d4aa' : entry.direction === -1 ? '#f43f5e' : '#475569'
+                  }}>{entry.direction === 1 ? '▲ BUY' : entry.direction === -1 ? '▼ SELL' : '—'}</span>
+                  <span style={{ fontSize: '11px', color: '#94a3b8', flex: 1 }}>{entry.reason}</span>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {chartSubTab === 'Zones' && (
+          <div style={{ padding: '12px', textAlign: 'center', color: '#475569', fontSize: '12px', paddingTop: '32px' }}>
+            Zone map available on desktop view
+          </div>
+        )}
+      </div>
+
       <style>{`
-        @keyframes pulseBanner { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         div::-webkit-scrollbar { display: none; }
       `}</style>
     </div>
