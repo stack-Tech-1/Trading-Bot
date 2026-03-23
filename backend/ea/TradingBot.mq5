@@ -594,10 +594,12 @@ void WriteTradesJSON()
    FileWriteString(fh, "    \"t4_zoneBonus\":"     + (g_lastSignalState.t4_zoneBonus     ? "true" : "false") + ",\n");
    FileWriteString(fh, "    \"finalDirection\":"   + IntegerToString(g_lastSignalState.finalDirection)       + "\n");
    FileWriteString(fh, "  },\n");
-   Print("[Debug] About to write candle data for symbol: ", _Symbol, " TF: ", Period(), " Bars available: ", Bars(_Symbol, Period()));
-   string candleJson = WriteCandleData(_Symbol, PERIOD_M15, 200);
-   Print("[Debug] candles JSON length: ", StringLen(candleJson));
-   FileWriteString(fh, "  \"candles\": " + candleJson + "\n");
+   FileWriteString(fh, "  \"candles_1m\": "  + WriteCandleData(_Symbol, PERIOD_M1,  200) + ",\n");
+   FileWriteString(fh, "  \"candles_5m\": "  + WriteCandleData(_Symbol, PERIOD_M5,  200) + ",\n");
+   FileWriteString(fh, "  \"candles_15m\": " + WriteCandleData(_Symbol, PERIOD_M15, 200) + ",\n");
+   FileWriteString(fh, "  \"candles_1h\": "  + WriteCandleData(_Symbol, PERIOD_H1,  200) + ",\n");
+   FileWriteString(fh, "  \"candles_4h\": "  + WriteCandleData(_Symbol, PERIOD_H4,  200) + ",\n");
+   FileWriteString(fh, "  \"candles_1d\": "  + WriteCandleData(_Symbol, PERIOD_D1,  200) + "\n");
    FileWriteString(fh, "}\n");
    FileClose(fh);
    Print("[Debug] Wrote trades.json successfully");

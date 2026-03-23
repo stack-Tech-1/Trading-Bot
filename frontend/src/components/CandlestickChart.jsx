@@ -277,7 +277,9 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   // ── Effect 3: Live data updates — fires on every wsData tick ─────────────
   useEffect(() => {
     if (!candleSeriesRef.current) return
-    const candles = wsData?.candles
+    const TF_KEY_MAP = { '1M': 'candles_1m', '5M': 'candles_5m', '15M': 'candles_15m', '1H': 'candles_1h', '4H': 'candles_4h', '1D': 'candles_1d' }
+    const tfKey = TF_KEY_MAP[activeTimeframe?.label] ?? 'candles_15m'
+    const candles = wsData?.[tfKey]
     if (!candles || candles.length === 0) return
 
     const chartCandles = candles
