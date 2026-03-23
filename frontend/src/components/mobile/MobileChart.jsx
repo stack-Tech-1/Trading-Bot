@@ -16,6 +16,7 @@ export default function MobileChart({ wsData, signalState, trades }) {
   const [activeIndicators, setActiveIndicators] = useState({
     ema5: true, ma20: true, ma50: true, ma200: true, bb: true, vol: true,
   })
+  const [chartSubTab, setChartSubTab] = useState('Positions')
 
   const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
 
@@ -133,6 +134,26 @@ export default function MobileChart({ wsData, signalState, trades }) {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Sub-tab bar — Positions / History / Signals / Zones */}
+      <div style={{
+        display: 'flex', overflowX: 'auto',
+        borderTop: '1px solid #1e293b',
+        background: '#0a1628'
+      }}>
+        {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
+          <button key={tab}
+            onClick={() => setChartSubTab(tab)}
+            style={{
+              flexShrink: 0, padding: '8px 16px',
+              background: 'transparent', border: 'none',
+              borderBottom: chartSubTab === tab ? '2px solid #00d4aa' : '2px solid transparent',
+              color: chartSubTab === tab ? '#00d4aa' : '#475569',
+              fontSize: '12px', fontWeight: '600', cursor: 'pointer'
+            }}
+          >{tab}</button>
+        ))}
       </div>
 
       <style>{`

@@ -446,7 +446,13 @@ export default function App() {
         </div>
 
         {/* Tab content */}
-        <div style={{ flex: 1, overflowY: 'auto', background: '#060b14' }}>
+        <div style={{
+          flex: 1,
+          overflowY: 'auto',
+          minHeight: '200px',
+          maxHeight: '300px',
+          background: '#060b14'
+        }}>
 
           {/* ── Positions ── */}
           {activeTab === 'Positions' && (
@@ -515,9 +521,7 @@ export default function App() {
 
           {/* ── History ── */}
           {activeTab === 'History' && (
-            <div style={{ padding: 8 }}>
-              <HistoryTable history={activeData?.history ?? []} />
-            </div>
+            <HistoryTable history={tradeData?.history ?? []} />
           )}
 
           {/* ── Signals ── */}

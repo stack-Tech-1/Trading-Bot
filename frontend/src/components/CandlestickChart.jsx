@@ -220,19 +220,22 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      chart.remove()
-      chartRef.current     = null
+      if (markersRef.current) {
+        try { markersRef.current.setMarkers([]) } catch(e) {}
+        markersRef.current = null
+      }
       candleSeriesRef.current = null
       volumeSeriesRef.current = null
       ma20Ref.current  = null
       ma50Ref.current  = null
       ma200Ref.current = null
+      ema5Ref.current = null
       bbUpperRef.current  = null
       bbMiddleRef.current = null
       bbLowerRef.current  = null
       rsiSeriesRef.current = null
-      ema5Ref.current = null
-      if (markersRef.current) { markersRef.current.setMarkers([]); markersRef.current = null }
+      try { chart.remove() } catch(e) {}
+      chartRef.current = null
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -410,20 +413,37 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
 
     if (history.length === 0) return
 
-    const markers = []
+    const positionMap = {}
     history.forEach(deal => {
       if (!deal.time || !deal.price) return
-      const isBuy = deal.type === 0
-      const isEntry = deal.entry === 0
-      markers.push({
-        time: Number(deal.time),
-        position: isBuy ? 'belowBar' : 'aboveBar',
-        color: isEntry ? (isBuy ? '#00d4aa' : '#f43f5e') : '#94a3b8',
-        shape: isEntry ? (isBuy ? 'arrowUp' : 'arrowDown') : 'circle',
-        text: isEntry
-          ? (isBuy ? `B ${deal.price?.toFixed(2)}` : `S ${deal.price?.toFixed(2)}`)
-          : `${deal.profit >= 0 ? '+' : ''}${deal.profit?.toFixed(2)}`,
-      })
+      const posId = deal.positionId ?? deal.ticket
+      if (!positionMap[posId]) positionMap[posId] = {}
+      if (deal.entry === 0) positionMap[posId].entry = deal
+      if (deal.entry === 1) positionMap[posId].exit = deal
+    })
+
+    const markers = []
+    Object.values(positionMap).forEach(pos => {
+      if (pos.entry) {
+        const isBuy = pos.entry.type === 0
+        markers.push({
+          time: Number(pos.entry.time),
+          position: isBuy ? 'belowBar' : 'aboveBar',
+          color: isBuy ? '#00d4aa' : '#f43f5e',
+          shape: isBuy ? 'arrowUp' : 'arrowDown',
+          text: isBuy ? 'B' : 'S'
+        })
+      }
+      if (pos.exit) {
+        const profit = pos.exit.profit ?? 0
+        markers.push({
+          time: Number(pos.exit.time),
+          position: pos.exit.type === 0 ? 'aboveBar' : 'belowBar',
+          color: profit >= 0 ? '#00d4aa' : '#f43f5e',
+          shape: 'circle',
+          text: `${profit >= 0 ? '+' : ''}${profit.toFixed(2)}`
+        })
+      }
     })
 
     markers.sort((a, b) => a.time - b.time)
