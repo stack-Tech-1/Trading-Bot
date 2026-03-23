@@ -356,8 +356,7 @@ export default function App() {
 
         {/* Signal panel */}
         <SectionHeader title="SIGNAL MONITOR" />
-        {console.log('[App] signalState being passed:', tradeData?.signalState)}
-        <SignalPanel signalState={tradeData?.signalState} />
+        <SignalPanel signalState={tradeData?.signalState ?? null} />
 
         {/* Bot status */}
         <SectionHeader title="BOT STATUS" />

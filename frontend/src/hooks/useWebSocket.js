@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 
 const WS_URL = window.location.hostname === 'localhost'
   ? 'ws://localhost:8765'
-  : `ws://${window.location.hostname}/ws`
+  : `ws://${window.location.hostname}:8765`
 
 /**
  * Custom hook that manages a WebSocket connection with automatic reconnection.

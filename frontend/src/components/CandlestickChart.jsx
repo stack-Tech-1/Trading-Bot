@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { createChart, CandlestickSeries, LineSeries, HistogramSeries } from 'lightweight-charts'
+import { createChart, CandlestickSeries, LineSeries, HistogramSeries, createSeriesMarkers } from 'lightweight-charts'
 import { isMobile } from '../hooks/useWindowSize'
 
 const TIMEFRAMES = [
@@ -145,6 +145,7 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   const rsiSeriesRef = useRef(null)
   const ema5Ref = useRef(null)
   const existingTradeLines = useRef([])
+  const markersRef = useRef(null)
 
   const [activeTimeframe, setActiveTimeframe] = useState(TIMEFRAMES[2])
   const [ohlcv, setOhlcv] = useState({ open: 0, high: 0, low: 0, close: 0, volume: 0 })
@@ -231,6 +232,7 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
       bbLowerRef.current  = null
       rsiSeriesRef.current = null
       ema5Ref.current = null
+      if (markersRef.current) { markersRef.current.setMarkers([]); markersRef.current = null }
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -401,7 +403,11 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   useEffect(() => {
     if (!candleSeriesRef.current) return
     const history = wsData?.history ?? []
-    candleSeriesRef.current.setMarkers([])
+
+    if (markersRef.current) {
+      markersRef.current.setMarkers([])
+    }
+
     if (history.length === 0) return
 
     const markers = []
@@ -416,12 +422,12 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
         shape: isEntry ? (isBuy ? 'arrowUp' : 'arrowDown') : 'circle',
         text: isEntry
           ? (isBuy ? `B ${deal.price?.toFixed(2)}` : `S ${deal.price?.toFixed(2)}`)
-          : `${(deal.profit ?? 0) >= 0 ? '+' : ''}${deal.profit?.toFixed(2)}`,
+          : `${deal.profit >= 0 ? '+' : ''}${deal.profit?.toFixed(2)}`,
       })
     })
 
     markers.sort((a, b) => a.time - b.time)
-    candleSeriesRef.current.setMarkers(markers)
+    markersRef.current = createSeriesMarkers(candleSeriesRef.current, markers)
   }, [wsData?.history])
 
   const fmt = (n) => Number(n).toFixed(decimals)
