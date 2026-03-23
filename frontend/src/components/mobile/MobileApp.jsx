@@ -4,8 +4,11 @@ import MobileSignals from './MobileSignals'
 import MobileSettings from './MobileSettings'
 import MobileNews from './MobileNews'
 
+const SYMBOLS = ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'XAUUSD', 'BTCUSD']
+
 export default function MobileApp({ tradeData, isConnected, sendMessage, signalLog }) {
   const [activeTab, setActiveTab] = useState('chart')
+  const [activeSymbol, setActiveSymbol] = useState('EURUSD')
 
   const tabs = [
     { id: 'chart',    label: 'Chart',    icon: '📈' },
@@ -17,6 +20,7 @@ export default function MobileApp({ tradeData, isConnected, sendMessage, signalL
   const meta = tradeData?.meta ?? {}
   const trades = tradeData?.trades ?? []
   const signalState = tradeData?.signalState ?? null
+  const symbolList = [...new Set([...trades.map(t => t.symbol), ...SYMBOLS])]
 
   return (
     <div style={{
@@ -82,6 +86,9 @@ export default function MobileApp({ tradeData, isConnected, sendMessage, signalL
             wsData={tradeData}
             signalState={signalState}
             trades={trades}
+            activeSymbol={activeSymbol}
+            setActiveSymbol={setActiveSymbol}
+            symbolList={symbolList}
           />
         )}
         {activeTab === 'signals' && (

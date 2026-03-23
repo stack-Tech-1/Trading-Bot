@@ -1,19 +1,37 @@
 import { useState } from 'react'
 import CandlestickChart from '../CandlestickChart'
 
-export default function MobileChart({ wsData, signalState, trades, signalLog }) {
+export default function MobileChart({ wsData, signalState, trades, signalLog, activeSymbol, setActiveSymbol, symbolList }) {
   const [chartSubTab, setChartSubTab] = useState('Positions')
 
-  const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
-  const chartHeight = window.innerHeight < 700 ? 340 : 390
+  const chartHeight = window.innerHeight < 700 ? 308 : 358
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', minHeight: 0 }}>
 
-      {/* Row 1: Chart — fixed height, completely self-contained */}
+      {/* Row 1: Symbol strip */}
+      <div style={{
+        height: '32px', flexShrink: 0,
+        display: 'flex', overflowX: 'auto', overflowY: 'hidden',
+        background: '#0a1628', borderBottom: '1px solid #1e293b',
+        WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
+      }}>
+        {(symbolList ?? []).map(sym => (
+          <button key={sym} onClick={() => setActiveSymbol(sym)} style={{
+            flexShrink: 0, border: 'none', background: 'transparent',
+            padding: '0 12px', height: '100%',
+            fontSize: '11px', fontWeight: '700', cursor: 'pointer',
+            color: activeSymbol === sym ? '#00d4aa' : '#475569',
+            borderBottom: activeSymbol === sym ? '2px solid #00d4aa' : '2px solid transparent',
+            whiteSpace: 'nowrap',
+          }}>{sym}</button>
+        ))}
+      </div>
+
+      {/* Row 2: Chart — fixed height, completely self-contained */}
       <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative', background: '#060b14' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-          <CandlestickChart symbol={symbol} wsData={wsData} />
+          <CandlestickChart symbol={activeSymbol ?? 'EURUSD'} wsData={wsData} />
         </div>
 
         {/* Signal overlay — absolute inside chart */}
