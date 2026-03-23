@@ -2,61 +2,18 @@ import { useState } from 'react'
 import CandlestickChart from '../CandlestickChart'
 
 export default function MobileChart({ wsData, signalState, trades, signalLog }) {
-  const [activeTF, setActiveTF] = useState('1M')
   const [chartSubTab, setChartSubTab] = useState('Positions')
-  const [indicators, setIndicators] = useState({
-    ema5: true, ma20: true, ma50: true, ma200: false, bb: true, volume: true
-  })
 
   const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
-  const chartHeight = window.innerHeight < 700 ? 180 : 240
+  const chartHeight = window.innerHeight < 700 ? 340 : 390
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', minHeight: 0 }}>
 
-      {/* Row 1: Timeframe buttons — fixed 36px */}
-      <div style={{ height: '36px', flexShrink: 0, display: 'flex', overflowX: 'auto', alignItems: 'center', gap: '4px', padding: '0 8px', background: '#0a1628', borderBottom: '1px solid #1e293b' }}>
-        {['1M','5M','15M','1H','4H','1D'].map(tf => (
-          <button key={tf} onClick={() => setActiveTF(tf)} style={{
-            flexShrink: 0, padding: '4px 10px',
-            background: activeTF === tf ? '#1e3a5f' : 'transparent',
-            color: activeTF === tf ? '#60a5fa' : '#475569',
-            border: activeTF === tf ? '1px solid #1e3a5f' : '1px solid transparent',
-            borderRadius: '4px', fontSize: '11px', fontWeight: '600', cursor: 'pointer'
-          }}>{tf}</button>
-        ))}
-      </div>
-
-      {/* Row 2: Indicator pills — fixed 32px */}
-      <div style={{ height: '32px', flexShrink: 0, display: 'flex', overflowX: 'auto', alignItems: 'center', gap: '4px', padding: '0 8px', background: '#0a1628', borderBottom: '1px solid #1e293b' }}>
-        {[
-          { key: 'ema5', label: 'EMA5', color: '#00ffcc' },
-          { key: 'ma20', label: 'MA20', color: '#3b82f6' },
-          { key: 'ma50', label: 'MA50', color: '#f59e0b' },
-          { key: 'ma200', label: 'MA200', color: '#8b5cf6' },
-          { key: 'bb', label: 'BB', color: '#4a90d9' },
-          { key: 'volume', label: 'Vol', color: '#6b7280' },
-        ].map(({ key, label, color }) => (
-          <button key={key}
-            onClick={() => setIndicators(prev => ({ ...prev, [key]: !prev[key] }))}
-            style={{
-              flexShrink: 0, display: 'flex', alignItems: 'center', gap: '3px',
-              padding: '2px 8px', borderRadius: '3px', border: 'none',
-              cursor: 'pointer', fontSize: '10px',
-              background: indicators[key] ? `${color}22` : '#1e293b',
-              color: indicators[key] ? color : '#475569'
-            }}
-          >
-            <span style={{ width: '6px', height: '2px', background: indicators[key] ? color : '#475569', display: 'inline-block', borderRadius: '1px' }}/>
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* Row 3: Chart — fixed height, completely self-contained */}
+      {/* Row 1: Chart — fixed height, completely self-contained */}
       <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative', background: '#060b14' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-          <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
+          <CandlestickChart symbol={symbol} wsData={wsData} />
         </div>
 
         {/* Signal overlay — absolute inside chart */}
@@ -102,7 +59,7 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         </div>
       </div>
 
-      {/* Row 4: Sub-tab bar — strictly AFTER chart div closes */}
+      {/* Row 2: Sub-tab bar — strictly AFTER chart div closes */}
       <div style={{ height: '36px', flexShrink: 0, display: 'flex', background: '#0a1628', borderTop: '1px solid #1e293b', borderBottom: '1px solid #1e293b' }}>
         {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
           <button key={tab} onClick={() => setChartSubTab(tab)} style={{
@@ -114,7 +71,7 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         ))}
       </div>
 
-      {/* Row 5: Scrollable content — takes ALL remaining space */}
+      {/* Row 3: Scrollable content — takes ALL remaining space */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', minHeight: 0, background: '#060b14' }}>
 
         {chartSubTab === 'Positions' && (
