@@ -9,6 +9,7 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
   })
 
   const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
+  const chartHeight = window.innerHeight < 700 ? 180 : 220
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
@@ -63,7 +64,7 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
       </div>
 
       {/* Chart — FIXED 280px height */}
-      <div style={{ height: '280px', flexShrink: 0, position: 'relative' }}>
+      <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative' }}>
         <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} style={{ width: '100%', height: '100%' }} />
 
         {/* Signal overlay bar pinned to bottom of chart */}
@@ -111,8 +112,13 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
 
       {/* Sub-tab bar — fixed 36px */}
       <div style={{
-        height: '36px', flexShrink: 0,
-        display: 'flex', background: '#0a1628', borderBottom: '1px solid #1e293b'
+        height: '36px',
+        flexShrink: 0,
+        display: 'flex',
+        background: '#0a1628',
+        borderTop: '1px solid #1e293b',
+        borderBottom: '1px solid #1e293b',
+        zIndex: 10
       }}>
         {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
           <button key={tab} onClick={() => setChartSubTab(tab)} style={{

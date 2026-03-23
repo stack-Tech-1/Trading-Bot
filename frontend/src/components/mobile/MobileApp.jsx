@@ -76,7 +76,7 @@ export default function MobileApp({ tradeData, isConnected, sendMessage, signalL
       </div>
 
       {/* Main content area — fills remaining space */}
-      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ flex: 1, overflow: 'hidden', position: 'relative', minHeight: 0 }}>
         {activeTab === 'chart' && (
           <MobileChart
             wsData={tradeData}

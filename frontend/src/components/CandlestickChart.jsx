@@ -447,7 +447,13 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
     })
 
     markers.sort((a, b) => a.time - b.time)
-    markersRef.current = createSeriesMarkers(candleSeriesRef.current, markers)
+    const seenTimes = new Set()
+    const dedupedMarkers = markers.filter(m => {
+      if (seenTimes.has(m.time)) return false
+      seenTimes.add(m.time)
+      return true
+    })
+    markersRef.current = createSeriesMarkers(candleSeriesRef.current, dedupedMarkers)
   }, [wsData?.history])
 
   const fmt = (n) => Number(n).toFixed(decimals)
