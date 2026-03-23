@@ -388,6 +388,7 @@ export default function App() {
         gridArea: 'chart-main',
         display: 'flex',
         flexDirection: 'column',
+        flex: 1,
         overflow: 'hidden',
         background: '#060b14',
         minHeight: 0,
@@ -449,8 +450,8 @@ export default function App() {
         <div style={{
           flex: 1,
           overflowY: 'auto',
-          minHeight: '200px',
-          maxHeight: '300px',
+          WebkitOverflowScrolling: 'touch',
+          minHeight: 0,
           background: '#060b14'
         }}>
 
@@ -521,7 +522,9 @@ export default function App() {
 
           {/* ── History ── */}
           {activeTab === 'History' && (
-            <HistoryTable history={tradeData?.history ?? []} />
+            <div style={{ padding: '12px' }}>
+              <HistoryTable history={tradeData?.history ?? []} />
+            </div>
           )}
 
           {/* ── Signals ── */}
