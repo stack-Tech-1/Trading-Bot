@@ -9,18 +9,13 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
   })
 
   const symbol = wsData?.trades?.[0]?.symbol ?? 'EURUSD'
-  const chartHeight = window.innerHeight < 700 ? 180 : 220
+  const chartHeight = window.innerHeight < 700 ? 180 : 240
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', minHeight: 0 }}>
 
-      {/* Timeframe row — fixed 36px */}
-      <div style={{
-        height: '36px', flexShrink: 0,
-        display: 'flex', overflowX: 'auto', alignItems: 'center',
-        gap: '4px', padding: '0 8px',
-        background: '#0a1628', borderBottom: '1px solid #1e293b'
-      }}>
+      {/* Row 1: Timeframe buttons — fixed 36px */}
+      <div style={{ height: '36px', flexShrink: 0, display: 'flex', overflowX: 'auto', alignItems: 'center', gap: '4px', padding: '0 8px', background: '#0a1628', borderBottom: '1px solid #1e293b' }}>
         {['1M','5M','15M','1H','4H','1D'].map(tf => (
           <button key={tf} onClick={() => setActiveTF(tf)} style={{
             flexShrink: 0, padding: '4px 10px',
@@ -32,13 +27,8 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         ))}
       </div>
 
-      {/* Indicator pills row — fixed 32px */}
-      <div style={{
-        height: '32px', flexShrink: 0,
-        display: 'flex', overflowX: 'auto', alignItems: 'center',
-        gap: '4px', padding: '0 8px',
-        background: '#0a1628', borderBottom: '1px solid #1e293b'
-      }}>
+      {/* Row 2: Indicator pills — fixed 32px */}
+      <div style={{ height: '32px', flexShrink: 0, display: 'flex', overflowX: 'auto', alignItems: 'center', gap: '4px', padding: '0 8px', background: '#0a1628', borderBottom: '1px solid #1e293b' }}>
         {[
           { key: 'ema5', label: 'EMA5', color: '#00ffcc' },
           { key: 'ma20', label: 'MA20', color: '#3b82f6' },
@@ -63,17 +53,19 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         ))}
       </div>
 
-      {/* Chart — FIXED 280px height */}
-      <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative', overflow: 'hidden' }}>
-        <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} style={{ width: '100%', height: '100%' }} />
+      {/* Row 3: Chart — fixed height, completely self-contained */}
+      <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative', background: '#060b14' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+          <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} />
+        </div>
 
-        {/* Signal overlay bar pinned to bottom of chart */}
+        {/* Signal overlay — absolute inside chart */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
-          height: '36px', background: 'rgba(10,22,40,0.9)',
+          height: '36px', background: 'rgba(10,22,40,0.92)',
           borderTop: '1px solid #1e293b',
           display: 'flex', alignItems: 'center',
-          padding: '0 10px', gap: '6px'
+          padding: '0 10px', gap: '6px', zIndex: 5
         }}>
           <span style={{
             fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
@@ -110,16 +102,8 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         </div>
       </div>
 
-      {/* Sub-tab bar — fixed 36px */}
-      <div style={{
-        height: '36px',
-        flexShrink: 0,
-        display: 'flex',
-        background: '#0a1628',
-        borderTop: '1px solid #1e293b',
-        borderBottom: '1px solid #1e293b',
-        zIndex: 10
-      }}>
+      {/* Row 4: Sub-tab bar — strictly AFTER chart div closes */}
+      <div style={{ height: '36px', flexShrink: 0, display: 'flex', background: '#0a1628', borderTop: '1px solid #1e293b', borderBottom: '1px solid #1e293b' }}>
         {['Positions', 'History', 'Signals', 'Zones'].map(tab => (
           <button key={tab} onClick={() => setChartSubTab(tab)} style={{
             flex: 1, border: 'none', background: 'transparent',
@@ -130,8 +114,8 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
         ))}
       </div>
 
-      {/* Tab content — flex:1 + overflowY:auto = fills remaining height, scrollable */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', background: '#060b14' }}>
+      {/* Row 5: Scrollable content — takes ALL remaining space */}
+      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', minHeight: 0, background: '#060b14' }}>
 
         {chartSubTab === 'Positions' && (
           <div style={{ padding: '12px' }}>
