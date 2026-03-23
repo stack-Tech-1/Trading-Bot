@@ -6,6 +6,70 @@ import {
   getDirectionColor,
 } from '../utils/formatters'
 
+// ── HistoryTable ──────────────────────────────────────────────────────────────
+export function HistoryTable({ history = [] }) {
+  if (history.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-32 text-gray-500 text-sm font-mono">
+        No closed trades in the last 7 days
+      </div>
+    )
+  }
+
+  const totalProfit = history.reduce((sum, d) => sum + (d.profit ?? 0), 0)
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-gray-800">
+      <table className="w-full text-sm text-left text-gray-300" style={{ minWidth: '600px' }}>
+        <thead className="bg-gray-800 sticky top-0 text-xs text-gray-400 uppercase tracking-wide">
+          <tr>
+            {['Time', 'Symbol', 'Type', 'Volume', 'Entry Price', 'Profit', 'Comment'].map(h => (
+              <th key={h} className="px-4 py-3 whitespace-nowrap">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {history.map((deal, idx) => {
+            const isBuy = deal.type === 0
+            return (
+              <tr key={deal.ticket ?? idx}
+                className={`border-t border-gray-800 transition-colors hover:bg-gray-700 ${idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}`}
+              >
+                <td className="px-4 py-3 text-gray-400 whitespace-nowrap font-mono">
+                  {formatTime(deal.time)}
+                </td>
+                <td className="px-4 py-3 font-medium text-white whitespace-nowrap">
+                  {deal.symbol}
+                </td>
+                <td className={`px-4 py-3 font-semibold ${isBuy ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {isBuy ? 'BUY' : 'SELL'}
+                </td>
+                <td className="px-4 py-3 font-mono">{(deal.volume ?? 0).toFixed(2)}</td>
+                <td className="px-4 py-3 font-mono">{(deal.price ?? 0).toFixed(5)}</td>
+                <td className={`px-4 py-3 font-mono font-semibold ${(deal.profit ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {(deal.profit ?? 0) >= 0 ? '+' : ''}{(deal.profit ?? 0).toFixed(2)}
+                </td>
+                <td className="px-4 py-3 text-gray-500 text-xs">{deal.comment ?? ''}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+        <tfoot>
+          <tr className="border-t border-gray-700">
+            <td colSpan={5} className="px-4 py-3 text-gray-400 text-xs font-mono uppercase tracking-wide">
+              Total ({history.length} deals)
+            </td>
+            <td className={`px-4 py-3 font-mono font-bold text-sm ${totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+              {totalProfit >= 0 ? '+' : ''}{totalProfit.toFixed(2)}
+            </td>
+            <td />
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  )
+}
+
 const HEADERS = [
   'Symbol', 'Direction', 'Lot', 'Entry Price',
   'Stop Loss', 'Take Profit', 'Worst Price', 'Lock Status', 'Open Time',

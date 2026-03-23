@@ -464,6 +464,64 @@ string WriteCandleData(string symbol, ENUM_TIMEFRAMES tf, int count)
 }
 
 //+------------------------------------------------------------------+
+//| GetTotalProfit                                                   |
+//| Sums profit of all entry/exit deals from the past 7 days.       |
+//+------------------------------------------------------------------+
+double GetTotalProfit()
+{
+   HistorySelect(TimeCurrent() - 7*24*60*60, TimeCurrent());
+   double total = 0.0;
+   int count = HistoryDealsTotal();
+   for(int i = 0; i < count; i++)
+   {
+      ulong ticket = HistoryDealGetTicket(i);
+      if(ticket == 0) continue;
+      ENUM_DEAL_ENTRY e = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(ticket, DEAL_ENTRY);
+      if(e == DEAL_ENTRY_IN || e == DEAL_ENTRY_OUT)
+         total += HistoryDealGetDouble(ticket, DEAL_PROFIT);
+   }
+   return total;
+}
+
+//+------------------------------------------------------------------+
+//| WriteTradeHistory                                                |
+//| Writes a JSON array of entry/exit deals from the past 7 days.   |
+//+------------------------------------------------------------------+
+void WriteTradeHistory(int fh)
+{
+   HistorySelect(TimeCurrent() - 7*24*60*60, TimeCurrent());
+   int count = HistoryDealsTotal();
+   FileWriteString(fh, "[");
+   bool first = true;
+   for(int i = 0; i < count; i++)
+   {
+      ulong ticket = HistoryDealGetTicket(i);
+      if(ticket == 0) continue;
+      ENUM_DEAL_ENTRY e = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(ticket, DEAL_ENTRY);
+      if(e != DEAL_ENTRY_IN && e != DEAL_ENTRY_OUT) continue;
+      if(!first) FileWriteString(fh, ",");
+      first = false;
+      FileWriteString(fh, "{");
+      FileWriteString(fh, "\"ticket\":"     + IntegerToString(HistoryDealGetInteger(ticket, DEAL_TICKET))      + ",");
+      FileWriteString(fh, "\"positionId\":" + IntegerToString(HistoryDealGetInteger(ticket, DEAL_POSITION_ID)) + ",");
+      FileWriteString(fh, "\"symbol\":\""   + HistoryDealGetString(ticket, DEAL_SYMBOL)                       + "\",");
+      FileWriteString(fh, "\"type\":"       + IntegerToString(HistoryDealGetInteger(ticket, DEAL_TYPE))        + ",");
+      FileWriteString(fh, "\"entry\":"      + IntegerToString(HistoryDealGetInteger(ticket, DEAL_ENTRY))       + ",");
+      FileWriteString(fh, "\"volume\":"     + DoubleToString(HistoryDealGetDouble(ticket, DEAL_VOLUME),     2) + ",");
+      FileWriteString(fh, "\"price\":"      + DoubleToString(HistoryDealGetDouble(ticket, DEAL_PRICE),      5) + ",");
+      FileWriteString(fh, "\"sl\":"         + DoubleToString(HistoryDealGetDouble(ticket, DEAL_SL),         5) + ",");
+      FileWriteString(fh, "\"tp\":"         + DoubleToString(HistoryDealGetDouble(ticket, DEAL_TP),         5) + ",");
+      FileWriteString(fh, "\"profit\":"     + DoubleToString(HistoryDealGetDouble(ticket, DEAL_PROFIT),     2) + ",");
+      FileWriteString(fh, "\"commission\":" + DoubleToString(HistoryDealGetDouble(ticket, DEAL_COMMISSION), 2) + ",");
+      FileWriteString(fh, "\"swap\":"       + DoubleToString(HistoryDealGetDouble(ticket, DEAL_SWAP),       2) + ",");
+      FileWriteString(fh, "\"time\":"       + IntegerToString(HistoryDealGetInteger(ticket, DEAL_TIME))        + ",");
+      FileWriteString(fh, "\"comment\":\""  + HistoryDealGetString(ticket, DEAL_COMMENT)                      + "\"");
+      FileWriteString(fh, "}");
+   }
+   FileWriteString(fh, "]");
+}
+
+//+------------------------------------------------------------------+
 //| WriteTradesJSON                                                  |
 //| Writes all open trade records plus account meta to trades.json  |
 //| in the MT5 Common Files folder.  The Python bridge reads this   |
@@ -484,12 +542,15 @@ void WriteTradesJSON()
    double drawdown = GetDailyDrawdownPct();
    double equity   = AccountInfoDouble(ACCOUNT_EQUITY);
    double balance  = AccountInfoDouble(ACCOUNT_BALANCE);
+   HistorySelect(TimeCurrent() - 7*24*60*60, TimeCurrent());
 
    FileWriteString(fh, "{\n");
    FileWriteString(fh, "  \"meta\": {\n");
-   FileWriteString(fh, "    \"dailyDrawdownPct\": " + DoubleToString(drawdown, 4) + ",\n");
-   FileWriteString(fh, "    \"accountEquity\": "    + DoubleToString(equity,   2) + ",\n");
-   FileWriteString(fh, "    \"accountBalance\": "   + DoubleToString(balance,  2) + "\n");
+   FileWriteString(fh, "    \"dailyDrawdownPct\": " + DoubleToString(drawdown, 4)          + ",\n");
+   FileWriteString(fh, "    \"accountEquity\": "    + DoubleToString(equity,   2)          + ",\n");
+   FileWriteString(fh, "    \"accountBalance\": "   + DoubleToString(balance,  2)          + ",\n");
+   FileWriteString(fh, "    \"totalProfit\": "      + DoubleToString(GetTotalProfit(), 2)  + ",\n");
+   FileWriteString(fh, "    \"totalTrades\": "      + IntegerToString(HistoryDealsTotal()) + "\n");
    FileWriteString(fh, "  },\n");
    FileWriteString(fh, "  \"trades\": [\n");
 
@@ -513,6 +574,9 @@ void WriteTradesJSON()
    }
 
    FileWriteString(fh, "  ],\n");
+   FileWriteString(fh, "  \"history\": ");
+   WriteTradeHistory(fh);
+   FileWriteString(fh, ",\n  \"totalProfit\": " + DoubleToString(GetTotalProfit(), 2) + ",\n");
    FileWriteString(fh, "  \"signalState\": {\n");
    FileWriteString(fh, "    \"t1_masterSwitch\":"  + (g_lastSignalState.t1_masterSwitch ? "true" : "false") + ",\n");
    FileWriteString(fh, "    \"t1_tradeCapOk\":"    + (g_lastSignalState.t1_tradeCapOk   ? "true" : "false") + ",\n");

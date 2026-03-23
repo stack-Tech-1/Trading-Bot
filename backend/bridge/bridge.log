@@ -1666,3 +1666,35 @@ task: <Task pending name='Task-5' coro=<IocpProactor.accept.<locals>.accept_coro
 2026-03-23 00:00:37,840 INFO [WS] Client disconnected: ('::1', 53165, 0, 0)
 2026-03-23 00:00:41,123 INFO connection open
 2026-03-23 00:00:41,123 INFO [WS] Client connected: ('::1', 61794, 0, 0)
+2026-03-23 00:03:51,219 INFO [WS] Client disconnected: ('::1', 61794, 0, 0)
+2026-03-23 00:04:10,033 INFO connection open
+2026-03-23 00:04:10,033 INFO [WS] Client connected: ('::1', 65348, 0, 0)
+2026-03-23 00:09:20,179 INFO [WS] Client disconnected: ('::1', 65348, 0, 0)
+2026-03-23 00:09:40,035 INFO connection open
+2026-03-23 00:09:40,035 INFO [WS] Client connected: ('::1', 55835, 0, 0)
+2026-03-23 00:13:50,161 INFO [WS] Client disconnected: ('::1', 55835, 0, 0)
+2026-03-23 00:14:13,015 INFO connection open
+2026-03-23 00:14:13,015 INFO [WS] Client connected: ('::1', 63095, 0, 0)
+2026-03-23 00:18:03,118 INFO [WS] Client disconnected: ('::1', 63095, 0, 0)
+2026-03-23 00:18:19,039 INFO connection open
+2026-03-23 00:18:19,040 INFO [WS] Client connected: ('::1', 53073, 0, 0)
+2026-03-23 00:21:09,156 INFO [WS] Client disconnected: ('::1', 53073, 0, 0)
+2026-03-23 00:21:24,027 INFO connection open
+2026-03-23 00:21:24,028 INFO [WS] Client connected: ('::1', 61835, 0, 0)
+2026-03-23 00:23:34,089 INFO [WS] Client disconnected: ('::1', 61835, 0, 0)
+2026-03-23 00:23:55,023 INFO connection open
+2026-03-23 00:23:55,023 INFO [WS] Client connected: ('::1', 51666, 0, 0)
+2026-03-23 00:27:56,638 INFO [WS] Client disconnected: ('::1', 51666, 0, 0)
+2026-03-23 04:49:26,486 INFO [Watcher] File watcher started on C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2026-03-23 04:49:26,515 INFO server listening on 127.0.0.1:8765
+2026-03-23 04:49:26,516 INFO server listening on [::1]:8765
+2026-03-23 04:49:26,516 INFO WebSocket server started on ws://localhost:8765
+2026-03-23 04:49:29,232 INFO [News] Fetched 12 high-impact events from ForexFactory
+2026-03-23 04:49:29,236 INFO [News] Wrote 12 events to C:\Users\SMC\AppData\Roaming\MetaQuotes\Terminal\Common\Files\news_events.json
+2026-03-23 04:49:29,236 INFO [News] News fetch complete at 2026-03-23T04:49:29.236655
+2026-03-23 04:49:31,278 INFO connection open
+2026-03-23 04:49:31,279 INFO [WS] Client connected: ('::1', 65341, 0, 0)
+2026-03-23 04:49:31,355 INFO [WS] Client disconnected: ('::1', 65341, 0, 0)
+2026-03-23 04:49:57,866 INFO connection open
+2026-03-23 04:49:57,867 INFO [WS] Client connected: ('::1', 57539, 0, 0)
+2026-03-23 04:49:57,909 INFO [WS] Client disconnected: ('::1', 57539, 0, 0)

@@ -10,6 +10,7 @@ import SettingsPanel from './components/SettingsPanel'
 import { formatCurrency, formatTime, getDirectionLabel, getDirectionColor } from './utils/formatters'
 import { useWindowSize, isMobile, isTablet } from './hooks/useWindowSize'
 import MobileApp from './components/mobile/MobileApp'
+import { HistoryTable } from './components/TradeTable'
 
 const WS_URL = window.location.hostname === 'localhost'
   ? 'ws://localhost:8765'
@@ -254,6 +255,18 @@ export default function App() {
               }}>
                 {formatCurrency(balance)}
               </div>
+              <div style={{
+                background: cardBg, border, borderRadius: 4,
+                padding: '3px 8px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
+              }}>
+                <div style={{ fontSize: 10, color: '#475569', fontFamily: 'monospace' }}>TOTAL P&L</div>
+                <div style={{
+                  fontSize: 14, fontWeight: 700, fontFamily: 'monospace',
+                  color: (activeData?.meta?.totalProfit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e',
+                }}>
+                  {formatCurrency(activeData?.meta?.totalProfit ?? 0)}
+                </div>
+              </div>
               <button
                 onClick={() => setShowSettings(true)}
                 style={{
@@ -308,6 +321,7 @@ export default function App() {
         <Cell label="Trades"   value={trades.length} />
         <Cell label="Win Rate" value={trades.length > 0 ? '—' : '—'} />
         <Cell label="Daily P&L" value={formatCurrency(equity - balance)} valueColor={(equity - balance) >= 0 ? '#00d4aa' : '#f43f5e'} />
+        <Cell label="Total P&L" value={formatCurrency(activeData?.meta?.totalProfit ?? 0)} valueColor={(activeData?.meta?.totalProfit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e'} />
 
         {/* Drawdown gauge */}
         <SectionHeader title="DRAWDOWN" />
@@ -502,8 +516,8 @@ export default function App() {
 
           {/* ── History ── */}
           {activeTab === 'History' && (
-            <div style={{ padding: 24, textAlign: 'center', color: '#475569', fontSize: 12, fontFamily: 'monospace' }}>
-              No closed trades yet
+            <div style={{ padding: 8 }}>
+              <HistoryTable history={activeData?.history ?? []} />
             </div>
           )}
 

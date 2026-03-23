@@ -144,6 +144,7 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
   const bbLowerRef   = useRef(null)
   const rsiSeriesRef = useRef(null)
   const ema5Ref = useRef(null)
+  const existingTradeLines = useRef([])
 
   const [activeTimeframe, setActiveTimeframe] = useState(TIMEFRAMES[2])
   const [ohlcv, setOhlcv] = useState({ open: 0, high: 0, low: 0, close: 0, volume: 0 })
@@ -360,23 +361,68 @@ export default function CandlestickChart({ symbol = 'EURUSD', wsData }) {
     if (ema5Ref.current) ema5Ref.current.applyOptions({ visible: indicators.ema5 })
   }, [indicators])
 
-  // ── Trade entry price lines ───────────────────────────────────────────────
+  // ── Open trade price lines (entry / SL / TP) ─────────────────────────────
   useEffect(() => {
     if (!candleSeriesRef.current) return
-    const trades = wsData?.trades?.filter(t => t.symbol === symbol) ?? []
-    trades.forEach(trade => {
-      if (trade.entryPrice) {
-        try {
-          candleSeriesRef.current.createPriceLine({
-            price: trade.entryPrice,
-            color: trade.direction === 1 ? '#00d4aa' : '#f43f5e',
-            lineWidth: 1, lineStyle: 2, axisLabelVisible: true,
-            title: trade.direction === 1 ? 'BUY' : 'SELL',
-          })
-        } catch (_) {}
+    existingTradeLines.current.forEach(line => {
+      try { candleSeriesRef.current.removePriceLine(line) } catch (_) {}
+    })
+    existingTradeLines.current = []
+
+    const openTrades = wsData?.trades ?? []
+    openTrades.forEach(trade => {
+      const entryLine = candleSeriesRef.current.createPriceLine({
+        price: trade.entryPrice,
+        color: trade.direction === 1 ? '#00d4aa' : '#f43f5e',
+        lineWidth: 1, lineStyle: 2, axisLabelVisible: true,
+        title: `${trade.direction === 1 ? 'BUY' : 'SELL'} ${trade.lotSize}`,
+      })
+      existingTradeLines.current.push(entryLine)
+
+      if (trade.stopLoss > 0) {
+        const slLine = candleSeriesRef.current.createPriceLine({
+          price: trade.stopLoss,
+          color: '#f43f5e', lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: 'SL',
+        })
+        existingTradeLines.current.push(slLine)
+      }
+
+      if (trade.takeProfit > 0) {
+        const tpLine = candleSeriesRef.current.createPriceLine({
+          price: trade.takeProfit,
+          color: '#00d4aa', lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: 'TP',
+        })
+        existingTradeLines.current.push(tpLine)
       }
     })
   }, [wsData, symbol])
+
+  // ── History deal markers ──────────────────────────────────────────────────
+  useEffect(() => {
+    if (!candleSeriesRef.current) return
+    const history = wsData?.history ?? []
+    candleSeriesRef.current.setMarkers([])
+    if (history.length === 0) return
+
+    const markers = []
+    history.forEach(deal => {
+      if (!deal.time || !deal.price) return
+      const isBuy = deal.type === 0
+      const isEntry = deal.entry === 0
+      markers.push({
+        time: Number(deal.time),
+        position: isBuy ? 'belowBar' : 'aboveBar',
+        color: isEntry ? (isBuy ? '#00d4aa' : '#f43f5e') : '#94a3b8',
+        shape: isEntry ? (isBuy ? 'arrowUp' : 'arrowDown') : 'circle',
+        text: isEntry
+          ? (isBuy ? `B ${deal.price?.toFixed(2)}` : `S ${deal.price?.toFixed(2)}`)
+          : `${(deal.profit ?? 0) >= 0 ? '+' : ''}${deal.profit?.toFixed(2)}`,
+      })
+    })
+
+    markers.sort((a, b) => a.time - b.time)
+    candleSeriesRef.current.setMarkers(markers)
+  }, [wsData?.history])
 
   const fmt = (n) => Number(n).toFixed(decimals)
 
