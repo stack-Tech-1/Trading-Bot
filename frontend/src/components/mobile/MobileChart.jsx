@@ -64,7 +64,7 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
       </div>
 
       {/* Chart — FIXED 280px height */}
-      <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative' }}>
+      <div style={{ height: `${chartHeight}px`, flexShrink: 0, position: 'relative', overflow: 'hidden' }}>
         <CandlestickChart symbol={symbol} wsData={wsData} activeTimeframe={activeTF} indicators={indicators} style={{ width: '100%', height: '100%' }} />
 
         {/* Signal overlay bar pinned to bottom of chart */}
@@ -176,52 +176,54 @@ export default function MobileChart({ wsData, signalState, trades, signalLog }) 
               <div style={{ textAlign: 'center', padding: '32px 16px', color: '#475569', fontSize: '13px' }}>
                 No closed trades in the last 7 days
               </div>
-            ) : (
-              <>
-                {Object.values(
-                  (wsData?.history ?? []).reduce((acc, deal) => {
-                    const id = deal.positionId ?? deal.ticket
-                    if (!acc[id]) acc[id] = { entry: null, exit: null }
-                    if (deal.entry === 0) acc[id].entry = deal
-                    if (deal.entry === 1) acc[id].exit = deal
-                    return acc
-                  }, {})
-                ).map((pos, i) => (
-                  <div key={i} style={{
-                    padding: '10px 14px', borderBottom: '1px solid #0f1e35',
-                    display: 'flex', alignItems: 'center', gap: '10px'
-                  }}>
-                    <span style={{
-                      fontSize: '11px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
-                      background: pos.entry?.type === 0 ? '#00d4aa22' : '#f43f5e22',
-                      color: pos.entry?.type === 0 ? '#00d4aa' : '#f43f5e', minWidth: '18px', textAlign: 'center'
-                    }}>{pos.entry?.type === 0 ? 'B' : 'S'}</span>
-                    <div style={{ flex: 1, fontSize: '11px' }}>
-                      <div style={{ color: '#94a3b8' }}>
-                        {pos.entry ? new Date(pos.entry.time * 1000).toLocaleTimeString() : '—'}
-                      </div>
-                      <div style={{ color: '#475569', fontSize: '10px' }}>
-                        Entry: {pos.entry?.price?.toFixed(2)} → Exit: {pos.exit?.price?.toFixed(2) ?? 'open'}
-                      </div>
-                    </div>
-                    <div style={{
-                      fontSize: '13px', fontWeight: '700',
-                      color: (pos.exit?.profit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e'
+            ) : (() => {
+              const positions = {}
+              ;(wsData?.history ?? []).forEach(deal => {
+                const id = deal.positionId ?? deal.ticket
+                if (!positions[id]) positions[id] = { entry: null, exit: null }
+                if (deal.entry === 0) positions[id].entry = deal
+                if (deal.entry === 1) positions[id].exit = deal
+              })
+              const positionList = Object.values(positions)
+              return (
+                <>
+                  {positionList.map((pos, i) => (
+                    <div key={i} style={{
+                      padding: '10px 14px', borderBottom: '1px solid #0f1e35',
+                      display: 'flex', alignItems: 'center', gap: '10px'
                     }}>
-                      {(pos.exit?.profit ?? 0) >= 0 ? '+' : ''}{(pos.exit?.profit ?? 0).toFixed(2)}
+                      <span style={{
+                        fontSize: '11px', fontWeight: '700', padding: '2px 6px', borderRadius: '3px',
+                        background: pos.entry?.type === 0 ? '#00d4aa22' : '#f43f5e22',
+                        color: pos.entry?.type === 0 ? '#00d4aa' : '#f43f5e', minWidth: '18px', textAlign: 'center'
+                      }}>{pos.entry?.type === 0 ? 'B' : 'S'}</span>
+                      <div style={{ flex: 1, fontSize: '11px' }}>
+                        <div style={{ color: '#94a3b8' }}>
+                          {pos.entry ? new Date(pos.entry.time * 1000).toLocaleTimeString() : '—'}
+                        </div>
+                        <div style={{ color: '#475569', fontSize: '10px' }}>
+                          Entry: {pos.entry?.price?.toFixed(2)} → Exit: {pos.exit?.price?.toFixed(2) ?? 'open'}
+                        </div>
+                      </div>
+                      <div style={{
+                        fontSize: '13px', fontWeight: '700',
+                        color: (pos.exit?.profit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e'
+                      }}>
+                        {(pos.exit?.profit ?? 0) >= 0 ? '+' : ''}{(pos.exit?.profit ?? 0).toFixed(2)}
+                      </div>
                     </div>
+                  ))}
+                  <div style={{
+                    padding: '12px 14px', textAlign: 'right',
+                    fontSize: '13px', fontWeight: '700',
+                    color: (wsData?.totalProfit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e',
+                    borderTop: '1px solid #1e293b'
+                  }}>
+                    Total: {(wsData?.totalProfit ?? 0) >= 0 ? '+' : ''}{(wsData?.totalProfit ?? 0).toFixed(2)}
                   </div>
-                ))}
-                <div style={{
-                  padding: '12px 14px', textAlign: 'right',
-                  fontSize: '13px', fontWeight: '700',
-                  color: (wsData?.totalProfit ?? 0) >= 0 ? '#00d4aa' : '#f43f5e',
-                  borderTop: '1px solid #1e293b'
-                }}>
-                  Total: {(wsData?.totalProfit ?? 0) >= 0 ? '+' : ''}{(wsData?.totalProfit ?? 0).toFixed(2)}
-                </div>
-              </>
-            )}
+                </>
+              )
+            })()}
           </div>
         )}
 
