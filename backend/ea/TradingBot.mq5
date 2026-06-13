@@ -347,7 +347,7 @@ void OnTick()
       g_lastSignalState
    );
 
-   if(sig.direction != 0) sig.direction = -sig.direction;  // Invert: execute opposite of signal
+   // if(sig.direction != 0) sig.direction = -sig.direction;  // Invert: execute opposite of signal
 
    if(sig.direction == 1)
       Print("[Trade] BUY signal confirmed | ", sig.reason);
